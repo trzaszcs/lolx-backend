@@ -27,8 +27,9 @@ task stage {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    // The production code uses the SLF4J logging API at compile time
-    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
+    compile 'org.slf4j:slf4j-api:1.7.16'
+    compile 'ch.qos.logback:logback-classic:1.1.5'
     compile("org.springframework.boot:spring-boot-starter-web")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
