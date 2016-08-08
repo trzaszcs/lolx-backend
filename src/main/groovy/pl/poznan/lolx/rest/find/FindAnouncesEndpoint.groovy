@@ -11,13 +11,13 @@ import pl.poznan.lolx.rest.add.AnounceRequestDto
 @Slf4j
 class FindAnouncesEndpoint {
 
-    @RequestMapping(value = "/anounces/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/anounces", method = RequestMethod.GET)
     List<AnounceRequestDto> find(@RequestParam("query") String query) {
         log.info("find anounces by query: {}", query)
         return [
-                new SimpleAnounceDto(id: "1", title: "title1", description: "description1...", state: "wlkp", city: "Poz"),
-                new SimpleAnounceDto(id: "2", title: "title1", description: "description2...", state: "wlkp", city: "Waw"),
-                new SimpleAnounceDto(id: "3", title: "title1", description: "description3...", state: "wlkp", city: "Krk"),
+                new SimpleAnounceDto(id: "1", title: "title1", state: "wlkp", city: "Poz"),
+                new SimpleAnounceDto(id: "2", title: "title1", state: "wlkp", city: "Waw"),
+                new SimpleAnounceDto(id: "3", title: "title1", state: "wlkp", city: "Krk"),
         ]
     }
 
