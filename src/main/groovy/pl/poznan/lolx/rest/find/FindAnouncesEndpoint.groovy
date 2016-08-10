@@ -12,7 +12,8 @@ import pl.poznan.lolx.rest.add.AnounceRequestDto
 class FindAnouncesEndpoint {
 
     @RequestMapping(value = "/anounces", method = RequestMethod.GET)
-    List<AnounceRequestDto> find(@RequestParam("query") String query) {
+    List<AnounceRequestDto> find(@RequestParam("query") String query,
+                                 @RequestParam(name = "page", defaultValue = "0") int page) {
         log.info("find anounces by query: {}", query)
         return [
                 new SimpleAnounceDto(id: "1", title: "title1", state: "wlkp", city: "Poz"),
