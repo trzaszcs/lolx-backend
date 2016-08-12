@@ -17,8 +17,15 @@ class CreateAnounceService {
     String create(AnounceCreationRequest anounceRequest) {
         def anounceId = genId()
 
-        def anounce = new Anounce(anounceRequest.properties)
-        anounce.id = anounceId
+
+        def anounce = new Anounce(
+                id: anounceId,
+                title: anounceRequest.title,
+                description: anounceRequest.description,
+                state: anounceRequest.state,
+                city: anounceRequest.city,
+                ownerId: anounceRequest.ownerId
+        )
 
         searchEngine.index(anounce)
         anounceDao.save(anounce)

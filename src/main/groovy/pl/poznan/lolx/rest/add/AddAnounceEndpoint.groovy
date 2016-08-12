@@ -24,7 +24,7 @@ class AddAnounceEndpoint {
     @RequestMapping(value = "/anounces", method = RequestMethod.POST)
     AnounceIdDto add(@RequestBody @Validated AnounceRequestDto dto) {
         log.info("got new anounce {}", dto)
-        new AnounceIdDto(createAnounceService.create(map(dto)))
+        new AnounceIdDto(id: createAnounceService.create(map(dto)))
     }
 
     def map(AnounceRequestDto anounceRequestDto) {
