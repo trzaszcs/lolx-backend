@@ -17,4 +17,8 @@ class AnounceSearchService {
         searchEngine.forUser(userId, page, itemsPerPage)
     }
 
+    SearchResult getById(String anounceId) {
+        searchEngine.getById(anounceId)
+    }
+
 }

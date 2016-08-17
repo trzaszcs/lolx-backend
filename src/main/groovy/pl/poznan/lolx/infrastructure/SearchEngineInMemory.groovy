@@ -35,6 +35,15 @@ class SearchEngineInMemory implements SearchEngine {
         )
     }
 
+    SearchResult getById(String anounceId) {
+        def anounces = []
+        anounces.addAll(generateAnounces(1, 0))
+        new SearchResult(
+                totalCount: 1,
+                anounces: anounces.subList(0, 1)
+        )
+    }
+
     @Override
     void index(Anounce anounce) {
         indexedAnounces.add(anounce)
