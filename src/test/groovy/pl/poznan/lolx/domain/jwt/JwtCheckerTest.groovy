@@ -10,7 +10,7 @@ class JwtCheckerTest {
 
     @Before
     void setup() {
-        jwtChecker = new JwtChecker("public.der")
+        jwtChecker = new JwtChecker(getClass().getClassLoader().getResource("public.der").getBytes())
     }
 
     @Test

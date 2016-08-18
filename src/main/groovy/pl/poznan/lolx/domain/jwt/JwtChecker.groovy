@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureException
 import io.jsonwebtoken.UnsupportedJwtException
-import org.springframework.beans.factory.annotation.Value
 
 import java.security.KeyFactory
 import java.security.PublicKey
@@ -16,8 +15,8 @@ class JwtChecker {
 
     private PublicKey publicKey
 
-    JwtChecker(String publicKeyPath) {
-        def publicKeyContent = new File(getClass().getClassLoader().getResource(publicKeyPath).file).bytes
+    JwtChecker(byte[] publicKeyContent) {
+        assert publicKeyContent != null
         this.publicKey = toPublicKey(publicKeyContent)
     }
 
