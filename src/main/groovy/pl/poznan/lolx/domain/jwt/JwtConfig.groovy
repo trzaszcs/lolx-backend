@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ResourceLoader
 
 @Configuration
 class JwtConfig {
@@ -13,10 +14,10 @@ class JwtConfig {
     String publicKeyPath
 
     @Autowired
-    ApplicationContext context
+    private ResourceLoader resourceLoader;
 
     @Bean
     JwtChecker jwtChecker() {
-        new JwtChecker(context.getResource(publicKeyPath).file.bytes)
+        new JwtChecker(resourceLoader.getResource(publicKeyPath).inputStream.bytes)
     }
 }
