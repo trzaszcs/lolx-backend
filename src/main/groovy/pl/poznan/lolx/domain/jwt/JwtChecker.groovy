@@ -5,22 +5,18 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureException
 import io.jsonwebtoken.UnsupportedJwtException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 
 import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.X509EncodedKeySpec
 
-@Component
 @Slf4j
 class JwtChecker {
 
     private PublicKey publicKey
 
-    @Autowired
-    JwtChecker(@Value('${publicKey.path}') String publicKeyPath) {
+    JwtChecker(String publicKeyPath) {
         def publicKeyContent = new File(getClass().getClassLoader().getResource(publicKeyPath).file).bytes
         this.publicKey = toPublicKey(publicKeyContent)
     }
