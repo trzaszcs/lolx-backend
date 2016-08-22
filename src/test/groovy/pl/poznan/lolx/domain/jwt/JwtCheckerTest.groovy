@@ -2,15 +2,15 @@ package pl.poznan.lolx.domain.jwt
 
 import org.junit.Before
 import org.junit.Test
+import pl.poznan.lolx.util.JwtUtil
 
 class JwtCheckerTest {
 
     def jwtChecker
-    def jwtToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmcm9udGVuZCIsImV4cCI6MTQ3MTU5MzUwOSwiaWF0IjoxNDcxNTA3MTA5LCJzdWIiOiI2NjYifQ.PKAqt5kItiQJrt9jxNq6kMxRswOi9_5YCslpJZvU9WxNvQEdsgIQaqebk6TTsB5Al643Ly74vo_kmutEj1FdrKcoQjoPaJv9trFOfW0VnE_nep5kQWADJ1peepDKOglluAQc_we1tenfqUWgxmxpeBjvxs14MkzPFn87cY2gAuDiXVPtRaTWPJLyz3LKuyT5rIh9Egc4v98XYkNjmQeQQ8Epq-TodbHuJYnHgZRB7IAQbeWMIyQ8AyND0Zxt50C2ym4EHoEY08nyfGTNVRSvKs-fE4W8Cwth3zfIXbQTJi5ACBs6YcylrWyyzmDR0DeL5Vtq6xlhNe9Auc4TZTRw2A"
-
+    def jwtToken = JwtUtil.gen("666")
     @Before
     void setup() {
-        jwtChecker = new JwtChecker(getClass().getClassLoader().getResource("public.der").getBytes())
+        jwtChecker = new JwtChecker(getClass().getClassLoader().getResource("tst_public.der").getBytes())
     }
 
     @Test

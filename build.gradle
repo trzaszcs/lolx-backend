@@ -48,5 +48,7 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
     testCompile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '1.18'
+
 
 }

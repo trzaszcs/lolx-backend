@@ -1,0 +1,5 @@
+publicKey:
+    path: classpath:tst_public.der
+
+user-service:
+    addr: http://localhost:12346/
