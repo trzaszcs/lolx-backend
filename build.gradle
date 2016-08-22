@@ -21,6 +21,10 @@ repositories {
     maven { url "http://repo.spring.io/milestone" }
 }
 
+bootRun {
+    systemProperties['spring.profiles.active']=project.gradle.startParameter.systemPropertiesArgs['spring.profiles.active'];
+}
+
 task stage {
     dependsOn build
 }

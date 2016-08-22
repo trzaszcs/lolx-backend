@@ -35,13 +35,8 @@ class SearchEngineInMemory implements SearchEngine {
         )
     }
 
-    SearchResult getById(String anounceId) {
-        def anounces = []
-        anounces.addAll(generateAnounces(1, 0))
-        new SearchResult(
-                totalCount: 1,
-                anounces: anounces.subList(0, 1)
-        )
+    Optional<Anounce> getById(String anounceId) {
+        Optional.of(generateSingle(anounceId, "Title " + anounceId, "666"))
     }
 
     @Override
@@ -52,8 +47,12 @@ class SearchEngineInMemory implements SearchEngine {
     private def generateAnounces(count, offset, ownerId = "someOwner") {
         def anounces = []
         (0..count).each {
-            anounces.add(new Anounce(id: "${offset + it}", title: "title ${offset + it}", state: "wlkp", city: "Poz", ownerId: ownerId))
+            anounces.add(generateSingle("${offset + it}", "${offset + it}", owner))
         }
         return anounces
+    }
+
+    private def generateSingle(id, title, ownerId) {
+        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", state: "wlkp", city: "Poz", ownerId: ownerId, ownerName: "someName")
     }
 }

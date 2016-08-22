@@ -1,5 +1,8 @@
+server:
+    port: 8081
+
 publicKey:
     path: classpath:public.der
 
 user-service:
-    addr: http://lolx-auth.herokuapp.com/
+    addr: http://localhost:8082/

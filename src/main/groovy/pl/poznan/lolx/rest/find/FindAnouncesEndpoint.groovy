@@ -2,7 +2,6 @@ package pl.poznan.lolx.rest.find
 
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -30,11 +29,5 @@ class FindAnouncesEndpoint {
                          @RequestParam(name = "itemsPerPage", defaultValue = "20") int itemsPerPage) {
         log.info("find anounces by query: {}", query)
         searchResultMapper.map(anounceSearchService.find(query, page, itemsPerPage))
-    }
-
-    @RequestMapping(value = "/anounces/{anounceId}", method = RequestMethod.GET)
-    SearchResultDto getById(@PathVariable String anounceId) {
-        log.info("find anounce by id: {}", anounceId)
-        searchResultMapper.map(anounceSearchService.getById(anounceId))
     }
 }

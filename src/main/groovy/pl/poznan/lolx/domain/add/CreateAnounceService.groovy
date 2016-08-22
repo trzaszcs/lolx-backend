@@ -13,18 +13,19 @@ class CreateAnounceService {
     AnounceDao anounceDao
     @Autowired
     SearchEngine searchEngine
+    @Autowired
+    UserDetails userDetails
 
     String create(AnounceCreationRequest anounceRequest) {
         def anounceId = genId()
-
-
         def anounce = new Anounce(
                 id: anounceId,
                 title: anounceRequest.title,
                 description: anounceRequest.description,
                 state: anounceRequest.state,
                 city: anounceRequest.city,
-                ownerId: anounceRequest.ownerId
+                ownerId: anounceRequest.ownerId,
+                ownerName: userDetails.find(anounceRequest.ownerId)
         )
 
         searchEngine.index(anounce)

@@ -1,15 +1,15 @@
-package pl.poznan.lolx.domain
+package pl.poznan.lolx.rest.get
 
 import groovy.transform.ToString
 
 @ToString
-class Anounce {
+class AnounceDto {
     String id
     String title
     String description
     String city
     String state
-    Date creationDate = new Date()
+    Date creationDate
     String ownerId
     String ownerName
 }
