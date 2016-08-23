@@ -66,7 +66,7 @@ class SearchEngineInMemory implements SearchEngine {
     private def generateTitle(id) {
         def dictionary = ["super", "dokładnie", "każdą", "najtaniej", "expresowo", "każdego dnia", "zawodowo", "najlepiej"]
         def verb = ["sprzątam", "myję", "przepycham", "odkażam", "udrażniam", "woskuję", "maluję", "poleruję", "zamiatam wokół"]
-        def subject = ["toalętę", "kabinę", "zlew", "rurę", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]
+        def subject = ["toaletę", "kabinę", "zlew", "rurę", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]
         Random random = new Random();
         def title = "${dictionary[random.nextInt(dictionary.size())]} ${dictionary[random.nextInt(dictionary.size())]} " +
                 "${verb[random.nextInt(verb.size())]} ${subject[random.nextInt(subject.size())]} #${id}"
