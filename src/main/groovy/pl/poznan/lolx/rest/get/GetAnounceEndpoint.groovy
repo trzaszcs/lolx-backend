@@ -34,6 +34,7 @@ class GetAnounceEndpoint {
 
     def map(anounce) {
         new AnounceDto(
+                id: anounce.id,
                 title: anounce.title,
                 description: anounce.description,
                 creationDate: anounce.creationDate,
