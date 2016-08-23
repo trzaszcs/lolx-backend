@@ -37,11 +37,12 @@ class SearchEngineInMemory implements SearchEngine {
 
     @Override
     Optional<Anounce> getById(String anounceId) {
-        new Anounce(id: anounceId,
-                title: "title ${anounceId}",
+        Optional.of(new Anounce(id: anounceId,
+                title: "${generateTitle(anounceId)}",
                 state: "wlkp",
                 city: "Poz",
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis."
+            )
         )
     }
 
@@ -53,12 +54,22 @@ class SearchEngineInMemory implements SearchEngine {
     private def generateAnounces(count, offset, ownerId = "someOwner") {
         def anounces = []
         (0..count).each {
-            anounces.add(generateSingle("${offset + it}", "${offset + it}", owner))
+            anounces.add(generateSingle("${offset + it}", generateTitle(it), owner))
         }
         return anounces
     }
 
     private def generateSingle(id, title, ownerId) {
         new Anounce(id: id, title: title, description: "Lorem Ipsum ...", state: "wlkp", city: "Poz", ownerId: ownerId, ownerName: "someName")
+    }
+
+    private def generateTitle(id) {
+        def dictionary = ["super", "dokładnie", "każdą", "najtaniej", "expresowo", "każdego dnia", "zawodowo", "najlepiej"]
+        def verb = ["sprzątam", "myję", "przepycham", "udrażniam", "woskuję", "maluję", "poleruję", "zamiatam wokół"]
+        def subject = ["toalętę", "kabinę", "zlew", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]
+        Random random = new Random();
+        def title = "${dictionary[random.nextInt(dictionary.size()-1)]} ${dictionary[random.nextInt(dictionary.size()-1)]} " +
+                "${verb[random.nextInt(dictionary.size()-1)]} ${subject[random.nextInt(dictionary.size()-1)]} #${id}"
+        title
     }
 }
