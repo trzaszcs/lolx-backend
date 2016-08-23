@@ -42,7 +42,7 @@ class SearchEngineInMemory implements SearchEngine {
                 state: "wlkp",
                 city: "Poz",
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis."
-            )
+        )
         )
     }
 
@@ -59,11 +59,15 @@ class SearchEngineInMemory implements SearchEngine {
         return anounces
     }
 
-    private def generateSingle(id, title, ownerId) {
-        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", state: "wlkp", city: "Poz", ownerId: ownerId, ownerName: "someName")
+    def genPrice(){
+        Math.round(Math.random() * 100) / 100;
     }
 
-    private def generateTitle(id) {
+    def generateSingle(id, title, ownerId) {
+        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", state: "Wielkopolska", city: "Poznan", ownerId: ownerId, ownerName: "someName", price: genPrice())
+    }
+
+    def generateTitle(id) {
         def dictionary = ["super", "dokładnie", "każdą", "najtaniej", "expresowo", "każdego dnia", "zawodowo", "najlepiej"]
         def verb = ["sprzątam", "myję", "przepycham", "odkażam", "udrażniam", "woskuję", "maluję", "poleruję", "zamiatam wokół"]
         def subject = ["toaletę", "kabinę", "zlew", "rurę", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]

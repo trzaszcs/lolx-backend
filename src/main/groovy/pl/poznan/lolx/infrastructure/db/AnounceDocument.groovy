@@ -13,4 +13,5 @@ class AnounceDocument {
     String state
     Date creationDate
     String ownerId
+    BigDecimal price
 }

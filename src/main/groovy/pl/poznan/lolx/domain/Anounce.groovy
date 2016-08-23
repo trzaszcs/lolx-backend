@@ -12,4 +12,5 @@ class Anounce {
     Date creationDate = new Date()
     String ownerId
     String ownerName
+    BigDecimal price
 }

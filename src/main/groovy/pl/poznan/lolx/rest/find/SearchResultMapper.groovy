@@ -10,7 +10,7 @@ class SearchResultMapper {
         new SearchResultDto(
                 totalCount: searchResult.totalCount,
                 anounces: searchResult.anounces.collect {
-                    new SimpleAnounceDto(id: it.id, title: it.title, state: it.state, city: it.city)
+                    new SimpleAnounceDto(id: it.id, title: it.title, state: it.state, city: it.city, creationDate: it.creationDate, price: it.price)
                 }
         )
 

@@ -9,4 +9,5 @@ class AnounceCreationRequest {
     String city
     String state
     String ownerId
+    BigDecimal price
 }

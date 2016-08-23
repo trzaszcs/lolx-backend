@@ -48,7 +48,8 @@ class AddAnounceEndpoint {
                 description: anounceRequestDto.description,
                 state: anounceRequestDto.state,
                 city: anounceRequestDto.state,
-                ownerId: anounceRequestDto.ownerId
+                ownerId: anounceRequestDto.ownerId,
+                price: anounceRequestDto.price
         )
     }
 

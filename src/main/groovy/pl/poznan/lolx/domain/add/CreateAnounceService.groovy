@@ -25,9 +25,9 @@ class CreateAnounceService {
                 state: anounceRequest.state,
                 city: anounceRequest.city,
                 ownerId: anounceRequest.ownerId,
-                ownerName: userDetails.find(anounceRequest.ownerId)
+                ownerName: userDetails.find(anounceRequest.ownerId),
+                price: anounceRequest.price
         )
-
         searchEngine.index(anounce)
         anounceDao.save(anounce)
         return anounceId
