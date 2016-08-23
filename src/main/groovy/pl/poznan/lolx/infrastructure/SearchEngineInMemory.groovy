@@ -68,8 +68,8 @@ class SearchEngineInMemory implements SearchEngine {
         def verb = ["sprzątam", "myję", "przepycham", "udrażniam", "woskuję", "maluję", "poleruję", "zamiatam wokół"]
         def subject = ["toalętę", "kabinę", "zlew", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]
         Random random = new Random();
-        def title = "${dictionary[random.nextInt(dictionary.size()-1)]} ${dictionary[random.nextInt(dictionary.size()-1)]} " +
-                "${verb[random.nextInt(dictionary.size()-1)]} ${subject[random.nextInt(dictionary.size()-1)]} #${id}"
+        def title = "${dictionary[random.nextInt(dictionary.size())]} ${dictionary[random.nextInt(dictionary.size())]} " +
+                "${verb[random.nextInt(verb.size())]} ${subject[random.nextInt(subject.size())]} #${id}"
         title
     }
 }
