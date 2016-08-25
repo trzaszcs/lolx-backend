@@ -26,22 +26,22 @@ class AnounceOrderEndpoint {
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    ResponseEntity add(@RequestHeader(value = "Authorization") authorizationHeader,
+    ResponseEntity add(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
                        @RequestBody @Validated AnounceOrderRequestDto dto) {
         log.info("got new order {}", dto)
 
-        if (!jwtChecker.verify(authorizationHeader, dto.ownerId)) {
+        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, dto.ownerId)) {
             log.warn("rejecting anounce {} due to authorization error", dto)
             //TODO if needed
         }
 
         def orderId = anounceOrderService.order(map(dto))
         new ResponseEntity(
-                new AnounceOrderRequestDto(requestId: orderId, customerContactInfo: getAnounceContactInfo()),
+                new AnounceOrderResponseDto(requestId: orderId, anounceContactInfo: getAnounceContactInfo()),
                 HttpStatus.ACCEPTED)
     }
 
-    private String getAnounceContactInfo() {
+    private static String getAnounceContactInfo() {
         "dzwon 600700800"
     }
 
