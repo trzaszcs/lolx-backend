@@ -22,4 +22,14 @@ class AnounceOrderMongoDao implements AnounceOrderDao {
         }
         anounceOrderMongoRepository.save(document)
     }
+
+    @Override
+    AnounceOrder get(String id) {
+        def anounceOrder = new AnounceOrder()
+        def document = anounceOrderMongoRepository.findOne(id)
+        use(InvokerHelper) {
+            anounceOrder.setProperties(document.properties)
+        }
+        return anounceOrder
+    }
 }

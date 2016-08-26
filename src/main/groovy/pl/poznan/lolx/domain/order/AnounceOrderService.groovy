@@ -25,4 +25,15 @@ class AnounceOrderService {
         return anounceOrderRequest.requestId
     }
 
+    AnounceOrderRequest get(String requestId) {
+        AnounceOrder anounceOrder = anounceOrderDao.get(requestId)
+        new AnounceOrderRequest(
+                requestId: anounceOrder.requestId,
+                requestDate: anounceOrder.requestDate,
+                anounceId: anounceOrder.anounceId,
+                preferedTime: anounceOrder.preferedTime,
+                preferedDate: anounceOrder.preferedDate,
+                customerContactInfo: anounceOrder.customerContactInfo
+        )
+    }
 }

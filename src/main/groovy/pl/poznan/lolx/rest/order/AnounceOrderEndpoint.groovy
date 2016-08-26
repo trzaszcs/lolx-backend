@@ -26,19 +26,53 @@ class AnounceOrderEndpoint {
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    ResponseEntity add(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
-                       @RequestBody @Validated AnounceOrderRequestDto dto) {
-        log.info("got new order {}", dto)
+    ResponseEntity order(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+                         @RequestBody @Validated AnounceOrderRequestDto dto) {
+        log.info("new order {}", dto)
 
         if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, dto.ownerId)) {
-            log.warn("rejecting anounce {} due to authorization error", dto)
+            log.warn("rejecting order {} due to authorization error", dto)
             //TODO if needed
         }
 
         def orderId = anounceOrderService.order(map(dto))
         new ResponseEntity(
-                new AnounceOrderResponseDto(requestId: orderId, anounceContactInfo: getAnounceContactInfo()),
-                HttpStatus.ACCEPTED)
+                new AnounceOrderStatusDto(
+                        requestId: orderId,
+                        anounceContactInfo: getAnounceContactInfo(),
+                        status: "PENDING"
+                ),
+                HttpStatus.ACCEPTED
+        )
+    }
+
+    @RequestMapping(value = "/orders/{requestId}", method = RequestMethod.GET)
+    ResponseEntity get(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+                         @PathVariable String requestId) {
+        log.info("get order {}", requestId)
+
+        AnounceOrderRequest order = anounceOrderService.get(requestId);
+        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, order.customerId)) {
+            log.warn("rejecting get order {} due to authorization error", requestId)
+            //TODO if needed
+        }
+
+        new ResponseEntity(
+                new AnounceOrderRequestDto(
+                        requestId: order.requestId,
+                        anounceId: order.anounceId,
+                        preferedTime: order.preferedTime,
+                        preferedDate: order.preferedDate,
+                        customerContactInfo: order.customerContactInfo,
+                        status: new AnounceOrderStatusDto(
+                                requestId: order.requestId,
+                                requestDate: order.requestDate,
+                                anounceContactInfo: "informacje kontaktowe do ogłoszenia: tel 600700800",
+                                status: "SUCCESS"
+                        )
+                ),
+                HttpStatus.OK
+        )
     }
 
     private static String getAnounceContactInfo() {
