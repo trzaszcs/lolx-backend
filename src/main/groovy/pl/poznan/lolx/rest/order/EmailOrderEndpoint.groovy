@@ -38,9 +38,7 @@ class EmailOrderEndpoint {
 
         if (!jwtChecker.verify(authorizationHeader, ownerId)) {
             log.warn("rejecting order {} due to authorization error", dto)
-            return new ResponseEntity(
-                    HttpStatus.UNAUTHORIZED
-            )
+            //TODO if needed
         }
 
         new ResponseEntity(
