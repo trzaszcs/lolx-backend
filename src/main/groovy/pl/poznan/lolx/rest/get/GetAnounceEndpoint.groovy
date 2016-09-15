@@ -41,7 +41,8 @@ class GetAnounceEndpoint {
                 state: anounce.state,
                 city: anounce.city,
                 ownerId: anounce.ownerId,
-                ownerName: anounce.ownerName
+                ownerName: anounce.ownerName,
+                price: anounce.price
         )
     }
 

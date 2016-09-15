@@ -15,4 +15,5 @@ class AnounceDto {
     Date creationDate
     String ownerId
     String ownerName
+    BigDecimal price
 }
