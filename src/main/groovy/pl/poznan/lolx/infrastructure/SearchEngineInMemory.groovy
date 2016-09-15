@@ -55,7 +55,7 @@ class SearchEngineInMemory implements SearchEngine {
     private def generateAnounces(count, offset, ownerId = "someOwner") {
         def anounces = []
         (0..count).each {
-            anounces.add(generateSingle("${offset + it}", generateTitle(it), owner))
+            anounces.add(generateSingle("${offset + it}", generateTitle(it), ownerId))
         }
         return anounces
     }
