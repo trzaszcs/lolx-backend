@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 class AnounceOrderDocument {
     @Id
     String requestId
+    String title
     String requestDate
     String anounceId
     String preferedTime

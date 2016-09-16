@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty
 class AnounceOrderRequestDto {
     @NotEmpty
     String requestId
+    String title
     @NotEmpty
     String anounceId
     String preferedTime
