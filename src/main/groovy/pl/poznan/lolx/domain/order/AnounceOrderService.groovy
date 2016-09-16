@@ -58,6 +58,7 @@ class AnounceOrderService {
               .map( { anounceOrder ->
                     new AnounceOrderRequest(
                             requestId: anounceOrder.requestId,
+                            title: anounceOrder.title,
                             requestDate: anounceOrder.requestDate,
                             anounceId: anounceOrder.anounceId,
                             preferedTime: anounceOrder.preferedTime,
