@@ -34,12 +34,8 @@ class EmailOrderEndpoint {
         log.info("new email order {}", dto)
 
         def order = anounceOrderService.get(dto.orderId)
-        def ownerId = order.customerId
-
-        if (!jwtChecker.verify(authorizationHeader, ownerId)) {
-            log.warn("rejecting order {} due to authorization error", dto)
-            //TODO if needed
-        }
+ 
+        log.info("email order {} {}", dto, order)
 
         new ResponseEntity(
                 HttpStatus.ACCEPTED
