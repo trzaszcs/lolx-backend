@@ -93,6 +93,7 @@ class AnounceOrderEndpoint {
         def customerOrders = orders.stream().map({ order ->
             new AnounceOrderRequestDto(
                     requestId: order.requestId,
+                    title: order.title,
                     anounceId: order.anounceId,
                     preferedTime: order.preferedTime,
                     preferedDate: order.preferedDate,
