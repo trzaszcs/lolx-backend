@@ -10,6 +10,8 @@ import pl.poznan.lolx.domain.jwt.JwtChecker
 import pl.poznan.lolx.domain.order.AnounceOrderRequest
 import pl.poznan.lolx.domain.order.AnounceOrderService
 
+import java.util.stream.Collectors
+
 @RestController
 @Slf4j
 class AnounceOrderEndpoint {
@@ -30,7 +32,7 @@ class AnounceOrderEndpoint {
                          @RequestBody @Validated AnounceOrderRequestDto dto) {
         log.info("new order {}", dto)
 
-        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, dto.ownerId)) {
+        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, dto.customerId)) {
             log.warn("rejecting order {} due to authorization error", dto)
             //TODO if needed
         }
@@ -64,6 +66,7 @@ class AnounceOrderEndpoint {
                         preferedTime: order.preferedTime,
                         preferedDate: order.preferedDate,
                         customerContactInfo: order.customerContactInfo,
+                        customerId: order.customerId,
                         status: new AnounceOrderStatusDto(
                                 requestId: order.requestId,
                                 requestDate: order.requestDate,
@@ -73,6 +76,37 @@ class AnounceOrderEndpoint {
                 ),
                 HttpStatus.OK
         )
+    }
+
+    @RequestMapping(value = "/orders/customer/{customerId}", method = RequestMethod.GET)
+    ResponseEntity getByCustomerId(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+                       @PathVariable String customerId) {
+        log.info("get order {}", customerId)
+
+        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, customerId)) {
+            log.warn("rejecting get order {} due to authorization error", customerId)
+            //TODO if needed
+        }
+        List<AnounceOrderRequest> orders = anounceOrderService.getByCustomerId(customerId);
+
+        def customerOrders = orders.stream().map({ order ->
+            new AnounceOrderRequestDto(
+                    requestId: order.requestId,
+                    anounceId: order.anounceId,
+                    preferedTime: order.preferedTime,
+                    preferedDate: order.preferedDate,
+                    customerContactInfo: order.customerContactInfo,
+                    customerId: order.customerId,
+                    status: new AnounceOrderStatusDto(
+                            requestId: order.requestId,
+                            requestDate: order.requestDate,
+                            anounceContactInfo: "informacje kontaktowe do ogłoszenia: tel 600700800",
+                            status: "SUCCESS"
+                    )
+            )
+        }).collect(Collectors.toList());
+
+        new ResponseEntity(customerOrders, HttpStatus.OK)
     }
 
     private static String getAnounceContactInfo() {
@@ -85,7 +119,8 @@ class AnounceOrderEndpoint {
             anounceId: anounceOrderRequestDto.anounceId,
             preferedTime: anounceOrderRequestDto.preferedTime,
             preferedDate: anounceOrderRequestDto.preferedDate,
-            customerContactInfo: anounceOrderRequestDto.customerContactInfo
+            customerContactInfo: anounceOrderRequestDto.customerContactInfo,
+            customerId: anounceOrderRequestDto.customerId
         )
     }
 

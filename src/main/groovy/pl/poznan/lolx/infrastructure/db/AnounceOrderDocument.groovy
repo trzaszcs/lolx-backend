@@ -12,4 +12,5 @@ class AnounceOrderDocument {
     String preferedTime
     String preferedDate
     String customerContactInfo
+    String customerId
 }

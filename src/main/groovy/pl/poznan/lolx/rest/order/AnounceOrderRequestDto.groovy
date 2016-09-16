@@ -13,5 +13,6 @@ class AnounceOrderRequestDto {
     String preferedDate
     String customerContactInfo
     String ownerId
+    String customerId
     AnounceOrderStatusDto status
 }

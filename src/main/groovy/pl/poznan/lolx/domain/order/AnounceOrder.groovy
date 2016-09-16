@@ -10,4 +10,5 @@ class AnounceOrder {
     String preferedTime
     String preferedDate
     String customerContactInfo
+    String customerId
 }
