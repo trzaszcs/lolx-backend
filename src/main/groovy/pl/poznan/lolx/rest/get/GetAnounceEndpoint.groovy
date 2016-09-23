@@ -41,7 +41,8 @@ class GetAnounceEndpoint {
                 creationDate: anounce.creationDate,
                 location: new LocationDto(anounce.location),
                 ownerId: anounce.ownerId,
-                ownerName: anounce.ownerName
+                ownerName: anounce.ownerName,
+                price: anounce.price
         )
     }
 
