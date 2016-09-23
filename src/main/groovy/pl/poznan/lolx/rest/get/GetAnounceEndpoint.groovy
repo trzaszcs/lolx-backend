@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import pl.poznan.lolx.domain.AnounceSearchService
+import pl.poznan.lolx.rest.add.LocationDto
 
 @RestController
 @Slf4j
@@ -38,8 +39,7 @@ class GetAnounceEndpoint {
                 title: anounce.title,
                 description: anounce.description,
                 creationDate: anounce.creationDate,
-                state: anounce.state,
-                city: anounce.city,
+                location: new LocationDto(anounce.location),
                 ownerId: anounce.ownerId,
                 ownerName: anounce.ownerName
         )

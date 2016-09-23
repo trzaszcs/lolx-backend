@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import pl.poznan.lolx.domain.Location
 import pl.poznan.lolx.domain.add.AnounceCreationRequest
 import pl.poznan.lolx.domain.add.CreateAnounceService
 import pl.poznan.lolx.domain.jwt.JwtChecker
@@ -46,8 +47,7 @@ class AddAnounceEndpoint {
         new AnounceCreationRequest(
                 title: anounceRequestDto.title,
                 description: anounceRequestDto.description,
-                state: anounceRequestDto.state,
-                city: anounceRequestDto.state,
+                location: new Location(anounceRequestDto.location.title, anounceRequestDto.location.latitude, anounceRequestDto.location.longitude),
                 ownerId: anounceRequestDto.ownerId,
                 price: anounceRequestDto.price
         )

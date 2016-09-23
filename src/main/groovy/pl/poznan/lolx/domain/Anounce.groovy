@@ -7,8 +7,7 @@ class Anounce {
     String id
     String title
     String description
-    String city
-    String state
+    Location location
     Date creationDate = new Date()
     String ownerId
     String ownerName

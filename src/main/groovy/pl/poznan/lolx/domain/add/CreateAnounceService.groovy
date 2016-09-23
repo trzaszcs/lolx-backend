@@ -22,8 +22,7 @@ class CreateAnounceService {
                 id: anounceId,
                 title: anounceRequest.title,
                 description: anounceRequest.description,
-                state: anounceRequest.state,
-                city: anounceRequest.city,
+                location: anounceRequest.location,
                 ownerId: anounceRequest.ownerId,
                 ownerName: userDetails.find(anounceRequest.ownerId),
                 price: anounceRequest.price

@@ -2,6 +2,7 @@ package pl.poznan.lolx.rest.find
 
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.SearchResult
+import pl.poznan.lolx.rest.add.LocationDto
 
 @Component
 class SearchResultMapper {
@@ -10,7 +11,13 @@ class SearchResultMapper {
         new SearchResultDto(
                 totalCount: searchResult.totalCount,
                 anounces: searchResult.anounces.collect {
-                    new SimpleAnounceDto(id: it.id, title: it.title, state: it.state, city: it.city, creationDate: it.creationDate, price: it.price)
+                    new SimpleAnounceDto(
+                            id: it.id,
+                            title: it.title,
+                            location: new LocationDto(title:  it.location.title, latitude: it.location.latitude, longitude: it.location.longitude),
+                            creationDate: it.creationDate,
+                            price: it.price
+                    )
                 }
         )
 

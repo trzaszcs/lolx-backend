@@ -12,10 +12,8 @@ class AnounceRequestDto {
     String title
     @NotEmpty
     String description
-    @NotEmpty
-    String city
-    @NotEmpty
-    String state
+    @NotNull
+    LocationDto location
     @NotEmpty
     String ownerId
     @NotNull
