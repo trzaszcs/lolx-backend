@@ -39,7 +39,10 @@ class GetAnounceEndpoint {
                 title: anounce.title,
                 description: anounce.description,
                 creationDate: anounce.creationDate,
-                location: new LocationDto(anounce.location),
+                location: new LocationDto(
+                        title: anounce.location.title,
+                        latitude: anounce.location.latitude,
+                        longitude: anounce.location.longitude),
                 ownerId: anounce.ownerId,
                 ownerName: anounce.ownerName,
                 price: anounce.price
