@@ -9,8 +9,7 @@ class AnounceDocument {
     String id
     String title
     String description
-    String city
-    String state
+    LocationDocument location
     Date creationDate
     String ownerId
     BigDecimal price
