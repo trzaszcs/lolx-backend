@@ -16,7 +16,8 @@ class SearchResultMapper {
                             title: it.title,
                             location: new LocationDto(title:  it.location.title, latitude: it.location.latitude, longitude: it.location.longitude),
                             creationDate: it.creationDate,
-                            price: it.price
+                            price: it.price,
+                            imgName: it.imgName
                     )
                 }
         )

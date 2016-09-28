@@ -29,6 +29,7 @@ class AnounceMongoDao implements AnounceDao {
                 latitude: anounce.location.latitude,
                 longitude: anounce.location.longitude
         )
+        document.imgName = anounce.imgName
 
         anounceMongoRepository.save(document)
     }

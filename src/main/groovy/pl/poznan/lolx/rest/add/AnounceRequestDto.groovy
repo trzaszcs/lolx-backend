@@ -19,4 +19,5 @@ class AnounceRequestDto {
     @NotNull
     @Min(value = 0l)
     BigDecimal price
+    String imgName
 }

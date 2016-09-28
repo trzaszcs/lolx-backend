@@ -13,4 +13,5 @@ class AnounceDocument {
     Date creationDate
     String ownerId
     BigDecimal price
+    String imgName
 }

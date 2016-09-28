@@ -49,7 +49,8 @@ class AddAnounceEndpoint {
                 description: anounceRequestDto.description,
                 location: new Location(anounceRequestDto.location.title, anounceRequestDto.location.latitude, anounceRequestDto.location.longitude),
                 ownerId: anounceRequestDto.ownerId,
-                price: anounceRequestDto.price
+                price: anounceRequestDto.price,
+                imgName: anounceRequestDto.imgName
         )
     }
 

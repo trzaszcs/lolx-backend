@@ -10,4 +10,5 @@ class AnounceCreationRequest {
     Location location
     String ownerId
     BigDecimal price
+    String imgName
 }

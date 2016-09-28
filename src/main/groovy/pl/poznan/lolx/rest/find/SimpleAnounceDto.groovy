@@ -16,4 +16,5 @@ class SimpleAnounceDto {
     BigDecimal price
     @JsonSerialize(using = DateSerializer.class)
     Date creationDate
+    String imgName
 }

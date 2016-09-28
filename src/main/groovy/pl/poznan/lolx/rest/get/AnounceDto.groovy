@@ -19,4 +19,5 @@ class AnounceDto {
     String ownerId
     String ownerName
     BigDecimal price
+    String imgName
 }

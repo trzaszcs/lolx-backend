@@ -45,7 +45,8 @@ class GetAnounceEndpoint {
                         longitude: anounce.location.longitude),
                 ownerId: anounce.ownerId,
                 ownerName: anounce.ownerName,
-                price: anounce.price
+                price: anounce.price,
+                imgName: anounce.imgName
         )
     }
 

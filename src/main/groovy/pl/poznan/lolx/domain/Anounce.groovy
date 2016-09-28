@@ -12,4 +12,5 @@ class Anounce {
     String ownerId
     String ownerName
     BigDecimal price
+    String imgName
 }

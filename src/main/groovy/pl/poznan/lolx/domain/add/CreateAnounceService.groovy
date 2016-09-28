@@ -25,7 +25,8 @@ class CreateAnounceService {
                 location: anounceRequest.location,
                 ownerId: anounceRequest.ownerId,
                 ownerName: userDetails.find(anounceRequest.ownerId),
-                price: anounceRequest.price
+                price: anounceRequest.price,
+                imgName: anounceRequest.imgName
         )
         searchEngine.index(anounce)
         anounceDao.save(anounce)
