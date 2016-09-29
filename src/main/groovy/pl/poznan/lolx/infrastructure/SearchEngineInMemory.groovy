@@ -11,16 +11,16 @@ class SearchEngineInMemory implements SearchEngine {
 
     final static int MAX_ITEMS_PER_PAGE = 50
 
-    def indexedAnounces = []
+    def indexedAnounces = [generateSingle(0,"Wyprowadzę psa", 666), generateSingle(1,"Skoszę trawę", 666), generateSingle(2,"Udziele korepetycji", 666)]
 
     @Override
     SearchResult find(String phrase, int page, int itemsPerPage) {
         itemsPerPage = itemsPerPage < MAX_ITEMS_PER_PAGE ? itemsPerPage : MAX_ITEMS_PER_PAGE
         def anounces = []
         anounces.addAll(indexedAnounces)
-        anounces.addAll(generateAnounces(itemsPerPage, (page * itemsPerPage)))
+//        anounces.addAll(generateAnounces(itemsPerPage, (page * itemsPerPage)))
         new SearchResult(
-                totalCount: 100,
+                totalCount: anounces.size(),
                 anounces: anounces
         )
     }
@@ -29,10 +29,10 @@ class SearchEngineInMemory implements SearchEngine {
     SearchResult forUser(String userId, int page, int itemsPerPage) {
         def anounces = []
         anounces.addAll(indexedAnounces)
-        anounces.addAll(generateAnounces(2, 0, userId))
+//        anounces.addAll(generateAnounces(2, 0, userId))
         new SearchResult(
-                totalCount: 2,
-                anounces: anounces.subList(0, 2)
+                totalCount: anounces.size(),
+                anounces: anounces
         )
     }
 
@@ -42,13 +42,7 @@ class SearchEngineInMemory implements SearchEngine {
         if (anounce.isPresent()){
             return anounce
         }
-        Optional.of(new Anounce(id: anounceId,
-                title: "${generateTitle(anounceId)}",
-                location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681),
-                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis.",
-                price: genPrice()
-            )
-        )
+        return Optional.empty()
     }
 
     @Override

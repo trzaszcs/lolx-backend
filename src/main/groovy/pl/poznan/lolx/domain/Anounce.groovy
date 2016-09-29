@@ -20,7 +20,7 @@ class Anounce {
 
     Optional<String> getSmallImage() {
         if (imgName) {
-            def parts = imgName.split(".")
+            def parts = imgName.split("\\.")
             def extension = parts[1]
             def fileName = parts[0]
             return Optional.of("$imagePath$fileName-256.$extension")

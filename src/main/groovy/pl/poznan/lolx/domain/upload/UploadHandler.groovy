@@ -1,5 +1,6 @@
 package pl.poznan.lolx.domain.upload
 
+import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Component
 
 import javax.imageio.ImageIO
@@ -7,20 +8,22 @@ import java.awt.*
 import java.awt.image.BufferedImage
 
 @Component
+@Slf4j
 class UploadHandler {
 
     final static int SMALL = 256
 
     String save(String fileExtension, byte[] content) {
         def generatedFileName = generateFileName()
-        File file = File.createTempFile(generatedFileName, ".$fileExtension")
+        File file = file(generatedFileName + "." + fileExtension)
         file.bytes = content
+        log.info("saved {} image", file.name)
         scaleImage(file, generatedFileName, fileExtension, SMALL)
         return file.getName()
     }
 
     Optional<File> getFile(String fileName) {
-        def f = new File(System.getProperty("java.io.tmpdir") + File.separator + fileName)
+        def f = file(fileName)
         if (f.exists()) {
             return Optional.of(f)
         } else {
@@ -50,8 +53,13 @@ class UploadHandler {
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.drawImage(img, 0, 0, width, newHeight, 0, 0, img.width, img.height, null);
         g.dispose();
-        File file = File.createTempFile(fileName + "-" + width, ".$ext")
-        ImageIO.write(dimg, "png", file)
+        File scaledImage = file("$fileName-$width.$ext")
+        ImageIO.write(dimg, "png", scaledImage)
+        log.info("saved scaled {} image {}", width, scaledImage.name)
+    }
+
+    def file(fileName){
+        new File(System.getProperty("java.io.tmpdir") + File.separator + fileName)
     }
 
 }

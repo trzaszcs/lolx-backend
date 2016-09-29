@@ -23,7 +23,7 @@ class GetAnounceIntTest {
     @Test
     void "should get anouncenemnt"() {
         def http = getHttpClient()
-        assert http.get(path: "/anounces/666", contentType: 'application/json').data.title != null
+        assert http.get(path: "/anounces/1", contentType: 'application/json').data.title != null
     }
 
     RESTClient getHttpClient() {
