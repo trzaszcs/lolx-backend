@@ -38,12 +38,16 @@ class SearchEngineInMemory implements SearchEngine {
 
     @Override
     Optional<Anounce> getById(String anounceId) {
+        def anounce = Optional.ofNullable(indexedAnounces.find { it.id == anounceId }) as Optional<Anounce>
+        if (anounce.isPresent()){
+            return anounce
+        }
         Optional.of(new Anounce(id: anounceId,
                 title: "${generateTitle(anounceId)}",
                 location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681),
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis.",
                 price: genPrice()
-        )
+            )
         )
     }
 
