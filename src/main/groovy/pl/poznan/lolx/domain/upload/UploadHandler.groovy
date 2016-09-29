@@ -9,11 +9,13 @@ import java.awt.image.BufferedImage
 @Component
 class UploadHandler {
 
+    final static int SMALL = 256
+
     String save(String fileExtension, byte[] content) {
         def generatedFileName = generateFileName()
         File file = File.createTempFile(generatedFileName, ".$fileExtension")
         file.bytes = content
-        scaleImage(file, generatedFileName, fileExtension, 256)
+        scaleImage(file, generatedFileName, fileExtension, SMALL)
         return file.getName()
     }
 
