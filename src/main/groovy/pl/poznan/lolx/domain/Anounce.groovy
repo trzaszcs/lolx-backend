@@ -1,6 +1,7 @@
 package pl.poznan.lolx.domain
 
 import groovy.transform.ToString
+import pl.poznan.lolx.domain.upload.ScaledImageSize
 
 @ToString
 class Anounce {
@@ -15,22 +16,20 @@ class Anounce {
     String imgName
 
 
-
     final String imagePath = "/api/upload/"
 
     Optional<String> getSmallImage() {
-        if (imgName) {
-            def parts = imgName.split("\\.")
-            def extension = parts[1]
-            def fileName = parts[0]
-            return Optional.of("$imagePath$fileName-256.$extension")
-        }
-        return Optional.empty()
+        return getImage(ScaledImageSize.SMALL)
     }
 
     Optional<String> getImage() {
+        return getImage(ScaledImageSize.MEDIUM)
+    }
+
+    Optional<String> getImage(ScaledImageSize scaledImageSize) {
         if (imgName) {
-            return Optional.of("$imagePath$imgName")
+            def scaledFileName = scaledImageSize.getFileName(imgName)
+            return Optional.of("$imagePath$scaledFileName")
         }
         return Optional.empty()
     }

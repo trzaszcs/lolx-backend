@@ -25,7 +25,7 @@ class UploadEndpoint {
         if (!ext || !SUPPORTED_EXTENSIONS.contains(ext)) {
             return ResponseEntity.badRequest().build()
         }
-        ResponseEntity.ok(new UploadResult(fileName: uploadHandler.save(ext, file.bytes)))
+        ResponseEntity.ok(new UploadResult(fileName: uploadHandler.save(ext, file.inputStream)))
     }
 
     //TODO: will be removed

@@ -1,25 +1,27 @@
 package pl.poznan.lolx.domain.upload
 
 import groovy.util.logging.Slf4j
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import javax.imageio.ImageIO
-import java.awt.*
 import java.awt.image.BufferedImage
 
 @Component
 @Slf4j
 class UploadHandler {
 
-    final static int SMALL = 256
+    @Autowired
+    ImageScaler imageScaler
 
-    String save(String fileExtension, byte[] content) {
+    String save(String fileExtension, InputStream stream) {
         def generatedFileName = generateFileName()
-        File file = file(generatedFileName + "." + fileExtension)
-        file.bytes = content
-        log.info("saved {} image", file.name)
-        scaleImage(file, generatedFileName, fileExtension, SMALL)
-        return file.getName()
+        def baseName = "$generatedFileName.$fileExtension"
+        log.debug("saved {} image", baseName)
+        BufferedImage img = ImageIO.read(stream)
+        scaleImage(img, generatedFileName, fileExtension, ScaledImageSize.SMALL)
+        scaleImage(img, generatedFileName, fileExtension, ScaledImageSize.MEDIUM)
+        return baseName
     }
 
     Optional<File> getFile(String fileName) {
@@ -35,30 +37,14 @@ class UploadHandler {
         UUID.randomUUID().toString()
     }
 
-    def scaleImage(imgFile, fileName, ext, width) {
-        BufferedImage img = ImageIO.read(imgFile)
-        int newHeight, newWidth
-        if (img.getWidth() > width) {
-            int scaleRatio = img.getWidth() / width;
-            newHeight = img.getHeight() / scaleRatio;
-            newWidth = width
-        } else {
-            newWidth = img.getWidth()
-            newHeight = img.getHeight()
-        }
-
-        BufferedImage dimg = new BufferedImage(newWidth, newHeight, img.getType());
-        Graphics2D g = dimg.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.drawImage(img, 0, 0, width, newHeight, 0, 0, img.width, img.height, null);
-        g.dispose();
-        File scaledImage = file("$fileName-$width.$ext")
+    def scaleImage(BufferedImage bufferedImage, String fileName, String ext, ScaledImageSize imageSize) {
+        BufferedImage dimg = imageScaler.scaleImage(bufferedImage, imageSize)
+        File scaledImage = file(imageSize.getFileName(fileName, ext))
         ImageIO.write(dimg, "png", scaledImage)
-        log.info("saved scaled {} image {}", width, scaledImage.name)
+        log.debug("saved scaled {} image {}", imageSize, scaledImage.name)
     }
 
-    def file(fileName){
+    def file(fileName) {
         new File(System.getProperty("java.io.tmpdir") + File.separator + fileName)
     }
 
