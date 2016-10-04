@@ -9,8 +9,14 @@ class AnounceSearchService {
     @Autowired
     SearchEngine searchEngine
 
-    SearchResult find(String phrase, int page, int itemsPerPage) {
-        searchEngine.find(phrase, page, itemsPerPage)
+    SearchResult find(
+            String phrase,
+            int page,
+            int itemsPerPage,
+            Optional<String> location,
+            Optional<Integer> latitude,
+            Optional<Integer> longitude) {
+        searchEngine.find(phrase, page, itemsPerPage, getCoordinate(longitude, longitude))
     }
 
     SearchResult forUser(String userId, int page, int itemsPerPage) {
@@ -19,6 +25,14 @@ class AnounceSearchService {
 
     Optional<Anounce> getById(String anounceId) {
         searchEngine.getById(anounceId)
+    }
+
+    Optional<Coordinate> getCoordinate(Optional<Integer> latitude,
+                                       Optional<Integer> longitude) {
+        if (latitude.isPresent() && longitude.isPresent()) {
+            return Optional.of(new Coordinate(latitude.get(), longitude.get()))
+        }
+        return Optional.empty()
     }
 
 }

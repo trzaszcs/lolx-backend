@@ -1,20 +1,17 @@
 package pl.poznan.lolx.infrastructure
 
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.Anounce
-import pl.poznan.lolx.domain.Location
-import pl.poznan.lolx.domain.SearchEngine
-import pl.poznan.lolx.domain.SearchResult
+import pl.poznan.lolx.domain.*
 
 @Component
 class SearchEngineInMemory implements SearchEngine {
 
     final static int MAX_ITEMS_PER_PAGE = 50
 
-    def indexedAnounces = [generateSingle(0,"Wyprowadzę psa", 666), generateSingle(1,"Skoszę trawę", 666), generateSingle(2,"Udziele korepetycji", 666)]
+    def indexedAnounces = [generateSingle(0, "Wyprowadzę psa", 666), generateSingle(1, "Skoszę trawę", 666), generateSingle(2, "Udziele korepetycji", 666)]
 
     @Override
-    SearchResult find(String phrase, int page, int itemsPerPage) {
+    SearchResult find(String phrase, int page, int itemsPerPage, Optional<Coordinate> coordinateOpt) {
         itemsPerPage = itemsPerPage < MAX_ITEMS_PER_PAGE ? itemsPerPage : MAX_ITEMS_PER_PAGE
         def anounces = []
         anounces.addAll(indexedAnounces)
@@ -39,7 +36,7 @@ class SearchEngineInMemory implements SearchEngine {
     @Override
     Optional<Anounce> getById(String anounceId) {
         def anounce = Optional.ofNullable(indexedAnounces.find { it.id == anounceId }) as Optional<Anounce>
-        if (anounce.isPresent()){
+        if (anounce.isPresent()) {
             return anounce
         }
         return Optional.empty()
