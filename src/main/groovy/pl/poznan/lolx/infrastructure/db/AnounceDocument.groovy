@@ -14,4 +14,5 @@ class AnounceDocument {
     String ownerId
     BigDecimal price
     String imgName
+    String categoryId
 }

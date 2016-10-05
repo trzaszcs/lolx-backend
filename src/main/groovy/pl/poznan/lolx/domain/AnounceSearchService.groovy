@@ -15,8 +15,9 @@ class AnounceSearchService {
             int itemsPerPage,
             Optional<String> location,
             Optional<Integer> latitude,
-            Optional<Integer> longitude) {
-        searchEngine.find(phrase, page, itemsPerPage, getCoordinate(longitude, longitude))
+            Optional<Integer> longitude,
+            Optional<String> categoryId) {
+        searchEngine.find(phrase, page, itemsPerPage, getCoordinate(latitude, longitude), categoryId)
     }
 
     SearchResult forUser(String userId, int page, int itemsPerPage) {

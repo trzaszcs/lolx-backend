@@ -11,7 +11,7 @@ class SearchEngineInMemory implements SearchEngine {
     def indexedAnounces = [generateSingle(0, "Wyprowadzę psa", 666), generateSingle(1, "Skoszę trawę", 666), generateSingle(2, "Udziele korepetycji", 666)]
 
     @Override
-    SearchResult find(String phrase, int page, int itemsPerPage, Optional<Coordinate> coordinateOpt) {
+    SearchResult find(String phrase, int page, int itemsPerPage, Optional<Coordinate> coordinateOpt, Optional<String> categoryId) {
         itemsPerPage = itemsPerPage < MAX_ITEMS_PER_PAGE ? itemsPerPage : MAX_ITEMS_PER_PAGE
         def anounces = []
         anounces.addAll(indexedAnounces)
@@ -60,7 +60,7 @@ class SearchEngineInMemory implements SearchEngine {
     }
 
     def generateSingle(id, title, ownerId) {
-        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681), ownerId: ownerId, ownerName: "someName", price: genPrice())
+        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", categoryId: "1", location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681), ownerId: ownerId, ownerName: "someName", price: genPrice())
     }
 
     def generateTitle(id) {

@@ -29,7 +29,8 @@ class FindAnouncesEndpoint {
                          @RequestParam(name = "itemsPerPage", defaultValue = "20") int itemsPerPage,
                          @RequestParam(name = "location", required = false) String location,
                          @RequestParam(name = "latitude", required = false) Integer latitude,
-                         @RequestParam(name = "longitude", required = false) Integer longitude) {
+                         @RequestParam(name = "longitude", required = false) Integer longitude,
+                         @RequestParam(name = "categoryId", required = false) String categoryId) {
         log.info("find anounces by query: {} and location {}", query, location)
         searchResultMapper.map(
                 anounceSearchService.find(
@@ -38,10 +39,11 @@ class FindAnouncesEndpoint {
                         itemsPerPage,
                         opt(location),
                         opt(latitude),
-                        opt(longitude)))
+                        opt(longitude),
+                        opt(categoryId)))
     }
 
-    def opt(value){
+    def opt(value) {
         Optional.ofNullable(value)
     }
 }

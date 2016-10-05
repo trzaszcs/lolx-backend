@@ -11,4 +11,5 @@ class AnounceCreationRequest {
     String ownerId
     BigDecimal price
     String imgName
+    String categoryId
 }

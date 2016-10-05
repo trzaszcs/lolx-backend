@@ -16,6 +16,8 @@ class AnounceRequestDto {
     LocationDto location
     @NotEmpty
     String ownerId
+    @NotEmpty
+    String categoryId
     @NotNull
     @Min(value = 0l)
     BigDecimal price

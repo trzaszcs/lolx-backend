@@ -36,7 +36,7 @@ class AddAnounceIntTest {
     void "should add anouncenemnt"() {
         // given
         def http = getHttpClient();
-        def anounce = new AnounceRequestDto(title: "t", description: "desc", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
+        def anounce = new AnounceRequestDto(title: "t", description: "desc", categoryId: "1", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
         WireMock.stubFor(get(urlEqualTo("/users/${ownerId}"))
                 .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
@@ -52,7 +52,7 @@ class AddAnounceIntTest {
     void "should return unauthorized for wrong jwtToken"() {
         // given
         def http = getHttpClient();
-        def anounce = new AnounceRequestDto(title: "t", description: "desc", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
+        def anounce = new AnounceRequestDto(title: "t", description: "desc", categoryId: "1", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
         try {
             // when
             http.post(path: "/anounces", body: anounce, contentType: 'application/json', headers: ["Authorization": buildBearer("XYZ")])
