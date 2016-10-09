@@ -2,6 +2,7 @@ package pl.poznan.lolx.infrastructure
 
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.*
+import pl.poznan.lolx.domain.add.Category
 
 @Component
 class SearchEngineInMemory implements SearchEngine {
@@ -60,7 +61,7 @@ class SearchEngineInMemory implements SearchEngine {
     }
 
     def generateSingle(id, title, ownerId) {
-        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", categoryId: "1", location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681), ownerId: ownerId, ownerName: "someName", price: genPrice())
+        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", category: new Category(id: "1", name: "Sprzatanie"), location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681), ownerId: ownerId, ownerName: "someName", price: genPrice())
     }
 
     def generateTitle(id) {

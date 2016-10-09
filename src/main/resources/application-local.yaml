@@ -6,3 +6,6 @@ publicKey:
 
 user-service:
     addr: http://localhost:8082/
+
+user-service:
+    addr: http://localhost:8083/

@@ -1,6 +1,7 @@
 package pl.poznan.lolx.domain
 
 import groovy.transform.ToString
+import pl.poznan.lolx.domain.add.Category
 import pl.poznan.lolx.domain.upload.ScaledImageSize
 
 @ToString
@@ -14,7 +15,7 @@ class Anounce {
     String ownerName
     BigDecimal price
     String imgName
-    String categoryId
+    Category category
 
 
     final String imagePath = "/api/upload/"

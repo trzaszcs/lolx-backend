@@ -41,6 +41,10 @@ class AddAnounceIntTest {
                 .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody("""{"id": "${ownerId}", "email" : "email@wp.pl"}""")))
+        WireMock.stubFor(get(urlEqualTo("/categories/${anounce.categoryId}"))
+                .willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody("""{"id": "${anounce.categoryId}", "name" : "CATEGORY"}""")))
         // when
         def response = http.post(path: "/anounces", body: anounce, contentType: 'application/json', headers: ["Authorization": buildBearer(jwtToken)])
         // then

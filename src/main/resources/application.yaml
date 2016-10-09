@@ -3,3 +3,6 @@ publicKey:
 
 user-service:
     addr: http://lolx-auth.herokuapp.com/
+
+category-service:
+    addr: http://category-auth.herokuapp.com/

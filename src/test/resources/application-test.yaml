@@ -3,3 +3,6 @@ publicKey:
 
 user-service:
     addr: http://localhost:12346/
+
+category-service:
+    addr: http://localhost:12346/

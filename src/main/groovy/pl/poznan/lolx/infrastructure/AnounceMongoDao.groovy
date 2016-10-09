@@ -24,7 +24,7 @@ class AnounceMongoDao implements AnounceDao {
         document.description = anounce.description
         document.ownerId = anounce.ownerId
         document.price = anounce.price
-        document.categoryId = anounce.categoryId
+        document.categoryId = anounce.category.id
         document.location = new LocationDocument(
                 title: anounce.location.title,
                 latitude: anounce.location.latitude,
