@@ -23,7 +23,8 @@ class UserDetailsRestService implements UserDetails {
     Optional<User> find(String id) {
         try {
             def response = restTemplate.getForEntity("${serviceAddress}/users/${id}", UserDto)
-            return Optional.of(new User(id: id, email: response.body.email, created: response.body.created))
+            def dto = response.body
+            return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName))
         } catch (HttpClientErrorException ex) {
             if (ex.statusCode == 404)
                 return Optional.empty()

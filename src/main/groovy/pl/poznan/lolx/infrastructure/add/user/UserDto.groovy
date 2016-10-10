@@ -6,5 +6,6 @@ import groovy.transform.ToString
 class UserDto {
     String id
     String email
+    String firstName
     Date created
 }

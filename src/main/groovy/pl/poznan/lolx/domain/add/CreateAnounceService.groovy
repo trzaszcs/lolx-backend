@@ -6,9 +6,9 @@ import pl.poznan.lolx.domain.Anounce
 import pl.poznan.lolx.domain.AnounceDao
 import pl.poznan.lolx.domain.SearchEngine
 import rx.Observable
+import rx.Scheduler
 import rx.schedulers.Schedulers
 
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 @Component
@@ -22,17 +22,12 @@ class CreateAnounceService {
     UserDetails userDetails
     @Autowired
     CategoryDetails categoryDetails
-
-    Executor executor = Executors.newFixedThreadPool(10)
+    final Scheduler scheduler = Schedulers.from(Executors.newFixedThreadPool(10))
 
     String create(AnounceCreationRequest anounceRequest) {
         def anounceId = genId()
 
-        def optCategory = categoryDetails.find(anounceRequest.categoryId)
-
-        if (!optCategory.isPresent()) {
-            throw new RuntimeException("Category with id ${anounceRequest.categoryId} not found")
-        }
+        def details = details(anounceRequest)
 
         def anounce = new Anounce(
                 id: anounceId,
@@ -40,10 +35,14 @@ class CreateAnounceService {
                 description: anounceRequest.description,
                 location: anounceRequest.location,
                 ownerId: anounceRequest.ownerId,
-                ownerName: userDetails.find(anounceRequest.ownerId),
+                ownerName: details.getUser().orElseThrow({
+                    new UserNotFoundException("User with id ${anounceRequest.ownerId} not found")
+                }).name(),
                 price: anounceRequest.price,
                 imgName: anounceRequest.imgName,
-                category: optCategory.get()
+                category: details.getCategory().orElseThrow({
+                    new CategoryNotFoundException("Category with id ${anounceRequest.categoryId} not found")
+                })
         )
         searchEngine.index(anounce)
         anounceDao.save(anounce)
@@ -54,25 +53,38 @@ class CreateAnounceService {
         UUID.randomUUID().toString()
     }
 
-    def details(anounceRequest){
-        def userObs = Observable.<Optional<User>>create({
+    def details(anounceRequest) {
+        def userObs = Observable.<Optional<User>> create({
             it.onNext(userDetails.find(anounceRequest.ownerId))
             it.onCompleted()
-        })
+        }).subscribeOn(scheduler)
 
-        def categoryObs = Observable.<Optional<Category>>create({
+        def categoryObs = Observable.<Optional<Category>> create({
             it.onNext(categoryDetails.find(anounceRequest.categoryId))
             it.onCompleted()
-        })
+        }).subscribeOn(scheduler)
 
-        return Observable.zip(userObs, categoryObs, { user , category ->
-            new Details(user: user, category: category)
-        }).observeOn(Schedulers.io()).toBlocking().first()
+        return Observable.zip(userObs, categoryObs, { user, category ->
+            new Details(user.orElse(null), category.orElse(null))
+        }).toBlocking().first()
 
     }
 
-    class Details {
-        Optional<User> user
-        Optional<Category> category
+    private class Details {
+        final User user
+        final Category category
+
+        Details(User user, Category category) {
+            this.user = user
+            this.category = category
+        }
+
+        Optional<User> getUser() {
+            Optional.ofNullable(user)
+        }
+
+        Optional<Category> getCategory() {
+            Optional.ofNullable(category)
+        }
     }
 }

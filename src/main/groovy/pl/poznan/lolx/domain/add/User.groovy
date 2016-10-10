@@ -6,5 +6,10 @@ import groovy.transform.ToString
 class User {
     String id
     String email
+    String firstName
     Date created
+
+    String name() {
+        firstName
+    }
 }
