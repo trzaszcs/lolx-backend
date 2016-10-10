@@ -14,7 +14,7 @@ import pl.poznan.lolx.infrastructure.add.user.UserDto
 @Component
 class CategoryDetailsRestService implements CategoryDetails {
 
-    @Value('${user-service.addr}')
+    @Value('${category-service.addr}')
     String categoryAddress
 
     @Autowired

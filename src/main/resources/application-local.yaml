@@ -1,11 +1,11 @@
 server:
-    port: 8081
+  port: 8081
 
 publicKey:
-    path: classpath:public.der
+  path: classpath:public.der
 
 user-service:
-    addr: http://localhost:8082/
+  addr: http://localhost:8082/
 
-user-service:
-    addr: http://localhost:8083/
+category-service:
+  addr: http://localhost:8083/

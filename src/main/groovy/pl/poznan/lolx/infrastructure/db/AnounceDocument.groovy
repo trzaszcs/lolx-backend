@@ -2,6 +2,7 @@ package pl.poznan.lolx.infrastructure.db
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import pl.poznan.lolx.domain.AnounceType
 
 @Document
 class AnounceDocument {
@@ -15,4 +16,5 @@ class AnounceDocument {
     BigDecimal price
     String imgName
     String categoryId
+    AnounceType type
 }

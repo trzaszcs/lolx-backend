@@ -61,7 +61,16 @@ class SearchEngineInMemory implements SearchEngine {
     }
 
     def generateSingle(id, title, ownerId) {
-        new Anounce(id: id, title: title, description: "Lorem Ipsum ...", category: new Category(id: "1", name: "Sprzatanie"), location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681), ownerId: ownerId, ownerName: "someName", price: genPrice())
+        new Anounce(
+                id: id,
+                title: title,
+                description: "Lorem Ipsum ...",
+                category: new Category(id: "1", name: "Sprzatanie"),
+                location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681),
+                ownerId: ownerId,
+                ownerName: "someName",
+                price: genPrice(),
+                type: AnounceType.OFFER)
     }
 
     def generateTitle(id) {

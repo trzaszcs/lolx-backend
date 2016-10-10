@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
+import pl.poznan.lolx.domain.AnounceType
 import pl.poznan.lolx.rest.add.AnounceRequestDto
 import pl.poznan.lolx.rest.add.LocationDto
 import pl.poznan.lolx.util.JwtUtil
@@ -32,11 +33,20 @@ class AddAnounceIntTest {
     @Rule
     public WireMockRule rule = new WireMockRule(12346)
 
+    def anounce = new AnounceRequestDto(
+            title: "t",
+            description: "desc",
+            categoryId: "1",
+            location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d),
+            ownerId: ownerId,
+            price: 22.23,
+            type: AnounceType.OFFER)
+
+
     @Test
     void "should add anouncenemnt"() {
         // given
         def http = getHttpClient();
-        def anounce = new AnounceRequestDto(title: "t", description: "desc", categoryId: "1", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
         WireMock.stubFor(get(urlEqualTo("/users/${ownerId}"))
                 .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
@@ -56,7 +66,6 @@ class AddAnounceIntTest {
     void "should return unauthorized for wrong jwtToken"() {
         // given
         def http = getHttpClient();
-        def anounce = new AnounceRequestDto(title: "t", description: "desc", categoryId: "1", location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d), ownerId: ownerId, price: 22.23)
         try {
             // when
             http.post(path: "/anounces", body: anounce, contentType: 'application/json', headers: ["Authorization": buildBearer("XYZ")])

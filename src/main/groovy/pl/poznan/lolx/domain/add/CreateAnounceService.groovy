@@ -42,7 +42,8 @@ class CreateAnounceService {
                 imgName: anounceRequest.imgName,
                 category: details.getCategory().orElseThrow({
                     new CategoryNotFoundException("Category with id ${anounceRequest.categoryId} not found")
-                })
+                }),
+                type: anounceRequest.type
         )
         searchEngine.index(anounce)
         anounceDao.save(anounce)

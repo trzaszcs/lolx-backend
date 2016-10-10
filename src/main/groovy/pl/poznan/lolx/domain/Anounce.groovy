@@ -16,6 +16,7 @@ class Anounce {
     BigDecimal price
     String imgName
     Category category
+    AnounceType type
 
 
     final String imagePath = "/api/upload/"

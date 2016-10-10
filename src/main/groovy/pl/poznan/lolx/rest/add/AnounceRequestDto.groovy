@@ -2,6 +2,7 @@ package pl.poznan.lolx.rest.add
 
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.NotEmpty
+import pl.poznan.lolx.domain.AnounceType
 
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -22,4 +23,6 @@ class AnounceRequestDto {
     @Min(value = 0l)
     BigDecimal price
     String imgName
+    @NotNull
+    AnounceType type
 }

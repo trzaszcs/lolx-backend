@@ -1,6 +1,5 @@
 package pl.poznan.lolx.infrastructure
 
-import org.codehaus.groovy.runtime.InvokerHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.Anounce
@@ -31,6 +30,7 @@ class AnounceMongoDao implements AnounceDao {
                 longitude: anounce.location.longitude
         )
         document.imgName = anounce.imgName
+        document.type = anounce.type
 
         anounceMongoRepository.save(document)
     }
