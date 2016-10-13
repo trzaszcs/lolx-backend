@@ -52,7 +52,8 @@ class AddAnounceEndpoint {
                 price: anounceRequestDto.price,
                 imgName: anounceRequestDto.imgName,
                 categoryId: anounceRequestDto.categoryId,
-                type: anounceRequestDto.type
+                type: anounceRequestDto.type,
+                duration: anounceRequestDto.duration
         )
     }
 

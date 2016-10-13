@@ -3,6 +3,7 @@ package pl.poznan.lolx.infrastructure.db
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import pl.poznan.lolx.domain.AnounceType
+import pl.poznan.lolx.domain.AnounceDuration
 
 @Document
 class AnounceDocument {
@@ -17,4 +18,5 @@ class AnounceDocument {
     String imgName
     String categoryId
     AnounceType type
+    AnounceDuration duration
 }

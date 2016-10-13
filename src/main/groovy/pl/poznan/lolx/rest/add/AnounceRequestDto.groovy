@@ -3,6 +3,7 @@ package pl.poznan.lolx.rest.add
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.NotEmpty
 import pl.poznan.lolx.domain.AnounceType
+import pl.poznan.lolx.domain.AnounceDuration
 
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -25,4 +26,6 @@ class AnounceRequestDto {
     String imgName
     @NotNull
     AnounceType type
+    @NotNull
+    AnounceDuration duration
 }

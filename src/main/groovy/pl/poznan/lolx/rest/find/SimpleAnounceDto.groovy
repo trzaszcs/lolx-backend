@@ -17,4 +17,5 @@ class SimpleAnounceDto {
     @JsonSerialize(using = DateSerializer.class)
     Date creationDate
     String img
+    String type
 }
