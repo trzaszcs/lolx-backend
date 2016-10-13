@@ -2,6 +2,7 @@ package pl.poznan.lolx.domain.add
 
 import groovy.transform.ToString
 import pl.poznan.lolx.domain.AnounceType
+import pl.poznan.lolx.domain.AnounceDuration
 import pl.poznan.lolx.domain.Location
 
 @ToString
@@ -14,4 +15,5 @@ class AnounceCreationRequest {
     String imgName
     String categoryId
     AnounceType type
+    AnounceDuration duration
 }

@@ -31,6 +31,7 @@ class AnounceMongoDao implements AnounceDao {
         )
         document.imgName = anounce.imgName
         document.type = anounce.type
+        document.duration = anounce.duration
 
         anounceMongoRepository.save(document)
     }

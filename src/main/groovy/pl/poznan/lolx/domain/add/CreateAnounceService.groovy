@@ -43,7 +43,8 @@ class CreateAnounceService {
                 category: details.getCategory().orElseThrow({
                     new CategoryNotFoundException("Category with id ${anounceRequest.categoryId} not found")
                 }),
-                type: anounceRequest.type
+                type: anounceRequest.type,
+                duration: anounceRequest.duration
         )
         searchEngine.index(anounce)
         anounceDao.save(anounce)

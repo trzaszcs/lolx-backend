@@ -17,6 +17,7 @@ class Anounce {
     String imgName
     Category category
     AnounceType type
+    AnounceDuration duration
 
 
     final String imagePath = "/api/upload/"
