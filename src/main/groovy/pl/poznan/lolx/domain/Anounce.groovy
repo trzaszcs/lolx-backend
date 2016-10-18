@@ -18,6 +18,7 @@ class Anounce {
     Category category
     AnounceType type
     AnounceDuration duration
+    boolean closed
 
 
     final String imagePath = "/api/upload/"
@@ -36,5 +37,9 @@ class Anounce {
             return Optional.of("$imagePath$scaledFileName")
         }
         return Optional.empty()
+    }
+
+    void markAsClosed() {
+        closed = true
     }
 }

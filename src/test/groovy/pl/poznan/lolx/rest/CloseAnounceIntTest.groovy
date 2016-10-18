@@ -7,7 +7,7 @@ import pl.poznan.lolx.domain.AnounceType
 import pl.poznan.lolx.rest.add.AnounceRequestDto
 import pl.poznan.lolx.rest.add.LocationDto
 
-class AddAnounceIntTest extends IntTest {
+class CloseAnounceIntTest extends IntTest {
 
     def anounce = new AnounceRequestDto(
             title: "t",
@@ -19,31 +19,24 @@ class AddAnounceIntTest extends IntTest {
             type: AnounceType.OFFER,
             duration: AnounceDuration.SEVEN_DAYS)
 
-
     @Test
-    void "should add anouncenemnt"() {
+    void "should close anouncenemnt"() {
         // given
-        mockUsers()
-        mockCategories(anounce.categoryId)
-        // when
-        def response = httpCreate(anounce)
-        // then
+        def http = httpClient()
+        def response = createAnounce(anounce)
         assert response.status == 201
-        assert response.data.id
-    }
-
-    @Test
-    void "should return unauthorized for wrong jwtToken"() {
+        def id = response.data.id
+        assert id
+        // when
+        response = http.delete(path: "/anounces/${id}/close", contentType: 'application/json', headers: ["Authorization": bearerToken])
+        // then
+        assert response.status == 204
         try {
-            // when
-            httpClient().post(path: "/anounces", body: anounce, contentType: 'application/json', headers: ["Authorization": buildBearer("XYZ")])
+            httpGet(id)
             assert false
-        } catch (HttpResponseException e) {
-            assert e.response.status == 401
+        } catch (HttpResponseException ex) {
+            assert ex.statusCode == 404
         }
-    }
 
-    def buildBearer(jwtToken) {
-        "Bearer ${jwtToken}"
     }
 }

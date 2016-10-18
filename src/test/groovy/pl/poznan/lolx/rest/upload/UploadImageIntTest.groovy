@@ -12,14 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
+import pl.poznan.lolx.rest.IntTest
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [AppConfig])
-@ActiveProfiles("test")
-class UploadImageIntTest {
+class UploadImageIntTest extends IntTest{
 
-    @LocalServerPort
-    int serverPort
 
     @Test
     void "should upload file"() {
@@ -44,10 +40,6 @@ class UploadImageIntTest {
         }catch(Exception ex){
             println ex
         }
-    }
-
-    RESTClient getHttpClient() {
-        new RESTClient("http://localhost:${serverPort}")
     }
 
     def fileToUpload() {

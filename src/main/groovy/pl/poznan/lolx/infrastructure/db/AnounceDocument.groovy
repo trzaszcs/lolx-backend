@@ -19,4 +19,5 @@ class AnounceDocument {
     String categoryId
     AnounceType type
     AnounceDuration duration
+    boolean closed
 }

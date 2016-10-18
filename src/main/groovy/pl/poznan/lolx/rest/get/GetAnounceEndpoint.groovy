@@ -29,7 +29,7 @@ class GetAnounceEndpoint {
         if (anounceOptional.isPresent()) {
             return ResponseEntity.ok(map(anounceOptional.get()))
         } else {
-            return ResponseEntity.notFound()
+            return ResponseEntity.notFound().build()
         }
     }
 

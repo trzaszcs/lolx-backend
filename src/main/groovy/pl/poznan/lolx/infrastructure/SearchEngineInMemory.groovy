@@ -48,6 +48,18 @@ class SearchEngineInMemory implements SearchEngine {
         indexedAnounces.add(anounce)
     }
 
+    @Override
+    void delete(String id) {
+        def iter = indexedAnounces.iterator()
+        while (iter.hasNext()) {
+            def anounce = iter.next()
+            if (anounce.id == id) {
+                iter.remove()
+                return
+            }
+        }
+    }
+
     private def generateAnounces(count, offset, ownerId = "someOwner") {
         def anounces = []
         (0..count).each {

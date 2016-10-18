@@ -18,6 +18,17 @@ class AnounceMongoDao implements AnounceDao {
     void save(Anounce anounce) {
         def document = new AnounceDocument()
         document.id = anounce.id
+        map(anounce, document)
+        anounceMongoRepository.save(document)
+    }
+
+    void update(Anounce anounce) {
+        def document = anounceMongoRepository.findOne(anounce.id)
+        map(anounce, document)
+        anounceMongoRepository.save(document)
+    }
+
+    def map(anounce, document) {
         document.title = anounce.title
         document.creationDate = anounce.creationDate
         document.description = anounce.description
@@ -32,7 +43,6 @@ class AnounceMongoDao implements AnounceDao {
         document.imgName = anounce.imgName
         document.type = anounce.type
         document.duration = anounce.duration
-
-        anounceMongoRepository.save(document)
+        document.closed = anounce.closed
     }
 }

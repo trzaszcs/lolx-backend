@@ -6,4 +6,5 @@ interface SearchEngine {
     SearchResult forUser(String userId, int page, int itemsPerPage)
     Optional<Anounce> getById(String anounceId)
     void index(Anounce anounce)
+    void delete(String indexId)
 }

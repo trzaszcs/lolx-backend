@@ -36,4 +36,8 @@ class AnounceSearchService {
         return Optional.empty()
     }
 
+    void delete(String anounceId){
+        searchEngine.delete(anounceId)
+    }
+
 }
