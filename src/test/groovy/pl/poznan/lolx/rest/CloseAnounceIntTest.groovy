@@ -28,7 +28,7 @@ class CloseAnounceIntTest extends IntTest {
         def id = response.data.id
         assert id
         // when
-        response = http.delete(path: "/anounces/${id}/close", contentType: 'application/json', headers: ["Authorization": bearerToken])
+        response = http.delete(path: "/anounces/${id}", contentType: 'application/json', headers: ["Authorization": bearerToken])
         // then
         assert response.status == 204
         try {
