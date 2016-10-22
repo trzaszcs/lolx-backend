@@ -20,21 +20,23 @@ class CloseAnounceEndpoint {
     @Autowired
     CloseAnounceService closeAnounceService
 
-    @RequestMapping(value = "/anounces/{anounceId}/close", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/anounces/{anounceId}", method = RequestMethod.DELETE)
     ResponseEntity add(
             @RequestHeader(value = "Authorization") authorizationHeader,
             @PathVariable String anounceId) {
         log.info("got close anounce {}", anounceId)
+        def anounceOpt = anounceSearchService.getById(anounceId);
 
-        def anounce = anounceSearchService.getById(anounceId);
-        def ownerId = anounce.get().ownerId
-
-        if (!jwtChecker.verify(authorizationHeader, ownerId)) {
-            log.warn("rejecting close anounce {} due to authorization error", anounce)
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED)
-        }
-        closeAnounceService.close(anounce.get())
-        new ResponseEntity(HttpStatus.NO_CONTENT)
+        return anounceOpt.map({ anounce ->
+            if (!jwtChecker.verify(authorizationHeader, anounce.ownerId)) {
+                log.warn("rejecting close anounce {} due to authorization error", anounce)
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED)
+            }
+            closeAnounceService.close(anounce)
+            return new ResponseEntity(HttpStatus.NO_CONTENT)
+        }).orElseGet({
+            return new ResponseEntity().notFound().build()
+        })
     }
 
 }
