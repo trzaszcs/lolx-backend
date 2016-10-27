@@ -26,13 +26,14 @@ class AnounceOrderService {
 
         anounceOrderDao.order(new AnounceOrder(
                 requestId: anounceOrderRequest.requestId,
-                title: anounce.orElse(null).title,
+                title: anounce.get().title,
                 requestDate: System.currentTimeMillis(),
                 anounceId: anounceOrderRequest.anounceId,
                 preferedTime: anounceOrderRequest.preferedTime,
                 preferedDate: anounceOrderRequest.preferedDate,
                 customerContactInfo: anounceOrderRequest.customerContactInfo,
-                customerId: anounceOrderRequest.customerId
+                customerId: anounceOrderRequest.customerId,
+                ownerId: anounce.get().ownerId
         ))
 
         return anounceOrderRequest.requestId
@@ -67,6 +68,24 @@ class AnounceOrderService {
                             customerId: anounceOrder.customerId
                     )
                 })
+                .collect(Collectors.toList())
+    }
+
+    List<AnounceOrderRequest> getByOwnerId(String ownerId) {
+        List<AnounceOrder> orders = anounceOrderDao.getByOwnerId(ownerId)
+        orders.stream()
+                .map( { anounceOrder ->
+            new AnounceOrderRequest(
+                    requestId: anounceOrder.requestId,
+                    title: anounceOrder.title,
+                    requestDate: anounceOrder.requestDate,
+                    anounceId: anounceOrder.anounceId,
+                    preferedTime: anounceOrder.preferedTime,
+                    preferedDate: anounceOrder.preferedDate,
+                    customerContactInfo: anounceOrder.customerContactInfo,
+                    customerId: anounceOrder.customerId
+            )
+        })
                 .collect(Collectors.toList())
     }
 }

@@ -1,6 +1,7 @@
 package pl.poznan.lolx.infrastructure.db
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
@@ -13,5 +14,8 @@ class AnounceOrderDocument {
     String preferedTime
     String preferedDate
     String customerContactInfo
+    @Indexed
     String customerId
+    @Indexed
+    String ownerId
 }

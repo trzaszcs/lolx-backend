@@ -1,14 +1,14 @@
 package pl.poznan.lolx.infrastructure.order
 
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.poznan.lolx.domain.order.AnounceOrder;
+import org.codehaus.groovy.runtime.InvokerHelper
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+import pl.poznan.lolx.domain.order.AnounceOrder
 import pl.poznan.lolx.domain.order.AnounceOrderDao
 import pl.poznan.lolx.infrastructure.db.AnounceOrderDocument
 import pl.poznan.lolx.infrastructure.db.AnounceOrderMongoRepository
 
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
 @Component
 class AnounceOrderMongoDao implements AnounceOrderDao {
@@ -37,9 +37,21 @@ class AnounceOrderMongoDao implements AnounceOrderDao {
 
     @Override
     List<AnounceOrder> getByCustomerId(String id) {
-        def documents = anounceOrderMongoRepository.getByCustomerId(id);
-        return documents.stream()
-                .map( { document ->
+        map(
+           anounceOrderMongoRepository.getByCustomerId(id)
+        )
+    }
+
+    @Override
+    List<AnounceOrder> getByOwnerId(String id) {
+        map(
+            anounceOrderMongoRepository.getByOwnerId(id)
+        )
+    }
+
+    private List map(List<AnounceOrderDocument> documents) {
+        documents.stream()
+                .map({ document ->
                     def anounceOrder = new AnounceOrder()
                     use(InvokerHelper) {
                         anounceOrder.setProperties(document.properties)

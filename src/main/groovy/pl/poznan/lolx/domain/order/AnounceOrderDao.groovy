@@ -4,4 +4,5 @@ interface AnounceOrderDao {
     void order(AnounceOrder anounceOrder)
     AnounceOrder get(String id)
     List<AnounceOrder> getByCustomerId(String id)
+    List<AnounceOrder> getByOwnerId(String id)
 }
