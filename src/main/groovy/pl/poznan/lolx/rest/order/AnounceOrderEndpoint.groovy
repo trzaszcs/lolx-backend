@@ -82,14 +82,39 @@ class AnounceOrderEndpoint {
     @RequestMapping(value = "/orders/customer/{customerId}", method = RequestMethod.GET)
     ResponseEntity getByCustomerId(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
                        @PathVariable String customerId) {
-        log.info("get order {}", customerId)
+        log.info("get customer orders {}", customerId)
 
         if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, customerId)) {
             log.warn("rejecting get order {} due to authorization error", customerId)
             //TODO if needed
         }
-        List<AnounceOrderRequest> orders = anounceOrderService.getByCustomerId(customerId);
+        List<AnounceOrderRequest> customerOrders = mapOrders(
+                anounceOrderService.getByCustomerId(customerId)
+        )
+        new ResponseEntity(customerOrders, HttpStatus.OK)
+    }
 
+    @RequestMapping(value = "/orders/owner/{ownerId}", method = RequestMethod.GET)
+    ResponseEntity getByOwnerId(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+                                   @PathVariable String ownerId) {
+        log.info("get owner orders {}", ownerId)
+
+        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, ownerId)) {
+            log.warn("rejecting get order {} due to authorization error", ownerId)
+            //TODO if needed
+        }
+        List<AnounceOrderRequest> customerOrders = mapOrders(
+                anounceOrderService.getByOwnerId(ownerId)
+        )
+        new ResponseEntity(customerOrders, HttpStatus.OK)
+    }
+
+    private static String getAnounceContactInfo() {
+        "dzwon 600700800"
+    }
+
+
+    def static List<AnounceOrderRequest> mapOrders(List<AnounceOrderRequest> orders) {
         def customerOrders = orders.stream().map({ order ->
             new AnounceOrderRequestDto(
                     requestId: order.requestId,
@@ -107,15 +132,10 @@ class AnounceOrderEndpoint {
                     )
             )
         }).collect(Collectors.toList());
-
-        new ResponseEntity(customerOrders, HttpStatus.OK)
+        customerOrders
     }
 
-    private static String getAnounceContactInfo() {
-        "dzwon 600700800"
-    }
-
-    def map(AnounceOrderRequestDto anounceOrderRequestDto) {
+    def static map(AnounceOrderRequestDto anounceOrderRequestDto) {
         new AnounceOrderRequest(
             requestId: anounceOrderRequestDto.requestId,
             anounceId: anounceOrderRequestDto.anounceId,
