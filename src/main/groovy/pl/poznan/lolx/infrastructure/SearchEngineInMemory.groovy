@@ -82,7 +82,8 @@ class SearchEngineInMemory implements SearchEngine {
                 ownerId: ownerId,
                 ownerName: "someName",
                 price: genPrice(),
-                type: AnounceType.OFFER)
+                type: AnounceType.OFFER,
+                contactPhone: "333 444 555")
     }
 
     def generateTitle(id) {

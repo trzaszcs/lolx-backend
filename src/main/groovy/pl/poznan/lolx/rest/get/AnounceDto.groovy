@@ -20,4 +20,5 @@ class AnounceDto {
     String ownerName
     BigDecimal price
     String img
+    String contactPhone
 }

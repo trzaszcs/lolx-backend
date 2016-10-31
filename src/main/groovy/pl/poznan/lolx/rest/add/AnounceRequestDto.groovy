@@ -28,4 +28,6 @@ class AnounceRequestDto {
     AnounceType type
     @NotNull
     AnounceDuration duration
+    @NotEmpty
+    String contactPhone
 }

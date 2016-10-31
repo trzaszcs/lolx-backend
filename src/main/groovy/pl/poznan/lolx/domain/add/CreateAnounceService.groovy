@@ -44,7 +44,8 @@ class CreateAnounceService {
                     new CategoryNotFoundException("Category with id ${anounceRequest.categoryId} not found")
                 }),
                 type: anounceRequest.type,
-                duration: anounceRequest.duration
+                duration: anounceRequest.duration,
+                contactPhone: anounceRequest.contactPhone
         )
         searchEngine.index(anounce)
         anounceDao.save(anounce)

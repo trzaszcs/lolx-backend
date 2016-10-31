@@ -53,7 +53,8 @@ class AddAnounceEndpoint {
                 imgName: anounceRequestDto.imgName,
                 categoryId: anounceRequestDto.categoryId,
                 type: anounceRequestDto.type,
-                duration: anounceRequestDto.duration
+                duration: anounceRequestDto.duration,
+                contactPhone: anounceRequestDto.contactPhone
         )
     }
 

@@ -17,7 +17,8 @@ class CloseAnounceIntTest extends IntTest {
             ownerId: ownerId,
             price: 22.23,
             type: AnounceType.OFFER,
-            duration: AnounceDuration.SEVEN_DAYS)
+            duration: AnounceDuration.SEVEN_DAYS,
+            contactPhone: "222 333 444")
 
     @Test
     void "should close anouncenemnt"() {
