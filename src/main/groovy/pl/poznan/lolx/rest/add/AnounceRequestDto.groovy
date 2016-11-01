@@ -2,8 +2,8 @@ package pl.poznan.lolx.rest.add
 
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.NotEmpty
-import pl.poznan.lolx.domain.AnounceType
 import pl.poznan.lolx.domain.AnounceDuration
+import pl.poznan.lolx.domain.AnounceType
 
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -30,4 +30,9 @@ class AnounceRequestDto {
     AnounceDuration duration
     @NotEmpty
     String contactPhone
+
+
+    def formattContactPhone () {
+        this.contactPhone.replaceAll(" ","").replaceAll("-","")
+    }
 }

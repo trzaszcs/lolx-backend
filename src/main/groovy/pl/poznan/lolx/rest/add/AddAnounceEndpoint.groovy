@@ -54,7 +54,7 @@ class AddAnounceEndpoint {
                 categoryId: anounceRequestDto.categoryId,
                 type: anounceRequestDto.type,
                 duration: anounceRequestDto.duration,
-                contactPhone: anounceRequestDto.contactPhone
+                contactPhone: anounceRequestDto.formattContactPhone()
         )
     }
 
