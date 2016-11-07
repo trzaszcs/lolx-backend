@@ -1,9 +1,8 @@
 package pl.poznan.lolx.rest.get
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.annotation.JsonFormat
 import groovy.transform.ToString
 import pl.poznan.lolx.rest.add.LocationDto
-import pl.poznan.lolx.rest.util.DateSerializer
 
 import javax.validation.constraints.NotNull
 
@@ -14,7 +13,7 @@ class AnounceDto {
     String description
     @NotNull
     LocationDto location
-    @JsonSerialize(using = DateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     Date creationDate
     String ownerId
     String ownerName
