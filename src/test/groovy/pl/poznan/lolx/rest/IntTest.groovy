@@ -59,6 +59,10 @@ abstract class IntTest {
         httpClient().get(path: "/anounces/$anounceId", contentType: 'application/json')
     }
 
+    def httpBulkGet(anounceIds) {
+        httpClient().get(path: "/anounces/bulk", query : [id: anounceIds], contentType: 'application/json')
+    }
+
     RESTClient httpClient() {
         if (!httpClientInstnance) {
             httpClientInstnance = new RESTClient("http://localhost:${serverPort}")
