@@ -2,7 +2,6 @@ package pl.poznan.lolx.domain.order
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.AnounceDao
 import pl.poznan.lolx.domain.AnounceSearchService
 import pl.poznan.lolx.domain.add.UserDetails
 
@@ -19,6 +18,26 @@ class AnounceOrderService {
 
     @Autowired
     UserDetails userDetails
+
+
+    String requestOrder(String anounceId, String authorId) {
+        return null
+    }
+
+    void removeRequestOrder(String requestOrderID) {
+
+    }
+
+    void acceptOrder(String requestOrderId, String authorId) {
+    }
+
+    void getRequestOrders(String anounceId, String userId){
+
+    }
+
+    void getRequestOrderForAnounce(String anounceId, String userId){
+
+    }
 
     String order(AnounceOrderRequest anounceOrderRequest) {
 
@@ -56,25 +75,25 @@ class AnounceOrderService {
     List<AnounceOrderRequest> getByCustomerId(String customerId) {
         List<AnounceOrder> orders = anounceOrderDao.getByCustomerId(customerId)
         orders.stream()
-              .map( { anounceOrder ->
-                    new AnounceOrderRequest(
-                            requestId: anounceOrder.requestId,
-                            title: anounceOrder.title,
-                            requestDate: anounceOrder.requestDate,
-                            anounceId: anounceOrder.anounceId,
-                            preferedTime: anounceOrder.preferedTime,
-                            preferedDate: anounceOrder.preferedDate,
-                            customerContactInfo: anounceOrder.customerContactInfo,
-                            customerId: anounceOrder.customerId
-                    )
-                })
+                .map({ anounceOrder ->
+            new AnounceOrderRequest(
+                    requestId: anounceOrder.requestId,
+                    title: anounceOrder.title,
+                    requestDate: anounceOrder.requestDate,
+                    anounceId: anounceOrder.anounceId,
+                    preferedTime: anounceOrder.preferedTime,
+                    preferedDate: anounceOrder.preferedDate,
+                    customerContactInfo: anounceOrder.customerContactInfo,
+                    customerId: anounceOrder.customerId
+            )
+        })
                 .collect(Collectors.toList())
     }
 
     List<AnounceOrderRequest> getByOwnerId(String ownerId) {
         List<AnounceOrder> orders = anounceOrderDao.getByOwnerId(ownerId)
         orders.stream()
-                .map( { anounceOrder ->
+                .map({ anounceOrder ->
             new AnounceOrderRequest(
                     requestId: anounceOrder.requestId,
                     title: anounceOrder.title,

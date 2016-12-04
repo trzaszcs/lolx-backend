@@ -38,6 +38,20 @@ class JwtChecker {
         return false
     }
 
+    String subject(String authorizationHeader) {
+        try {
+            def jwtSubject = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(extractJwt(authorizationHeader)).getBody().getSubject()
+            return jwtSubject
+        } catch (SignatureException e) {
+            log.warn("wrong jwt signature", e)
+        } catch (MalformedJwtException e) {
+            log.warn("malformed jwt token", e)
+        } catch (UnsupportedJwtException e) {
+            log.warn("unable to check jwt", e)
+        }
+        return null
+    }
+
     private def extractJwt(authorizationHeader) {
         authorizationHeader.replace('Bearer ', '')
     }

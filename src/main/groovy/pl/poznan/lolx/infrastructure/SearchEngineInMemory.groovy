@@ -9,7 +9,7 @@ class SearchEngineInMemory implements SearchEngine {
 
     final static int MAX_ITEMS_PER_PAGE = 50
 
-    def indexedAnounces = [generateSingle(0, "Wyprowadzę psa", 666), generateSingle(1, "Skoszę trawę", 666), generateSingle(2, "Udziele korepetycji", 666)]
+    def indexedAnounces = [generateSingle(0, "Wyprowadzę psa", 1), generateSingle(1, "Skoszę trawę", 1), generateSingle(2, "Udziele korepetycji", 2)]
 
     @Override
     SearchResult find(String phrase, int page, int itemsPerPage, Optional<Coordinate> coordinateOpt, Optional<String> categoryId) {

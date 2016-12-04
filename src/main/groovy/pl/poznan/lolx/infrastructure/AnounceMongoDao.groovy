@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.Anounce
 import pl.poznan.lolx.domain.AnounceDao
+import pl.poznan.lolx.domain.add.Category
 import pl.poznan.lolx.infrastructure.db.AnounceDocument
 import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
 import pl.poznan.lolx.infrastructure.db.LocationDocument
@@ -28,6 +29,11 @@ class AnounceMongoDao implements AnounceDao {
         anounceMongoRepository.save(document)
     }
 
+    @Override
+    Anounce find(String id) {
+        return map(anounceMongoRepository.findOne(id))
+    }
+
     def map(anounce, document) {
         document.title = anounce.title
         document.creationDate = anounce.creationDate
@@ -45,5 +51,20 @@ class AnounceMongoDao implements AnounceDao {
         document.duration = anounce.duration
         document.closed = anounce.closed
         document.contactPhone = anounce.contactPhone
+    }
+
+    def map(AnounceDocument anounce) {
+        return new Anounce(
+                id: anounce.id,
+                ownerId: anounce.ownerId,
+                title: anounce.title,
+                description: anounce.description,
+                creationDate: anounce.creationDate,
+                price: anounce.price,
+                duration: anounce.duration,
+                category: new Category(id: anounce.categoryId),
+                type: anounce.type
+
+        )
     }
 }
