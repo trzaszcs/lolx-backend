@@ -7,6 +7,4 @@ import org.hibernate.validator.constraints.NotEmpty
 class RequestRequestOrderDto {
     @NotEmpty
     String anounceId
-    @NotEmpty
-    String authorId
 }
