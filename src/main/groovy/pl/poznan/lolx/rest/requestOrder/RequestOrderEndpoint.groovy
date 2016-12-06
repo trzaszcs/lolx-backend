@@ -10,7 +10,7 @@ import pl.poznan.lolx.domain.jwt.JwtChecker
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderService
 
-@RestController(value = "request-orders")
+@RestController
 @Slf4j
 class RequestOrderEndpoint {
 
@@ -19,17 +19,11 @@ class RequestOrderEndpoint {
     @Autowired
     RequestOrderService requestOrderService
 
-    @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity order(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+    @RequestMapping(value = "/request-orders", method = RequestMethod.POST)
+    ResponseEntity order(@RequestHeader(value = "Authorization") authorizationHeader,
                          @RequestBody @Validated RequestRequestOrderDto dto) {
-        log.info("new order {}", dto)
-
-        if (authorizationHeader != null && !jwtChecker.verify(authorizationHeader, dto.authorId)) {
-            log.warn("rejecting order {} due to authorization error", dto)
-            //TODO if needed
-        }
-
-        def id = requestOrderService.requestOrder(dto.anounceId, dto.authorId)
+        log.info("new request order {}", dto)
+        def id = requestOrderService.requestOrder(dto.anounceId, jwtChecker.subject(authorizationHeader))
         ResponseEntity.ok(
                 new RequestOrderIdDto(
                         id: id
@@ -37,12 +31,11 @@ class RequestOrderEndpoint {
         )
     }
 
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    ResponseEntity delete(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+    @RequestMapping(value = "/request-orders/{id}", method = RequestMethod.DELETE)
+    ResponseEntity delete(@RequestHeader(value = "Authorization") authorizationHeader,
                           @PathVariable("id") String id) {
         if (authorizationHeader != null) {
-            def authorId = jwtChecker.verify(authorizationHeader)
+            def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
                 requestOrderService.removeRequestOrder(id, authorId)
                 return ResponseEntity.ok().build()
@@ -51,8 +44,8 @@ class RequestOrderEndpoint {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
-    @RequestMapping(value = "/anounce/{anounceId}/author", method = RequestMethod.GET)
-    ResponseEntity getForAnounceAuthor(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+    @RequestMapping(value = "/request-orders/anounce/{anounceId}/author", method = RequestMethod.GET)
+    ResponseEntity getForAnounceAuthor(@RequestHeader(value = "Authorization") authorizationHeader,
                                        @PathVariable("anounceId") String anounceId) {
         if (authorizationHeader != null) {
             def authorId = jwtChecker.verify(authorizationHeader)
@@ -68,34 +61,28 @@ class RequestOrderEndpoint {
     }
 
 
-    @RequestMapping(value = "/anounce/{anounceId}", method = RequestMethod.GET)
-    ResponseEntity get(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+    @RequestMapping(value = "/request-orders/anounce/{anounceId}", method = RequestMethod.GET)
+    ResponseEntity get(@RequestHeader(value = "Authorization") authorizationHeader,
                        @PathVariable("anounceId") String anounceId) {
         if (authorizationHeader != null) {
-            log.warn("rejecting order {} due to authorization error", dto)
-            def authorId = jwtChecker.verify(authorizationHeader)
+            def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
-                requestOrderService.getRequestOrderForAnounce(anounceId, authorId)
-                        .map {
-                    ResponseEntity.ok {
-                        map(it)
-                    }
-                }.orElse {
-                    ResponseEntity.notFound().build()
-                }
+                return requestOrderService.getRequestOrderForAnounce(anounceId, authorId)
+                        .map({
+                            return ResponseEntity.ok(map(it))
+                        }).orElse(ResponseEntity.notFound().build())
             }
         }
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
-
-    @RequestMapping(value = "/accept/{id}", method = RequestMethod.POST)
-    ResponseEntity accept(@RequestHeader(value = "Authorization", required = false) authorizationHeader,
+    @RequestMapping(value = "/request-orders/{id}/accept", method = RequestMethod.POST)
+    ResponseEntity accept(@RequestHeader(value = "Authorization") authorizationHeader,
                           @PathVariable("id") String id) {
         if (authorizationHeader != null) {
             log.warn("rejecting order")
-            def authorId = jwtChecker.verify(authorizationHeader)
+            def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
                 requestOrderService.acceptOrder(id, authorId)
                 return ResponseEntity.ok().build()

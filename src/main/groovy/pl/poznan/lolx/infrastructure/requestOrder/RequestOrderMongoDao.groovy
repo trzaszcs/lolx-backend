@@ -22,7 +22,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
 
     @Override
     Optional<RequestOrder> findById(String id) {
-        return Optional.ofNullable(repository.findOne(id)).flatMap { map(it) }
+        return Optional.ofNullable(repository.findOne(id)).map({ map(it) })
     }
 
     @Override
@@ -52,7 +52,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
     @Override
     Optional<RequestOrder> findByAnounceIdAndAuthorId(String anounceId, String authorId) {
         return Optional.ofNullable(repository.findByAnounceIdAndAuthorId(anounceId, authorId))
-                .flatMap { map(it) }
+                .map { map(it) }
     }
 
     def map(RequestOrder order) {
