@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar build/libs/lolx-backend.jar
+web: java -Dserver.port=$PORT -javaagent:newrelic/newrelic.jar  -jar build/libs/lolx-backend.jar
