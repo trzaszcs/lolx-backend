@@ -31,6 +31,21 @@ class RequestOrderEndpoint {
         )
     }
 
+
+    @RequestMapping(value = "/request-orders/{id}", method = RequestMethod.GET)
+    ResponseEntity getDetails(@RequestHeader(value = "Authorization") authorizationHeader,
+                              @PathVariable("id") String id) {
+        if (authorizationHeader != null) {
+            def authorId = jwtChecker.subject(authorizationHeader)
+            if (authorId) {
+                return requestOrderService.getRequestOrder(id, authorId)
+                        .map({ ResponseEntity.ok(map(it)) })
+                        .orElse(ResponseEntity.notFound().build())
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+    }
+
     @RequestMapping(value = "/request-orders/{id}", method = RequestMethod.DELETE)
     ResponseEntity delete(@RequestHeader(value = "Authorization") authorizationHeader,
                           @PathVariable("id") String id) {
@@ -48,7 +63,7 @@ class RequestOrderEndpoint {
     ResponseEntity getForAnounceAuthor(@RequestHeader(value = "Authorization") authorizationHeader,
                                        @PathVariable("anounceId") String anounceId) {
         if (authorizationHeader != null) {
-            def authorId = jwtChecker.verify(authorizationHeader)
+            def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
                 ResponseEntity.ok {
                     requestOrderService.getRequestOrdersForAnounceAuthor(anounceId, authorId).collect {
@@ -62,15 +77,15 @@ class RequestOrderEndpoint {
 
 
     @RequestMapping(value = "/request-orders/anounce/{anounceId}", method = RequestMethod.GET)
-    ResponseEntity get(@RequestHeader(value = "Authorization") authorizationHeader,
-                       @PathVariable("anounceId") String anounceId) {
+    ResponseEntity getByAnounceId(@RequestHeader(value = "Authorization") authorizationHeader,
+                                  @PathVariable("anounceId") String anounceId) {
         if (authorizationHeader != null) {
             def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
                 return requestOrderService.getRequestOrderForAnounce(anounceId, authorId)
                         .map({
-                            return ResponseEntity.ok(map(it))
-                        }).orElse(ResponseEntity.notFound().build())
+                    return ResponseEntity.ok(map(it))
+                }).orElse(ResponseEntity.notFound().build())
             }
         }
 

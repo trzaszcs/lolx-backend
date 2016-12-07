@@ -55,6 +55,12 @@ class RequestOrderMongoDao implements RequestOrderDao {
                 .map { map(it) }
     }
 
+    @Override
+    Optional<RequestOrder> findByIdAndAuthorId(String id, String authorId) {
+        return Optional.ofNullable(repository.findByIdAndAuthorId(id, authorId))
+                .map { map(it) }
+    }
+
     def map(RequestOrder order) {
         return new RequestOrderDocument(
                 anounceId: order.anounceId,

@@ -39,4 +39,8 @@ class RequestOrderService {
     Optional<RequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
         return requestOrderDao.findByAnounceIdAndAuthorId(anounceId, userId)
     }
+
+    Optional<RequestOrder> getRequestOrder(String id, String userId) {
+        return requestOrderDao.findByIdAndAuthorId(id, userId)
+    }
 }
