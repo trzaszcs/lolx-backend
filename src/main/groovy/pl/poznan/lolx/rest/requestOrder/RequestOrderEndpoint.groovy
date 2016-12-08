@@ -113,7 +113,7 @@ class RequestOrderEndpoint {
                 authorId: order.authorId,
                 anounceId: order.anounceId,
                 creationDate: order.creationDate,
-                accepted: order.accepted
+                status: order.status
         )
     }
 

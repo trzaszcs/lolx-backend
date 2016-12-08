@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderDao
+import pl.poznan.lolx.domain.requestOrder.Status
 import pl.poznan.lolx.infrastructure.db.RequestOrderDocument
 import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
 
@@ -34,7 +35,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
     boolean accept(String id) {
         Query query = new Query(where("id").is(id));
         def update = new Update()
-        update.set("accepted", true)
+        update.set("status", Status.ACCEPTED)
         return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
     }
 
@@ -65,7 +66,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return new RequestOrderDocument(
                 anounceId: order.anounceId,
                 authorId: order.authorId,
-                accepted: order.accepted,
+                status: order.status,
                 creationDate: order.creationDate
         )
     }
@@ -75,7 +76,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
                 id: order.id,
                 anounceId: order.anounceId,
                 authorId: order.authorId,
-                accepted: order.accepted,
+                status: order.status,
                 creationDate: order.creationDate
         )
     }

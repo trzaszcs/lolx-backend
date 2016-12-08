@@ -9,9 +9,9 @@ class RequestOrder {
     String authorId
     String anounceId
     Date creationDate
-    boolean accepted
+    Status status
 
     static RequestOrder buildNew(String authorId, String anounceId) {
-        new RequestOrder(authorId: authorId, anounceId: anounceId, creationDate: new Date())
+        new RequestOrder(authorId: authorId, anounceId: anounceId, creationDate: new Date(), status: Status.WAITING)
     }
 }

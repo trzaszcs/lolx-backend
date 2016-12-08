@@ -4,6 +4,7 @@ import groovyx.net.http.HttpResponseException
 import org.junit.Test
 import pl.poznan.lolx.domain.AnounceDuration
 import pl.poznan.lolx.domain.AnounceType
+import pl.poznan.lolx.domain.requestOrder.Status
 import pl.poznan.lolx.rest.IntTest
 import pl.poznan.lolx.rest.add.AnounceRequestDto
 import pl.poznan.lolx.rest.add.LocationDto
@@ -74,7 +75,7 @@ class AddRequestOrderTest extends IntTest {
         // then
         assert response.status == 200
         def requestOrderHttpResponse = httpGetRequestOrderForUser(anounceId)
-        assert requestOrderHttpResponse.data.accepted
+        assert requestOrderHttpResponse.data.status == Status.ACCEPTED.name()
     }
 
 
