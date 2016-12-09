@@ -13,7 +13,8 @@ class RequestOrderService {
     RequestOrderDao requestOrderDao
 
     String requestOrder(String anounceId, String authorId) {
-        return requestOrderDao.save(RequestOrder.buildNew(authorId, anounceId))
+        def anounce = anounceDao.find(anounceId)
+        return requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId))
     }
 
     void removeRequestOrder(String requestOrderId, String authorId) {

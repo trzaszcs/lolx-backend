@@ -65,6 +65,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
     def map(RequestOrder order) {
         return new RequestOrderDocument(
                 anounceId: order.anounceId,
+                anounceAuthorId: order.anounceAuthorId,
                 authorId: order.authorId,
                 status: order.status,
                 creationDate: order.creationDate
@@ -75,6 +76,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return new RequestOrder(
                 id: order.id,
                 anounceId: order.anounceId,
+                anounceAuthorId: order.anounceAuthorId,
                 authorId: order.authorId,
                 status: order.status,
                 creationDate: order.creationDate

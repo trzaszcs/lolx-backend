@@ -8,10 +8,11 @@ class RequestOrder {
     String id
     String authorId
     String anounceId
+    String anounceAuthorId
     Date creationDate
     Status status
 
-    static RequestOrder buildNew(String authorId, String anounceId) {
-        new RequestOrder(authorId: authorId, anounceId: anounceId, creationDate: new Date(), status: Status.WAITING)
+    static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId) {
+        new RequestOrder(authorId: authorId, anounceId: anounceId, creationDate: new Date(), anounceAuthorId: anounceAuthorId, status: Status.WAITING)
     }
 }
