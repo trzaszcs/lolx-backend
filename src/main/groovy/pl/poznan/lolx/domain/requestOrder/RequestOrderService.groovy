@@ -44,4 +44,13 @@ class RequestOrderService {
     Optional<RequestOrder> getRequestOrder(String id, String userId) {
         return requestOrderDao.findByIdAndAuthorId(id, userId)
     }
+
+    List<RequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
+        requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId)
+    }
+
+
+    List<RequestOrder> findByAuthorId(String authorId) {
+        requestOrderDao.findByAuthorId(authorId)
+    }
 }

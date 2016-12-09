@@ -92,6 +92,29 @@ class RequestOrderEndpoint {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
+    @RequestMapping(value = "/request-orders/author", method = RequestMethod.GET)
+    ResponseEntity getByAuthorId(@RequestHeader(value = "Authorization") authorizationHeader) {
+        if (authorizationHeader != null) {
+            def authorId = jwtChecker.subject(authorizationHeader)
+            if (authorId) {
+                return ResponseEntity.ok(requestOrderService.findByAuthorId(authorId).collect { map(it) })
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+    }
+
+
+    @RequestMapping(value = "/request-orders/anounce-author", method = RequestMethod.GET)
+    ResponseEntity getForAnounceAuthor(@RequestHeader(value = "Authorization") authorizationHeader) {
+        if (authorizationHeader != null) {
+            def authorId = jwtChecker.subject(authorizationHeader)
+            if (authorId) {
+                return ResponseEntity.ok(requestOrderService.findByAnounceAuthorId(authorId).collect { map(it) })
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+    }
+
     @RequestMapping(value = "/request-orders/{id}/accept", method = RequestMethod.POST)
     ResponseEntity accept(@RequestHeader(value = "Authorization") authorizationHeader,
                           @PathVariable("id") String id) {
