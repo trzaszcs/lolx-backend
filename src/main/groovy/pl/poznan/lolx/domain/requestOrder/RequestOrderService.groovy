@@ -41,16 +41,22 @@ class RequestOrderService {
         return requestOrderDao.findByAnounceIdAndAuthorId(anounceId, userId)
     }
 
-    Optional<RequestOrder> getRequestOrder(String id, String userId) {
+    Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
         return requestOrderDao.findByIdAndAuthorId(id, userId)
     }
 
-    List<RequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
-        requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId)
+    List<DetailedRequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
+        enrichRequestOrdersWithAnounce(requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId))
     }
 
 
-    List<RequestOrder> findByAuthorId(String authorId) {
-        requestOrderDao.findByAuthorId(authorId)
+    List<DetailedRequestOrder> findByAuthorId(String authorId) {
+        enrichRequestOrdersWithAnounce(requestOrderDao.findByAuthorId(authorId))
+    }
+
+    def enrichRequestOrdersWithAnounce(list) {
+        list.collect {
+            new DetailedRequestOrder(requestOrder: it, anounceTitle: anounceDao.find(it.anounceId).title)
+        }
     }
 }

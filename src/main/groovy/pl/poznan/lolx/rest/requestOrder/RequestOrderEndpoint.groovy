@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.poznan.lolx.domain.jwt.JwtChecker
+import pl.poznan.lolx.domain.requestOrder.DetailedRequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderService
 
@@ -137,6 +138,17 @@ class RequestOrderEndpoint {
                 anounceId: order.anounceId,
                 creationDate: order.creationDate,
                 status: order.status
+        )
+    }
+
+    def map(DetailedRequestOrder order) {
+        new DetailedRequestOrderDto(
+                id: order.requestOrder.id,
+                authorId: order.requestOrder.authorId,
+                anounceId: order.requestOrder.anounceId,
+                creationDate: order.requestOrder.creationDate,
+                status: order.requestOrder.status,
+                anounceTitle: order.anounceTitle
         )
     }
 
