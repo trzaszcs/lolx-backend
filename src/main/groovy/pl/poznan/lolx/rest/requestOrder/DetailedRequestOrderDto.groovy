@@ -7,4 +7,6 @@ import org.hibernate.validator.constraints.NotEmpty
 class DetailedRequestOrderDto extends RequestOrderDto {
     @NotEmpty
     String anounceTitle
+    String anounceAuthorName
+    String authorName
 }

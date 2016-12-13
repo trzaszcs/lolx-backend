@@ -34,12 +34,12 @@ class AddRequestOrderTest extends IntTest {
         mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         // when
-        def response = httpCreateRequestOrder(anounceId)
+        def response = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken)
         // then
         assert response.status == 200
         def requestOrderId = response.data.id
         assert requestOrderId
-        def requestOrderHttpResponse = httpGetRequestOrderForUser(anounceId)
+        def requestOrderHttpResponse = httpGetRequestOrderForUser(anounceId, requestOrderOwnerBearerToken)
         assert requestOrderHttpResponse.status == 200
         assert requestOrderHttpResponse.data.id == requestOrderId
     }
@@ -50,13 +50,13 @@ class AddRequestOrderTest extends IntTest {
         mockUsers()
         mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
-        def requestOrderId = httpCreateRequestOrder(anounceId).data.id
+        def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when
-        def response = httpDeleteRequestOrder(requestOrderId)
+        def response = httpDeleteRequestOrder(requestOrderId, requestOrderOwnerBearerToken)
         // then
         assert response.status == 200
         try {
-            httpGetRequestOrderForUser(anounceId)
+            httpGetRequestOrderForUser(anounceId, requestOrderOwnerBearerToken)
             assert false
         } catch (HttpResponseException ex) {
             assert ex.response.status == 404
@@ -69,30 +69,13 @@ class AddRequestOrderTest extends IntTest {
         mockUsers()
         mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
-        def requestOrderId = httpCreateRequestOrder(anounceId).data.id
+        def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when
         def response = httpAcceptRequestOrder(requestOrderId)
         // then
         assert response.status == 200
-        def requestOrderHttpResponse = httpGetRequestOrderForUser(anounceId)
+        def requestOrderHttpResponse = httpGetRequestOrderForUser(anounceId, requestOrderOwnerBearerToken)
         assert requestOrderHttpResponse.data.status == Status.ACCEPTED.name()
-    }
-
-
-    def httpCreateRequestOrder(anounceId) {
-        httpClient().post(path: "/request-orders", body: new RequestRequestOrderDto(anounceId: anounceId), contentType: 'application/json', headers: ["Authorization": requestOrderOwnerBearerToken])
-    }
-
-    def httpGetRequestOrderForUser(anounceId) {
-        httpClient().get(path: "/request-orders/anounce/${anounceId}", contentType: 'application/json', headers: ["Authorization": requestOrderOwnerBearerToken])
-    }
-
-    def httpDeleteRequestOrder(requestOrderId) {
-        httpClient().delete(path: "/request-orders/${requestOrderId}", contentType: 'application/json', headers: ["Authorization": requestOrderOwnerBearerToken])
-    }
-
-    def httpAcceptRequestOrder(requestOrderId) {
-        httpClient().post(path: "/request-orders/${requestOrderId}/accept", contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
 }

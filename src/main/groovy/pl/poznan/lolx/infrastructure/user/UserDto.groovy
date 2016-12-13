@@ -1,4 +1,4 @@
-package pl.poznan.lolx.infrastructure.add.user
+package pl.poznan.lolx.infrastructure.user
 
 import groovy.transform.ToString
 

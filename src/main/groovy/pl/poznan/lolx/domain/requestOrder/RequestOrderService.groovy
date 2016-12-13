@@ -3,6 +3,7 @@ package pl.poznan.lolx.domain.requestOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.AnounceDao
+import pl.poznan.lolx.domain.add.UserDetails
 
 @Component
 class RequestOrderService {
@@ -11,6 +12,8 @@ class RequestOrderService {
     AnounceDao anounceDao
     @Autowired
     RequestOrderDao requestOrderDao
+    @Autowired
+    UserDetails userDetails
 
     String requestOrder(String anounceId, String authorId) {
         def anounce = anounceDao.find(anounceId)
@@ -46,17 +49,33 @@ class RequestOrderService {
     }
 
     List<DetailedRequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
-        enrichRequestOrdersWithAnounce(requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId))
+        decorateRequestOrder(requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId))
     }
 
 
     List<DetailedRequestOrder> findByAuthorId(String authorId) {
-        enrichRequestOrdersWithAnounce(requestOrderDao.findByAuthorId(authorId))
+        decorateRequestOrder(requestOrderDao.findByAuthorId(authorId))
     }
 
-    def enrichRequestOrdersWithAnounce(list) {
-        list.collect {
-            new DetailedRequestOrder(requestOrder: it, anounceTitle: anounceDao.find(it.anounceId).title)
+    def decorateRequestOrder(requestOrderList) {
+        def uniqueAnounceIds = requestOrderList.collect { it.anounceId }.toSet()
+        def anouncesMap = uniqueAnounceIds.collectEntries {
+            [(it): anounceDao.find(it)]
+        }
+
+        def userIds = requestOrderList.collect {
+            [it.anounceAuthorId, it.authorId]
+        }.flatten().toSet().toList()
+
+        def usersMap = userDetails.find(userIds)
+
+        requestOrderList.collect {
+            new DetailedRequestOrder(
+                    requestOrder: it,
+                    anounceTitle: anouncesMap[it.anounceId].title,
+                    requestOrderAuthorName: usersMap[it.authorId].firstName,
+                    anounceAuthorName: usersMap[it.anounceAuthorId].firstName
+            )
         }
     }
 }

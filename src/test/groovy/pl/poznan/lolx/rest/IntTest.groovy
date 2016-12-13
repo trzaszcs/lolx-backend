@@ -3,13 +3,19 @@ package pl.poznan.lolx.rest
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import groovyx.net.http.RESTClient
+import org.junit.After
 import org.junit.Rule
 import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
+import pl.poznan.lolx.infrastructure.AnounceMongoDao
+import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
+import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
+import pl.poznan.lolx.rest.requestOrder.RequestRequestOrderDto
 import pl.poznan.lolx.util.JwtUtil
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -21,6 +27,11 @@ abstract class IntTest {
 
     @LocalServerPort
     protected int serverPort
+    @Autowired
+    AnounceMongoRepository anounceMongoRepository
+    @Autowired
+    RequestOrderMongoRepository requestOrderMongoRepository
+
 
     def ownerId = "666"
     def jwtToken = JwtUtil.gen(ownerId)
@@ -45,7 +56,23 @@ abstract class IntTest {
                 .withBody("""{"id": "${ownerId}", "email" : "email@wp.pl"}""")))
     }
 
-    def createAnounce(anounce){
+    def mockBulkUsers(usersMap) {
+        def json = usersMap.collect { id, name ->
+            """
+            "$id": {
+                "id": "$id",
+                "firstName": "$name"
+            }
+            """
+        }.join(",")
+
+        WireMock.stubFor(get(urlMatching("/users/bulk.*"))
+                .willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody("""{$json}""")))
+    }
+
+    def createAnounce(anounce) {
         mockCategories(anounce.categoryId)
         mockUsers()
         httpCreate(anounce)
@@ -60,7 +87,27 @@ abstract class IntTest {
     }
 
     def httpBulkGet(anounceIds) {
-        httpClient().get(path: "/anounces/bulk", query : [id: anounceIds], contentType: 'application/json')
+        httpClient().get(path: "/anounces/bulk", query: [id: anounceIds], contentType: 'application/json')
+    }
+
+    def httpCreateRequestOrder(anounceId, token) {
+        httpClient().post(path: "/request-orders", body: new RequestRequestOrderDto(anounceId: anounceId), contentType: 'application/json', headers: ["Authorization": token])
+    }
+
+    def httpGetRequestOrderForUser(anounceId, token) {
+        httpClient().get(path: "/request-orders/anounce/${anounceId}", contentType: 'application/json', headers: ["Authorization": token])
+    }
+
+    def httpGetRequestOrdersForUser(token) {
+        httpClient().get(path: "/request-orders/author", contentType: 'application/json', headers: ["Authorization": token])
+    }
+
+    def httpDeleteRequestOrder(requestOrderId, token) {
+        httpClient().delete(path: "/request-orders/${requestOrderId}", contentType: 'application/json', headers: ["Authorization": token])
+    }
+
+    def httpAcceptRequestOrder(requestOrderId) {
+        httpClient().post(path: "/request-orders/${requestOrderId}/accept", contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
     RESTClient httpClient() {
@@ -72,5 +119,11 @@ abstract class IntTest {
 
     def buildBearer(jwtToken) {
         "Bearer ${jwtToken}"
+    }
+
+    @After
+    void cleanup() {
+        anounceMongoRepository.deleteAll()
+        requestOrderMongoRepository.deleteAll()
     }
 }
