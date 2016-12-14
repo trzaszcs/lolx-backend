@@ -67,6 +67,10 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return repository.findByAnounceAuthorId(anounceAuthorId).collect { map(it) }
     }
 
+    @Override
+    List<RequestOrder> findByAnounceAuthorIdOrAuthorId(String authorId) {
+        return repository.findByAnounceAuthorIdOrAuthorId(authorId, authorId).collect { map(it) }
+    }
 
     @Override
     List<RequestOrder> findByAuthorId(String authorId) {

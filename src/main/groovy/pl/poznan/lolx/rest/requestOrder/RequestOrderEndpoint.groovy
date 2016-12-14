@@ -104,6 +104,17 @@ class RequestOrderEndpoint {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
+    @RequestMapping(value = "/request-orders/user", method = RequestMethod.GET)
+    ResponseEntity getForUser(@RequestHeader(value = "Authorization") authorizationHeader) {
+        if (authorizationHeader != null) {
+            def authorId = jwtChecker.subject(authorizationHeader)
+            if (authorId) {
+                return ResponseEntity.ok(requestOrderService.findForUser(authorId).collect { map(it) })
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+    }
+
 
     @RequestMapping(value = "/request-orders/anounce-author", method = RequestMethod.GET)
     ResponseEntity getForAnounceAuthor(@RequestHeader(value = "Authorization") authorizationHeader) {

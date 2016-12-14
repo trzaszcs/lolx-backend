@@ -99,7 +99,7 @@ abstract class IntTest {
     }
 
     def httpGetRequestOrdersForUser(token) {
-        httpClient().get(path: "/request-orders/author", contentType: 'application/json', headers: ["Authorization": token])
+        httpClient().get(path: "/request-orders/user", contentType: 'application/json', headers: ["Authorization": token])
     }
 
     def httpDeleteRequestOrder(requestOrderId, token) {

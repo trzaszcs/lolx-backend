@@ -13,4 +13,6 @@ interface RequestOrderMongoRepository extends CrudRepository<RequestOrderDocumen
 
     List<RequestOrderDocument> findByAnounceAuthorId(String anounceAuthorId)
 
+    List<RequestOrderDocument> findByAnounceAuthorIdOrAuthorId(String anounceAuthorId, String authorId)
+
 }

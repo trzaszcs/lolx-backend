@@ -49,7 +49,11 @@ class RequestOrderService {
     }
 
     List<DetailedRequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
-        decorateRequestOrder(requestOrderDao.findByAnounceIdAndAuthorId(anounceAuthorId))
+        decorateRequestOrder(requestOrderDao.findByAnounceAuthorId(anounceAuthorId))
+    }
+
+    List<DetailedRequestOrder> findForUser(String userId) {
+        decorateRequestOrder(requestOrderDao.findByAnounceAuthorIdOrAuthorId(userId))
     }
 
 

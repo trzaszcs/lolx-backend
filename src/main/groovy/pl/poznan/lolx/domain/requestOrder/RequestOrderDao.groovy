@@ -20,4 +20,6 @@ interface RequestOrderDao {
 
     List<RequestOrder> findByAnounceAuthorId(String anounceAuthorId)
 
+    List<RequestOrder> findByAnounceAuthorIdOrAuthorId(String authorId)
+
 }

@@ -9,6 +9,8 @@ import pl.poznan.lolx.infrastructure.db.AnounceDocument
 import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
 import pl.poznan.lolx.infrastructure.db.LocationDocument
 
+import javax.annotation.PostConstruct
+
 @Component
 class AnounceMongoDao implements AnounceDao {
 
