@@ -107,7 +107,7 @@ abstract class IntTest {
     }
 
     def httpAcceptRequestOrder(requestOrderId) {
-        httpClient().post(path: "/request-orders/${requestOrderId}/accept", contentType: 'application/json', headers: ["Authorization": bearerToken])
+        httpClient().put(path: "/request-orders/${requestOrderId}/accept", contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
     RESTClient httpClient() {

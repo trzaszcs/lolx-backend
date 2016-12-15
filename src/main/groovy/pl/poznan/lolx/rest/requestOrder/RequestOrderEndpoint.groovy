@@ -127,14 +127,29 @@ class RequestOrderEndpoint {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
-    @RequestMapping(value = "/request-orders/{id}/accept", method = RequestMethod.POST)
+    @RequestMapping(value = "/request-orders/{id}/accept", method = RequestMethod.PUT)
     ResponseEntity accept(@RequestHeader(value = "Authorization") authorizationHeader,
+                          @PathVariable("id") String id) {
+        if (authorizationHeader != null) {
+            log.warn("accept order")
+            def authorId = jwtChecker.subject(authorizationHeader)
+            if (authorId) {
+                requestOrderService.accept(id, authorId)
+                return ResponseEntity.ok().build()
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+    }
+
+    @RequestMapping(value = "/request-orders/{id}/reject", method = RequestMethod.PUT)
+    ResponseEntity reject(@RequestHeader(value = "Authorization") authorizationHeader,
                           @PathVariable("id") String id) {
         if (authorizationHeader != null) {
             log.warn("rejecting order")
             def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
-                requestOrderService.acceptOrder(id, authorId)
+                requestOrderService.reject(id, authorId)
                 return ResponseEntity.ok().build()
             }
         }

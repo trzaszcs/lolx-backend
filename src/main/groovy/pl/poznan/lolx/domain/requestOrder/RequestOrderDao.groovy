@@ -8,6 +8,8 @@ interface RequestOrderDao {
 
     boolean accept(String id)
 
+    boolean reject(String id)
+
     boolean remove(String id, String authorId)
 
     List<RequestOrder> findByAnounceId(String anounceId)

@@ -40,6 +40,14 @@ class RequestOrderMongoDao implements RequestOrderDao {
     }
 
     @Override
+    boolean reject(String id) {
+        Query query = new Query(where("id").is(id));
+        def update = new Update()
+        update.set("status", Status.REJECTED)
+        return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
+    }
+
+    @Override
     boolean remove(String id, String authorId) {
         Query query = new Query(where("id").is(id).andOperator(where("authorId").is(authorId)));
         return mongoTemplate.remove(query, RequestOrderDocument).n > 0

@@ -24,11 +24,20 @@ class RequestOrderService {
         requestOrderDao.remove(requestOrderId, authorId)
     }
 
-    void acceptOrder(String requestOrderId, String authorId) {
+    void accept(String requestOrderId, String authorId) {
         def optionalRequestOrder = requestOrderDao.findById(requestOrderId)
         optionalRequestOrder.ifPresent {
             if (anounceDao.find(it.anounceId).ownerId == authorId) {
                 requestOrderDao.accept(requestOrderId)
+            }
+        }
+    }
+
+    void reject(String requestOrderId, String authorId) {
+        def optionalRequestOrder = requestOrderDao.findById(requestOrderId)
+        optionalRequestOrder.ifPresent {
+            if (anounceDao.find(it.anounceId).ownerId == authorId) {
+                requestOrderDao.reject(requestOrderId)
             }
         }
     }
