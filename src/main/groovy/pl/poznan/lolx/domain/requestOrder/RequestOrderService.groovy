@@ -71,6 +71,9 @@ class RequestOrderService {
     }
 
     def decorateRequestOrder(requestOrderList) {
+        if (requestOrderList.isEmpty()) {
+            return []
+        }
         def uniqueAnounceIds = requestOrderList.collect { it.anounceId }.toSet()
         def anouncesMap = uniqueAnounceIds.collectEntries {
             [(it): anounceDao.find(it)]

@@ -44,7 +44,7 @@ class UserDetailsRestService implements UserDetails {
             })
             def usersMap = response.body
             return usersMap.keySet().collectEntries {
-                [(it): map(usersMap[it])]
+                [(it): map(Optional.ofNullable(usersMap[it]).orElseThrow({new RuntimeException("User with id ${it} not found")}))]
             }
         } catch (HttpClientErrorException ex) {
             if (ex.statusCode == 404)
