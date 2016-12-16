@@ -7,5 +7,6 @@ class UserDto {
     String id
     String email
     String firstName
+    String nick
     Date created
 }

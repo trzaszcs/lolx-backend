@@ -89,8 +89,8 @@ class RequestOrderService {
             new DetailedRequestOrder(
                     requestOrder: it,
                     anounceTitle: anouncesMap[it.anounceId].title,
-                    requestOrderAuthorName: usersMap[it.authorId].firstName,
-                    anounceAuthorName: usersMap[it.anounceAuthorId].firstName
+                    requestOrderAuthorName: usersMap[it.authorId].name(),
+                    anounceAuthorName: usersMap[it.anounceAuthorId].name()
             )
         }
     }

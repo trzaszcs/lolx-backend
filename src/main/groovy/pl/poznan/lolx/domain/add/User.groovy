@@ -7,9 +7,10 @@ class User {
     String id
     String email
     String firstName
+    String nick
     Date created
 
     String name() {
-        firstName
+        nick
     }
 }

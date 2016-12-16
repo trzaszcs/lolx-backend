@@ -61,7 +61,7 @@ abstract class IntTest {
             """
             "$id": {
                 "id": "$id",
-                "firstName": "$name"
+                "nick": "$name"
             }
             """
         }.join(",")

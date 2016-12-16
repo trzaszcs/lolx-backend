@@ -54,6 +54,6 @@ class UserDetailsRestService implements UserDetails {
     }
 
     private User map(UserDto dto) {
-        new User(id: dto.id, email: dto.email, created: dto.created, firstName: dto.firstName)
+        new User(id: dto.id, email: dto.email, created: dto.created, firstName: dto.firstName, nick: dto.nick)
     }
 }
