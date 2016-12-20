@@ -12,5 +12,6 @@ class RequestOrderDocument {
     String anounceId
     String anounceAuthorId
     Date creationDate
+    Date updateStatusDate
     Status status
 }

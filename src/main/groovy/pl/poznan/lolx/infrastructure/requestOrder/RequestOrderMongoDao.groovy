@@ -36,6 +36,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         Query query = new Query(where("id").is(id));
         def update = new Update()
         update.set("status", Status.ACCEPTED)
+        update.set("updateStatusDate", new Date())
         return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
     }
 
@@ -44,6 +45,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         Query query = new Query(where("id").is(id));
         def update = new Update()
         update.set("status", Status.REJECTED)
+        update.set("updateStatusDate", new Date())
         return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
     }
 
@@ -102,6 +104,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
                 anounceAuthorId: order.anounceAuthorId,
                 authorId: order.authorId,
                 status: order.status,
+                updateStatusDate: order.updateStatusDate,
                 creationDate: order.creationDate
         )
     }

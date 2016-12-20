@@ -8,9 +8,11 @@ class JwtCheckerTest {
 
     def jwtChecker
     def jwtToken = JwtUtil.gen("666")
+
     @Before
     void setup() {
-        jwtChecker = new JwtChecker(getClass().getClassLoader().getResource("tst_public.der").getBytes())
+        jwtChecker = new JwtChecker(new KeyResolver([
+                "test": PublicKeyConverter.convert(getClass().getClassLoader().getResource("tst_public.der").getBytes())]))
     }
 
     @Test

@@ -1,5 +1,5 @@
 publicKey:
-    path: classpath:public.der
+    dir: classpath:certs/
 
 user-service:
     addr: http://lolx-auth.herokuapp.com/

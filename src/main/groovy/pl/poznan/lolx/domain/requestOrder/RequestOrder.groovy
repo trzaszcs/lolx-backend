@@ -10,6 +10,7 @@ class RequestOrder {
     String anounceId
     String anounceAuthorId
     Date creationDate
+    Date updateStatusDate
     Status status
 
     static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId) {

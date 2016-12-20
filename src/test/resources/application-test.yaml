@@ -1,5 +1,5 @@
 publicKey:
-    path: classpath:tst_public.der
+    dir: classpath:certs/
 
 user-service:
     addr: http://localhost:12346/

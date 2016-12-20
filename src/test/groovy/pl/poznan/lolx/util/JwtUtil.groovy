@@ -12,6 +12,7 @@ final class JwtUtil {
         def bytes = JwtUtil.class.classLoader.getResourceAsStream("private_key.der").bytes
         def key = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(bytes))
         Jwts.builder().claim("sub", subject)
+                .setIssuer("test")
                 .signWith(SignatureAlgorithm.RS256, key)
                 .compact()
     }
