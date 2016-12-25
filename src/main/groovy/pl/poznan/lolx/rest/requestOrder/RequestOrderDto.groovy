@@ -13,6 +13,8 @@ class RequestOrderDto {
     String anounceId
     @NotEmpty
     String authorId
+    @NotEmpty
+    String anounceAuthorId
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     Date creationDate
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")

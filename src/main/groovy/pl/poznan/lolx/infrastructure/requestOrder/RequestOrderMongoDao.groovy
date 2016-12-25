@@ -60,8 +60,9 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return repository.findByAnounceId(anounceId).collect { map(it) }
     }
 
+    //TODO authorIdOrA
     @Override
-    Optional<RequestOrder> findByAnounceIdAndAuthorId(String anounceId, String authorId) {
+    Optional<RequestOrder> findByAnounceIdAndAuthorIdOrAnounceAuthorId(String anounceId, String authorId) {
         return Optional.ofNullable(repository.findByAnounceIdAndAuthorId(anounceId, authorId))
                 .map { map(it) }
     }

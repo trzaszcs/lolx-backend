@@ -50,7 +50,7 @@ class RequestOrderService {
     }
 
     Optional<RequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
-        return requestOrderDao.findByAnounceIdAndAuthorId(anounceId, userId)
+        return requestOrderDao.findByAnounceIdAndAuthorIdOrAnounceAuthorId(anounceId, userId)
     }
 
     Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
@@ -90,7 +90,8 @@ class RequestOrderService {
                     requestOrder: it,
                     anounceTitle: anouncesMap[it.anounceId].title,
                     requestOrderAuthorName: usersMap[it.authorId].name(),
-                    anounceAuthorName: usersMap[it.anounceAuthorId].name()
+                    anounceAuthorName: usersMap[it.anounceAuthorId].name(),
+                    anounceAuthorId: it.anounceAuthorId
             )
         }
     }

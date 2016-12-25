@@ -14,7 +14,7 @@ interface RequestOrderDao {
 
     List<RequestOrder> findByAnounceId(String anounceId)
 
-    Optional<RequestOrder> findByAnounceIdAndAuthorId(String anounceId, String authorId)
+    Optional<RequestOrder> findByAnounceIdAndAuthorIdOrAnounceAuthorId(String anounceId, String authorId)
 
     Optional<RequestOrder> findByIdAndAuthorId(String id, String authorId)
 

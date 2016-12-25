@@ -162,6 +162,7 @@ class RequestOrderEndpoint {
                 id: order.id,
                 authorId: order.authorId,
                 anounceId: order.anounceId,
+                anounceAuthorId: order.anounceAuthorId,
                 creationDate: order.creationDate,
                 status: order.status,
                 statusUpdateDate: order.updateStatusDate
@@ -178,6 +179,7 @@ class RequestOrderEndpoint {
                 statusUpdateDate: order.requestOrder.updateStatusDate,
                 anounceTitle: order.anounceTitle,
                 anounceAuthorName: order.anounceAuthorName,
+                anounceAuthorId: order.anounceAuthorId,
                 authorName: order.requestOrderAuthorName
         )
     }
