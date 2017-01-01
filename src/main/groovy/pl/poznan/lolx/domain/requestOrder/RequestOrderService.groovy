@@ -54,7 +54,9 @@ class RequestOrderService {
     }
 
     Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
-        return requestOrderDao.findByIdAndAuthorId(id, userId)
+        return requestOrderDao.findByIdAndAuthorId(id, userId).map({
+            decorateRequestOrder([it])[0]
+        })
     }
 
     List<DetailedRequestOrder> findByAnounceAuthorId(String anounceAuthorId) {
