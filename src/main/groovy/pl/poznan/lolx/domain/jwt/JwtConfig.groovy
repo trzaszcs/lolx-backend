@@ -23,6 +23,7 @@ class JwtConfig {
 
     @Bean
     Map<String, PublicKey> certsMap() {
+        new File("classpath:certs/chat.der")
         files.split(',').collectEntries { it ->
             def file = getFile(it)
             [(file.name.substring(0, file.name.indexOf("."))): PublicKeyConverter.convert(file.bytes)]
