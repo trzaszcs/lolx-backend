@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
+import org.springframework.core.io.support.ResourcePatternResolver
 
-import java.security.KeyFactory
 import java.security.PublicKey
-import java.security.spec.X509EncodedKeySpec
 
 @Configuration
 class JwtConfig {
@@ -19,10 +18,14 @@ class JwtConfig {
     @Autowired
     private ResourceLoader resourceLoader
 
+    @Autowired
+    private ResourcePatternResolver resolver
+
     @Bean
     Map<String, PublicKey> certsMap() {
-        return resourceLoader.getResource(publicKeyDir).file.listFiles().collectEntries {
-            [(it.name.substring(0, it.name.indexOf("."))): PublicKeyConverter.convert(it.bytes)]
+        resolver.getResources(publicKeyDir+"*.*").collectEntries {
+            def file = it.file
+            [(file.name.substring(0, file.name.indexOf("."))): PublicKeyConverter.convert(file.bytes)]
         }
     }
 }
