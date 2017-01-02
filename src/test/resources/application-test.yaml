@@ -1,5 +1,6 @@
 publicKey:
     dir: classpath:certs/
+    files: test.der
 
 user-service:
     addr: http://localhost:12346/
