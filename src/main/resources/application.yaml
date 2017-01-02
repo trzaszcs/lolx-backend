@@ -1,5 +1,6 @@
 publicKey:
     dir: classpath:certs/
+    files: chat.der,frontend.der
 
 user-service:
     addr: http://lolx-auth.herokuapp.com/

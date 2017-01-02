@@ -18,14 +18,18 @@ class JwtConfig {
     @Autowired
     private ResourceLoader resourceLoader
 
-    @Autowired
-    private ResourcePatternResolver resolver
+    @Value('${publicKey.files}')
+    private String files
 
     @Bean
     Map<String, PublicKey> certsMap() {
-        resolver.getResources(publicKeyDir+"*.*").collectEntries {
-            def file = it.file
+        files.split(',').collectEntries { it ->
+            def file = getFile(it)
             [(file.name.substring(0, file.name.indexOf("."))): PublicKeyConverter.convert(file.bytes)]
         }
+    }
+
+    def getFile(fileName) {
+        resourceLoader.getResource(publicKeyDir + fileName).file
     }
 }
