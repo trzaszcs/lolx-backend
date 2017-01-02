@@ -23,6 +23,10 @@ class JwtConfig {
 
     @Bean
     Map<String, PublicKey> certsMap() {
+        println("xxx>")
+        resourceLoader.getResource("classpath:chat.der").file
+        println("xxx>")
+
         println("------->")
         resourceLoader.getResource("classpath:certs/chat.der").file
         println("------->")
