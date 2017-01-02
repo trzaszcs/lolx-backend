@@ -2,7 +2,7 @@ server:
   port: 8081
 
 publicKey:
-  path: classpath:public.der
+  dir: classpath:certs/
 
 user-service:
   addr: http://localhost:8082/
