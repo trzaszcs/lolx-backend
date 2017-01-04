@@ -28,7 +28,7 @@ class JwtConfig {
         }
     }
 
-    def getCertContent(fileName){
+    def getCertContent(fileName) {
         resourceLoader.getResource(publicKeyDir + fileName).inputStream.bytes
     }
 }

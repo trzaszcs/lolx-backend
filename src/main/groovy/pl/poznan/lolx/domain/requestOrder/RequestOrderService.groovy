@@ -49,8 +49,10 @@ class RequestOrderService {
         return []
     }
 
-    Optional<RequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
-        return requestOrderDao.findByAnounceIdAndAuthorIdOrAnounceAuthorId(anounceId, userId)
+    Optional<DetailedRequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
+        return requestOrderDao.findByAnounceIdAndAuthorIdOrAnounceAuthorId(anounceId, userId).map({
+            decorateRequestOrder([it])[0]
+        })
     }
 
     Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
