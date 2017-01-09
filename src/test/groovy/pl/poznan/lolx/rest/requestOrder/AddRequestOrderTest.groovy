@@ -31,6 +31,7 @@ class AddRequestOrderTest extends IntTest {
     void "should create request order"() {
         // given
         mockUsers()
+        mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
         mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         // when
@@ -67,6 +68,7 @@ class AddRequestOrderTest extends IntTest {
     void "should be able to accept order"() {
         // given
         mockUsers()
+        mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
         mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
