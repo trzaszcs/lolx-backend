@@ -9,6 +9,7 @@ interface RequestOrderMongoRepository extends CrudRepository<RequestOrderDocumen
     @Query('{$and : [{\'anounceId\': ?0}, {$or : [{\'authorId\' : ?1}, {\'anounceAuthorId\' : ?1}]}]}')
     RequestOrderDocument findByAnounceIdAndAuthorId(String anounceId, String authorId)
 
+    @Query('{$and : [{\'id\': ?0}, {$or : [{\'authorId\' : ?1}, {\'anounceAuthorId\' : ?1}]}]}')
     RequestOrderDocument findByIdAndAuthorId(String id, String authorId)
 
     List<RequestOrderDocument> findByAuthorId(String authorId)
