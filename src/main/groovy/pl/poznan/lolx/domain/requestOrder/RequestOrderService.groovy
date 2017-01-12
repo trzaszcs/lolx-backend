@@ -65,8 +65,8 @@ class RequestOrderService {
         decorateRequestOrder(requestOrderDao.findByAnounceAuthorId(anounceAuthorId))
     }
 
-    List<DetailedRequestOrder> findForUser(String userId) {
-        decorateRequestOrder(requestOrderDao.findByAnounceAuthorIdOrAuthorId(userId))
+    List<DetailedRequestOrder> find(SearchParams params) {
+        decorateRequestOrder(requestOrderDao.find(params))
     }
 
 

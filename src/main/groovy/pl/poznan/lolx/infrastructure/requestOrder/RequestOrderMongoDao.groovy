@@ -1,12 +1,16 @@
 package pl.poznan.lolx.infrastructure.requestOrder
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderDao
+import pl.poznan.lolx.domain.requestOrder.SearchParams
 import pl.poznan.lolx.domain.requestOrder.Status
 import pl.poznan.lolx.infrastructure.db.RequestOrderDocument
 import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
@@ -79,8 +83,14 @@ class RequestOrderMongoDao implements RequestOrderDao {
     }
 
     @Override
-    List<RequestOrder> findByAnounceAuthorIdOrAuthorId(String authorId) {
-        return repository.findByAnounceAuthorIdOrAuthorId(authorId, authorId).collect { map(it) }
+    List<RequestOrder> find(SearchParams params) {
+        Criteria criteria = new Criteria().orOperator(where("authorId").is(params.authorId), where("anounceAuthorId").is(params.authorId))
+        if (params.hasStatusFilter()) {
+            criteria = criteria.andOperator("status").is(params.status)
+        }
+        Query query = new Query(criteria)
+                .with(new PageRequest(params.page, params.itemsPerPage, new Sort(Sort.Direction.ASC, "creationDate")))
+        return mongoTemplate.find(query, RequestOrderDocument).collect { map(it) }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.poznan.lolx.rest.requestOrder
 
+import com.sun.org.apache.xerces.internal.util.Status
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -10,6 +11,7 @@ import pl.poznan.lolx.domain.jwt.JwtChecker
 import pl.poznan.lolx.domain.requestOrder.DetailedRequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderService
+import pl.poznan.lolx.domain.requestOrder.SearchParams
 
 @RestController
 @Slf4j
@@ -105,11 +107,23 @@ class RequestOrderEndpoint {
     }
 
     @RequestMapping(value = "/request-orders/user", method = RequestMethod.GET)
-    ResponseEntity getForUser(@RequestHeader(value = "Authorization") authorizationHeader) {
+    ResponseEntity getForUser(@RequestHeader(value = "Authorization") String authorizationHeader,
+                              @RequestParam(name = "page", defaultValue = "0") int page,
+                              @RequestParam(name = "status", defaultValue = "ALL") StatusDto status,
+                              @RequestParam(name = "itemsPerPage", defaultValue = "20") int itemsPerPage) {
         if (authorizationHeader != null) {
             def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
-                return ResponseEntity.ok(requestOrderService.findForUser(authorId).collect { map(it) })
+                return ResponseEntity.ok(
+                        requestOrderService.find(
+                                new SearchParams(
+                                        authorId,
+                                        status.all() ? null : Status.valueOf(status.name()),
+                                        itemsPerPage,
+                                        page))
+                                .collect {
+                            map(it)
+                        })
             }
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
