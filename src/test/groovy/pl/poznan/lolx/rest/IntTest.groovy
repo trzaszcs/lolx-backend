@@ -12,10 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
-import pl.poznan.lolx.infrastructure.AnounceMongoDao
 import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
 import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
 import pl.poznan.lolx.rest.requestOrder.RequestRequestOrderDto
+import pl.poznan.lolx.rest.requestOrder.StatusDto
 import pl.poznan.lolx.util.JwtUtil
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
@@ -98,8 +98,13 @@ abstract class IntTest {
         httpClient().get(path: "/request-orders/anounce/${anounceId}", contentType: 'application/json', headers: ["Authorization": token])
     }
 
-    def httpGetRequestOrdersForUser(token) {
-        httpClient().get(path: "/request-orders/user", contentType: 'application/json', headers: ["Authorization": token])
+    def httpGetRequestOrdersForUser(String token, StatusDto status = null) {
+        def query = [:]
+
+        if (status) {
+            query = ["status": status]
+        }
+        httpClient().get(path: "/request-orders/user", contentType: 'application/json', headers: ["Authorization": token], query: query)
     }
 
     def httpDeleteRequestOrder(requestOrderId, token) {

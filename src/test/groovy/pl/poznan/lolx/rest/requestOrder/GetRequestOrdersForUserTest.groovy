@@ -39,10 +39,44 @@ class GetRequestOrdersForUserTest extends IntTest {
         def response = httpGetRequestOrdersForUser(requestOrderOwnerBearerToken)
         // then
         assert response.status == 200
-        def requestOrders = response.data
-        assert requestOrders.size() == 1
-        assert requestOrders.get(0).id == requestOrderId
-        assert requestOrders.get(0).authorName == requestOrderAuthorName
-        assert requestOrders.get(0).anounceAuthorName == anounceAuthorName
+        def searchResult = response.data
+        assert searchResult.totalCount == 1
+        assert searchResult.requestOrders.size() == 1
+        assert searchResult.requestOrders.get(0).id == requestOrderId
+        assert searchResult.requestOrders.get(0).authorName == requestOrderAuthorName
+        assert searchResult.requestOrders.get(0).anounceAuthorName == anounceAuthorName
+    }
+
+    @Test
+    void "should return request orders by specific status"() {
+        // given
+        mockUsers()
+        def anounceAuthorName = "hyzio"
+        def requestOrderAuthorName = "dyzio"
+        mockBulkUsers([(ownerId): anounceAuthorName, (requestOrderOwnerId): requestOrderAuthorName])
+        mockCategories(anounce.categoryId)
+
+        // create 2 anounces
+
+        def anounceId1 = httpCreate(anounce).data.id
+        def anounceId2 = httpCreate(anounce).data.id
+
+        // create 2 request orders
+
+        def requestOrderId1 = httpCreateRequestOrder(anounceId1, requestOrderOwnerBearerToken).data.id
+        def requestOrderId2 = httpCreateRequestOrder(anounceId2, requestOrderOwnerBearerToken).data.id
+
+        // accept one
+
+        httpAcceptRequestOrder(requestOrderId1)
+
+        // when
+        def response = httpGetRequestOrdersForUser(requestOrderOwnerBearerToken, StatusDto.ACCEPTED)
+        // then
+        assert response.status == 200
+        def searchResult = response.data
+        assert searchResult.totalCount == 1
+        assert searchResult.requestOrders.size() == 1
+        assert searchResult.requestOrders.get(0).id == requestOrderId1
     }
 }

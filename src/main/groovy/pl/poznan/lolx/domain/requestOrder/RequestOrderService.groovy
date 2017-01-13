@@ -3,6 +3,7 @@ package pl.poznan.lolx.domain.requestOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.AnounceDao
+import pl.poznan.lolx.domain.SearchResult
 import pl.poznan.lolx.domain.add.UserDetails
 
 @Component
@@ -65,8 +66,13 @@ class RequestOrderService {
         decorateRequestOrder(requestOrderDao.findByAnounceAuthorId(anounceAuthorId))
     }
 
-    List<DetailedRequestOrder> find(SearchParams params) {
-        decorateRequestOrder(requestOrderDao.find(params))
+    SearchResult<DetailedRequestOrder> find(SearchParams params) {
+        int count = requestOrderDao.count(params)
+        if (count > 0) {
+            return new SearchResult<DetailedRequestOrder>(totalCount: count, items: decorateRequestOrder(requestOrderDao.find(params)))
+        } else {
+            return SearchResult.empty()
+        }
     }
 
 

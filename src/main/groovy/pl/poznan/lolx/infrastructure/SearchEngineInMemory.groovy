@@ -19,7 +19,7 @@ class SearchEngineInMemory implements SearchEngine {
 //        anounces.addAll(generateAnounces(itemsPerPage, (page * itemsPerPage)))
         new SearchResult(
                 totalCount: anounces.size(),
-                anounces: anounces
+                items: anounces
         )
     }
 
@@ -30,7 +30,7 @@ class SearchEngineInMemory implements SearchEngine {
 //        anounces.addAll(generateAnounces(2, 0, userId))
         new SearchResult(
                 totalCount: anounces.size(),
-                anounces: anounces
+                items: anounces
         )
     }
 

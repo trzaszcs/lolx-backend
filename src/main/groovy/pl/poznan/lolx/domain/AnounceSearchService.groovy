@@ -9,7 +9,7 @@ class AnounceSearchService {
     @Autowired
     SearchEngine searchEngine
 
-    SearchResult find(
+    SearchResult<Anounce> find(
             String phrase,
             int page,
             int itemsPerPage,
@@ -20,7 +20,7 @@ class AnounceSearchService {
         searchEngine.find(phrase, page, itemsPerPage, getCoordinate(latitude, longitude), categoryId)
     }
 
-    SearchResult forUser(String userId, int page, int itemsPerPage) {
+    SearchResult<Anounce> forUser(String userId, int page, int itemsPerPage) {
         searchEngine.forUser(userId, page, itemsPerPage)
     }
 

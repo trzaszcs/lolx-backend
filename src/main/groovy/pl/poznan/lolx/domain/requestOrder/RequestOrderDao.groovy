@@ -24,4 +24,6 @@ interface RequestOrderDao {
 
     List<RequestOrder> find(SearchParams params)
 
+    int count(SearchParams params)
+
 }

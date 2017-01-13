@@ -10,7 +10,7 @@ class SearchResultMapper {
     def map(SearchResult searchResult) {
         new SearchResultDto(
                 totalCount: searchResult.totalCount,
-                anounces: searchResult.anounces.collect {
+                anounces: searchResult.items.collect {
                     new SimpleAnounceDto(
                             id: it.id,
                             title: it.title,

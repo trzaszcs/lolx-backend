@@ -1,6 +1,5 @@
 package pl.poznan.lolx.rest.requestOrder
 
-import com.sun.org.apache.xerces.internal.util.Status
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -8,10 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.poznan.lolx.domain.jwt.JwtChecker
-import pl.poznan.lolx.domain.requestOrder.DetailedRequestOrder
-import pl.poznan.lolx.domain.requestOrder.RequestOrder
-import pl.poznan.lolx.domain.requestOrder.RequestOrderService
-import pl.poznan.lolx.domain.requestOrder.SearchParams
+import pl.poznan.lolx.domain.requestOrder.*
 
 @RestController
 @Slf4j
@@ -114,16 +110,18 @@ class RequestOrderEndpoint {
         if (authorizationHeader != null) {
             def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
+                def searchResult = requestOrderService.find(
+                        new SearchParams(
+                                authorId,
+                                status.all() ? null : Status.valueOf(status.name()),
+                                itemsPerPage,
+                                page))
                 return ResponseEntity.ok(
-                        requestOrderService.find(
-                                new SearchParams(
-                                        authorId,
-                                        status.all() ? null : Status.valueOf(status.name()),
-                                        itemsPerPage,
-                                        page))
-                                .collect {
-                            map(it)
-                        })
+                        new SearchResultDto(
+                                totalCount: searchResult.totalCount,
+                                requestOrders: searchResult.items.collect { map(it) }
+                        )
+                )
             }
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()

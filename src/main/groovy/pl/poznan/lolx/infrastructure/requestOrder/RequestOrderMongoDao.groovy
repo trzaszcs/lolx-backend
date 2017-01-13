@@ -84,13 +84,23 @@ class RequestOrderMongoDao implements RequestOrderDao {
 
     @Override
     List<RequestOrder> find(SearchParams params) {
-        Criteria criteria = new Criteria().orOperator(where("authorId").is(params.authorId), where("anounceAuthorId").is(params.authorId))
-        if (params.hasStatusFilter()) {
-            criteria = criteria.andOperator("status").is(params.status)
-        }
+        Criteria criteria = buildCriteria(params)
         Query query = new Query(criteria)
                 .with(new PageRequest(params.page, params.itemsPerPage, new Sort(Sort.Direction.ASC, "creationDate")))
         return mongoTemplate.find(query, RequestOrderDocument).collect { map(it) }
+    }
+
+    @Override
+    int count(SearchParams params) {
+        return mongoTemplate.count(new Query(buildCriteria(params)), RequestOrderDocument)
+    }
+
+    def buildCriteria(SearchParams params) {
+        Criteria criteria = new Criteria().orOperator(where("authorId").is(params.authorId), where("anounceAuthorId").is(params.authorId))
+        if (params.hasStatusFilter()) {
+            criteria = criteria.and("status").is(params.status)
+        }
+        return criteria
     }
 
     @Override
