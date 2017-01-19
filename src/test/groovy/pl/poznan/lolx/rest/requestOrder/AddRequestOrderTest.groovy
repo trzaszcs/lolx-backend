@@ -19,7 +19,7 @@ class AddRequestOrderTest extends IntTest {
             location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d),
             ownerId: ownerId,
             price: 22.23,
-            type: AnounceType.OFFER,
+            type: AnounceType.ORDER,
             duration: AnounceDuration.SEVEN_DAYS,
             contactPhone: "222 333 444")
 

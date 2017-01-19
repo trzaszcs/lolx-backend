@@ -1,8 +1,10 @@
 package pl.poznan.lolx.infrastructure
 
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.*
-import pl.poznan.lolx.domain.add.Category
+import pl.poznan.lolx.domain.Anounce
+import pl.poznan.lolx.domain.Coordinate
+import pl.poznan.lolx.domain.SearchEngine
+import pl.poznan.lolx.domain.SearchResult
 
 @Component
 class SearchEngineInMemory implements SearchEngine {
@@ -58,41 +60,5 @@ class SearchEngineInMemory implements SearchEngine {
                 return
             }
         }
-    }
-
-    private def generateAnounces(count, offset, ownerId = "someOwner") {
-        def anounces = []
-        (0..count).each {
-            anounces.add(generateSingle("${offset + it}", generateTitle(it), ownerId))
-        }
-        return anounces
-    }
-
-    def genPrice() {
-        Math.round(Math.random() * 100) / 100;
-    }
-
-    def generateSingle(id, title, ownerId) {
-        new Anounce(
-                id: id,
-                title: title,
-                description: "Lorem Ipsum ...",
-                category: new Category(id: "1", name: "Sprzatanie"),
-                location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681),
-                ownerId: ownerId,
-                ownerName: "someName",
-                price: genPrice(),
-                type: AnounceType.OFFER,
-                contactPhone: "333 444 555")
-    }
-
-    def generateTitle(id) {
-        def dictionary = ["super", "dokładnie", "każdą", "najtaniej", "expresowo", "każdego dnia", "zawodowo", "najlepiej"]
-        def verb = ["sprzątam", "myję", "przepycham", "odkażam", "udrażniam", "woskuję", "maluję", "poleruję", "zamiatam wokół"]
-        def subject = ["toaletę", "kabinę", "zlew", "rurę", "łazienkę", "twojego zwierzaka", "garaż", "werandę", "piwnicę i strych", "chodnik przed twoim domem", "twojego pupila"]
-        Random random = new Random();
-        def title = "${dictionary[random.nextInt(dictionary.size())]} ${dictionary[random.nextInt(dictionary.size())]} " +
-                "${verb[random.nextInt(verb.size())]} ${subject[random.nextInt(subject.size())]} #${id}"
-        title
     }
 }

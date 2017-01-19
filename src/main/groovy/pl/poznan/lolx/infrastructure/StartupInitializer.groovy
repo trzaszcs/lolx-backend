@@ -29,7 +29,7 @@ class StartupInitializer {
                 ownerId: ownerId,
                 ownerName: "someName",
                 price: genPrice(),
-                type: AnounceType.OFFER,
+                type: AnounceType.EXECUTE,
                 contactPhone: "333 444 555")
     }
 

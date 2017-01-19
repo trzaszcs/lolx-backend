@@ -1,6 +1,7 @@
 package pl.poznan.lolx.domain.requestOrder
 
 import groovy.transform.ToString
+import pl.poznan.lolx.domain.AnounceType
 
 
 @ToString
@@ -9,11 +10,18 @@ class RequestOrder {
     String authorId
     String anounceId
     String anounceAuthorId
+    AnounceType anounceType
     Date creationDate
     Date updateStatusDate
     Status status
 
-    static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId) {
-        new RequestOrder(authorId: authorId, anounceId: anounceId, creationDate: new Date(), anounceAuthorId: anounceAuthorId, status: Status.WAITING)
+    static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId, AnounceType anounceType) {
+        new RequestOrder(
+                authorId: authorId,
+                anounceId: anounceId,
+                creationDate: new Date(),
+                anounceAuthorId: anounceAuthorId,
+                anounceType: anounceType,
+                status: Status.WAITING)
     }
 }

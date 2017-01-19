@@ -112,6 +112,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return new RequestOrderDocument(
                 anounceId: order.anounceId,
                 anounceAuthorId: order.anounceAuthorId,
+                anounceType: order.anounceType,
                 authorId: order.authorId,
                 status: order.status,
                 creationDate: order.creationDate
@@ -123,6 +124,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
                 id: order.id,
                 anounceId: order.anounceId,
                 anounceAuthorId: order.anounceAuthorId,
+                anounceType: order.anounceType,
                 authorId: order.authorId,
                 status: order.status,
                 updateStatusDate: order.updateStatusDate,

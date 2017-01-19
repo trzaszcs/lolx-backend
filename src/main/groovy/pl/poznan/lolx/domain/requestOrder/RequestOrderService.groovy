@@ -18,7 +18,7 @@ class RequestOrderService {
 
     String requestOrder(String anounceId, String authorId) {
         def anounce = anounceDao.find(anounceId)
-        return requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId))
+        return requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId, anounce.type))
     }
 
     void removeRequestOrder(String requestOrderId, String authorId) {
