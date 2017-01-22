@@ -40,6 +40,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         Query query = new Query(where("id").is(id));
         def update = new Update()
         update.set("status", Status.ACCEPTED)
+        update.set("seen", false)
         update.set("updateStatusDate", new Date())
         return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
     }
@@ -49,6 +50,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
         Query query = new Query(where("id").is(id));
         def update = new Update()
         update.set("status", Status.REJECTED)
+        update.set("seen", false)
         update.set("updateStatusDate", new Date())
         return mongoTemplate.updateFirst(query, update, RequestOrderDocument).n > 0
     }
@@ -106,6 +108,14 @@ class RequestOrderMongoDao implements RequestOrderDao {
     @Override
     List<RequestOrder> findByAuthorId(String authorId) {
         return repository.findByAuthorId(authorId).collect { map(it) }
+    }
+
+    @Override
+    void markAsSeen(String id) {
+        Query query = new Query(where("id").is(id));
+        def update = new Update()
+        update.set("seen", true)
+        mongoTemplate.updateFirst(query, update, RequestOrderDocument)
     }
 
     def map(RequestOrder order) {

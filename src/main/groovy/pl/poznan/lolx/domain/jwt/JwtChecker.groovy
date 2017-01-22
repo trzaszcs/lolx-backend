@@ -29,6 +29,9 @@ class JwtChecker {
             return true
         } catch (SignatureException e) {
             log.warn("wrong jwt signature", e)
+        } catch (ExpiredJwtException e) {
+            log.warn("jwt token expired", e)
+            throw new JwtExpiredException()
         } catch (MalformedJwtException e) {
             log.warn("malformed jwt token", e)
         } catch (UnsupportedJwtException e) {

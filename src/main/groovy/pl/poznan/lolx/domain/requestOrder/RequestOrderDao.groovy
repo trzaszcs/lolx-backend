@@ -26,4 +26,6 @@ interface RequestOrderDao {
 
     int count(SearchParams params)
 
+    void markAsSeen(String id)
+
 }

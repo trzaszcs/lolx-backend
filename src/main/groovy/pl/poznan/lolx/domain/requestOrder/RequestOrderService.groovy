@@ -52,13 +52,13 @@ class RequestOrderService {
 
     Optional<DetailedRequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
         return requestOrderDao.findByAnounceIdAndAuthorIdOrAnounceAuthorId(anounceId, userId).map({
-            decorateRequestOrder([it])[0]
+            markAsSeenAndDecorate(it)
         })
     }
 
     Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
         return requestOrderDao.findByIdAndAuthorId(id, userId).map({
-            decorateRequestOrder([it])[0]
+            markAsSeenAndDecorate(it)
         })
     }
 
@@ -104,5 +104,10 @@ class RequestOrderService {
                     anounceAuthorId: it.anounceAuthorId
             )
         }
+    }
+
+    DetailedRequestOrder markAsSeenAndDecorate(RequestOrder requestOrder) {
+        requestOrderDao.markAsSeen(requestOrder.id)
+        return decorateRequestOrder([requestOrder])[0]
     }
 }

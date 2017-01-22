@@ -16,4 +16,5 @@ class RequestOrderDocument {
     Date creationDate
     Date updateStatusDate
     Status status
+    boolean seen
 }
