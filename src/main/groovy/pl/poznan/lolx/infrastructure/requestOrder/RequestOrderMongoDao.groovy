@@ -118,6 +118,17 @@ class RequestOrderMongoDao implements RequestOrderDao {
         mongoTemplate.updateFirst(query, update, RequestOrderDocument)
     }
 
+    @Override
+    List<RequestOrder> findUnseen(String userId) {
+        Criteria criteria = new Criteria().orOperator(
+                where("authorId").is(userId).and("status").in(Status.ACCEPTED, Status.REJECTED),
+                where("anounceAuthorId").is(userId).and("status").is(Status.WAITING))
+                .and("seen").is(false)
+        return mongoTemplate.find(new Query(criteria), RequestOrderDocument).collect {
+            map(it)
+        }
+    }
+
     def map(RequestOrder order) {
         return new RequestOrderDocument(
                 anounceId: order.anounceId,
@@ -125,7 +136,8 @@ class RequestOrderMongoDao implements RequestOrderDao {
                 anounceType: order.anounceType,
                 authorId: order.authorId,
                 status: order.status,
-                creationDate: order.creationDate
+                creationDate: order.creationDate,
+                seen: order.seen
         )
     }
 

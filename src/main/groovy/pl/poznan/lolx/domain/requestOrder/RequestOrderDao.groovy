@@ -28,4 +28,6 @@ interface RequestOrderDao {
 
     void markAsSeen(String id)
 
+    List<RequestOrder> findUnseen(String userId)
+
 }

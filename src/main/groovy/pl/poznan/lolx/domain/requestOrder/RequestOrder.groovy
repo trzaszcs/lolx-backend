@@ -14,6 +14,7 @@ class RequestOrder {
     Date creationDate
     Date updateStatusDate
     Status status
+    boolean seen
 
     static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId, AnounceType anounceType) {
         new RequestOrder(
@@ -22,6 +23,7 @@ class RequestOrder {
                 creationDate: new Date(),
                 anounceAuthorId: anounceAuthorId,
                 anounceType: anounceType,
-                status: Status.WAITING)
+                status: Status.WAITING,
+                seen: false)
     }
 }
