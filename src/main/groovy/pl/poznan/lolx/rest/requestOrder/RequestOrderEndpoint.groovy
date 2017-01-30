@@ -22,12 +22,15 @@ class RequestOrderEndpoint {
     ResponseEntity order(@RequestHeader(value = "Authorization") authorizationHeader,
                          @RequestBody @Validated RequestRequestOrderDto dto) {
         log.info("new request order {}", dto)
-        def id = requestOrderService.requestOrder(dto.anounceId, jwtChecker.subject(authorizationHeader))
-        ResponseEntity.ok(
-                new RequestOrderIdDto(
-                        id: id
-                )
-        )
+        String authorId = jwtChecker.subject(authorizationHeader)
+        if (authorId) {
+            return ResponseEntity.ok(
+                    new RequestOrderIdDto(
+                            id: requestOrderService.requestOrder(dto.anounceId, authorId)
+                    )
+            )
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
 
@@ -193,7 +196,7 @@ class RequestOrderEndpoint {
                 statusUpdateDate: order.requestOrder.updateStatusDate,
                 anounceTitle: order.anounceTitle,
                 anounceAuthorName: order.anounceAuthorName,
-                anounceAuthorId: order.anounceAuthorId,
+                anounceAuthorId: order.requestOrder.anounceAuthorId,
                 authorName: order.requestOrderAuthorName
         )
     }

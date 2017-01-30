@@ -52,13 +52,13 @@ class RequestOrderService {
 
     Optional<DetailedRequestOrder> getRequestOrderForAnounce(String anounceId, String userId) {
         return requestOrderDao.findByAnounceIdAndAuthorIdOrAnounceAuthorId(anounceId, userId).map({
-            markAsSeenAndDecorate(it)
+            markAsSeenAndDecorate(userId, it)
         })
     }
 
     Optional<DetailedRequestOrder> getRequestOrder(String id, String userId) {
         return requestOrderDao.findByIdAndAuthorId(id, userId).map({
-            markAsSeenAndDecorate(it)
+            markAsSeenAndDecorate(userId, it)
         })
     }
 
@@ -100,14 +100,15 @@ class RequestOrderService {
                     requestOrder: it,
                     anounceTitle: anouncesMap[it.anounceId].title,
                     requestOrderAuthorName: usersMap[it.authorId].name(),
-                    anounceAuthorName: usersMap[it.anounceAuthorId].name(),
-                    anounceAuthorId: it.anounceAuthorId
+                    anounceAuthorName: usersMap[it.anounceAuthorId].name()
             )
         }
     }
 
-    DetailedRequestOrder markAsSeenAndDecorate(RequestOrder requestOrder) {
-        requestOrderDao.markAsSeen(requestOrder.id)
+    DetailedRequestOrder markAsSeenAndDecorate(String requesterId, RequestOrder requestOrder) {
+        if (requestOrder.shouldBeMarkedAsSeen(requesterId)) {
+            requestOrderDao.markAsSeen(requestOrder.id)
+        }
         return decorateRequestOrder([requestOrder])[0]
     }
 }

@@ -5,9 +5,6 @@ import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import java.security.KeyFactory
-import java.security.spec.X509EncodedKeySpec
-
 @Slf4j
 @Component
 class JwtChecker {
@@ -65,12 +62,5 @@ class JwtChecker {
 
     private def extractJwt(authorizationHeader) {
         authorizationHeader.replace('Bearer ', '')
-    }
-
-    private def toPublicKey(base64Content) {
-        X509EncodedKeySpec spec =
-                new X509EncodedKeySpec(base64Content);
-        def kf = KeyFactory.getInstance("RSA");
-        return kf.generatePublic(spec);
     }
 }

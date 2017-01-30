@@ -17,6 +17,9 @@ class RequestOrder {
     boolean seen
 
     static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId, AnounceType anounceType) {
+        if (authorId == anounceAuthorId) {
+            throw new IllegalArgumentException("Author ${authorId} cannot create requestOrder because is the owner of anounce ${anounceId}")
+        }
         new RequestOrder(
                 authorId: authorId,
                 anounceId: anounceId,
@@ -25,5 +28,12 @@ class RequestOrder {
                 anounceType: anounceType,
                 status: Status.WAITING,
                 seen: false)
+    }
+
+    boolean shouldBeMarkedAsSeen(String requestingUserId) {
+        return !seen &&
+                (status == Status.WAITING && anounceAuthorId == requestingUserId) ||
+                (status == Status.ACCEPTED && authorId == requestingUserId) ||
+                (status == Status.REJECTED && authorId == requestingUserId)
     }
 }
