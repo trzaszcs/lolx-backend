@@ -11,13 +11,14 @@ class AnounceSearchService {
 
     SearchResult<Anounce> find(
             String phrase,
+            AnounceType type,
             int page,
             int itemsPerPage,
             Optional<String> location,
             Optional<Integer> latitude,
             Optional<Integer> longitude,
             Optional<String> categoryId) {
-        searchEngine.find(phrase, page, itemsPerPage, getCoordinate(latitude, longitude), categoryId)
+        searchEngine.find(phrase, type, page, itemsPerPage, getCoordinate(latitude, longitude), categoryId)
     }
 
     SearchResult<Anounce> forUser(String userId, int page, int itemsPerPage) {
@@ -36,7 +37,7 @@ class AnounceSearchService {
         return Optional.empty()
     }
 
-    void delete(String anounceId){
+    void delete(String anounceId) {
         searchEngine.delete(anounceId)
     }
 
