@@ -12,7 +12,7 @@ enum ScaledImageSize {
     }
 
     String getFileName(String originalFileName) {
-        String imageParts = originalFileName.split("\\.")
+        String[] imageParts = originalFileName.split("\\.")
         return getFileName(imageParts[0], imageParts[1])
     }
 

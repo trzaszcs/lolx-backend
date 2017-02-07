@@ -25,4 +25,5 @@ class RequestOrderDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     Date statusUpdateDate
     Status status
+    boolean seen
 }

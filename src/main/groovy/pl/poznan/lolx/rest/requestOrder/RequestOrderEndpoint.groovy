@@ -197,7 +197,8 @@ class RequestOrderEndpoint {
                 anounceTitle: order.anounceTitle,
                 anounceAuthorName: order.anounceAuthorName,
                 anounceAuthorId: order.requestOrder.anounceAuthorId,
-                authorName: order.requestOrderAuthorName
+                authorName: order.requestOrderAuthorName,
+                seen: order.requestOrder.seen
         )
     }
 
