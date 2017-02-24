@@ -1,4 +1,4 @@
-package pl.poznan.lolx.domain.jwt
+package pl.poznan.lolx.rest.shared.jwt
 
 import groovy.transform.PackageScope
 

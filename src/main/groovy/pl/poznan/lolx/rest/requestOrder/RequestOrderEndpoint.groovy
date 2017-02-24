@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.poznan.lolx.domain.jwt.JwtChecker
+import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 import pl.poznan.lolx.domain.requestOrder.*
 
 @RestController

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.poznan.lolx.domain.AnounceSearchService
-import pl.poznan.lolx.domain.jwt.JwtChecker
+import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 import pl.poznan.lolx.domain.order.AnounceOrderService
 
 @RestController

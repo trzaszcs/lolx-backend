@@ -1,4 +1,4 @@
-package pl.poznan.lolx.domain.jwt
+package pl.poznan.lolx.rest.shared.jwt
 
 import groovy.util.logging.Slf4j
 import io.jsonwebtoken.*

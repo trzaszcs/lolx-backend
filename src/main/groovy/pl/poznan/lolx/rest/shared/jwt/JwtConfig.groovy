@@ -1,4 +1,4 @@
-package pl.poznan.lolx.domain.jwt
+package pl.poznan.lolx.rest.shared.jwt
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

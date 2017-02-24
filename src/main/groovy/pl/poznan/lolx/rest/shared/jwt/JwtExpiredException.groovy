@@ -1,4 +1,4 @@
-package pl.poznan.lolx.domain.jwt
+package pl.poznan.lolx.rest.shared.jwt
 
 
 class JwtExpiredException extends RuntimeException {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pl.poznan.lolx.domain.Location
 import pl.poznan.lolx.domain.add.AnounceCreationRequest
 import pl.poznan.lolx.domain.add.CreateAnounceService
-import pl.poznan.lolx.domain.jwt.JwtChecker
+import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 
 @RestController
 @Slf4j

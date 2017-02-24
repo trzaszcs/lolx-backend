@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import pl.poznan.lolx.domain.jwt.JwtChecker
+import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 import pl.poznan.lolx.domain.requestOrder.events.UnseenRequestOrdersEventsService
 
 @RestController
