@@ -19,7 +19,7 @@ class CreateAnounceService {
     @Autowired
     SearchEngine searchEngine
     @Autowired
-    UserDetails userDetails
+    UserClient userDetails
     @Autowired
     CategoryDetails categoryDetails
     final Scheduler scheduler = Schedulers.from(Executors.newFixedThreadPool(10))
@@ -58,7 +58,7 @@ class CreateAnounceService {
 
     def details(anounceRequest) {
         def userObs = Observable.<Optional<User>> create({
-            it.onNext(userDetails.find(anounceRequest.ownerId))
+            it.onNext(userDetails.find(anounceRequest.ownerId, false))
             it.onCompleted()
         }).subscribeOn(scheduler)
 

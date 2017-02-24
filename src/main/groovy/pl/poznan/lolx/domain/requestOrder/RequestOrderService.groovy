@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.AnounceDao
 import pl.poznan.lolx.domain.SearchResult
-import pl.poznan.lolx.domain.add.UserDetails
+import pl.poznan.lolx.domain.add.UserClient
 
 @Component
 class RequestOrderService {
@@ -14,7 +14,7 @@ class RequestOrderService {
     @Autowired
     RequestOrderDao requestOrderDao
     @Autowired
-    UserDetails userDetails
+    UserClient userDetails
 
     String requestOrder(String anounceId, String authorId) {
         def anounce = anounceDao.find(anounceId)

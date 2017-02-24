@@ -17,4 +17,6 @@ class RequestOrderDocument {
     Date updateStatusDate
     Status status
     boolean seen
+    boolean notified
+    Date lockTime
 }

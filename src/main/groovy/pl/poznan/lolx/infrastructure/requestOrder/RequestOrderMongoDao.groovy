@@ -112,7 +112,7 @@ class RequestOrderMongoDao implements RequestOrderDao {
 
     @Override
     void markAsSeen(String id) {
-        Query query = new Query(where("id").is(id));
+        def query = new Query(where("id").is(id));
         def update = new Update()
         update.set("seen", true)
         mongoTemplate.updateFirst(query, update, RequestOrderDocument)
@@ -127,6 +127,29 @@ class RequestOrderMongoDao implements RequestOrderDao {
         return mongoTemplate.find(new Query(criteria), RequestOrderDocument).collect {
             map(it)
         }
+    }
+
+    @Override
+    Optional<RequestOrder> lockNotNotified(Date lockTime) {
+        def criteria = new Criteria().
+                where("seen").is(false)
+                .andOperator(new Criteria().orOperator(
+                Criteria.where("notified").is(false),
+                Criteria.where("lockTime").lt(lockTime)
+        ))
+        def update = new Update()
+        update.set("lockTime", lockTime)
+        def document = Optional.ofNullable(mongoTemplate.findAndModify(criteria, update, RequestOrderDocument))
+        return document.map({ map(it) })
+    }
+
+    @Override
+    void markLockedAsNotified(String id) {
+        def criteria = Criteria.
+                where("id").is(id)
+        def update = new Update()
+        update.unset("lockTime").set("notified", true)
+        mongoTemplate.updateFirst(criteria, update, RequestOrderDocument)
     }
 
     def map(RequestOrder order) {

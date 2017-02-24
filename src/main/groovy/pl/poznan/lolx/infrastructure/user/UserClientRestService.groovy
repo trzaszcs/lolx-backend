@@ -3,16 +3,19 @@ package pl.poznan.lolx.infrastructure.user
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.ParameterizedTypeReference
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import pl.poznan.lolx.domain.add.User
-import pl.poznan.lolx.domain.add.UserDetails
+import pl.poznan.lolx.domain.add.UserClient
+import pl.poznan.lolx.infrastructure.shared.AuthorizationHeaderBuilder
 
 @Component
-class UserDetailsRestService implements UserDetails {
+class UserClientRestService implements UserClient {
 
     @Value('${user-service.addr}')
     String serviceAddress
@@ -20,10 +23,22 @@ class UserDetailsRestService implements UserDetails {
     @Autowired
     RestTemplate restTemplate
 
+    @Autowired
+    AuthorizationHeaderBuilder authorizationHeaderBuilder
+
     @Override
-    Optional<User> find(String id) {
+    Optional<User> find(String id, boolean detailed) {
         try {
-            def response = restTemplate.getForEntity("${serviceAddress}/users/${id}", UserDto)
+            HttpHeaders headers = new HttpHeaders();
+            if (detailed) {
+                headers.set("Authorization", authorizationHeaderBuilder.build(id))
+            }
+            HttpEntity entity = new HttpEntity(headers);
+            def response = restTemplate.exchange(
+                    "${serviceAddress}/users/${id}",
+                    HttpMethod.GET,
+                    entity,
+                    UserDto)
             def dto = response.body
             return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName))
         } catch (HttpClientErrorException ex) {
@@ -44,7 +59,9 @@ class UserDetailsRestService implements UserDetails {
             })
             def usersMap = response.body
             return usersMap.keySet().collectEntries {
-                [(it): map(Optional.ofNullable(usersMap[it]).orElseThrow({new RuntimeException("User with id ${it} not found")}))]
+                [(it): map(Optional.ofNullable(usersMap[it]).orElseThrow({
+                    new RuntimeException("User with id ${it} not found")
+                }))]
             }
         } catch (HttpClientErrorException ex) {
             if (ex.statusCode == 404)

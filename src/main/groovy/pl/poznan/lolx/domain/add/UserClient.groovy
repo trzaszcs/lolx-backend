@@ -1,8 +1,8 @@
 package pl.poznan.lolx.domain.add
 
 
-interface UserDetails {
-    Optional<User> find(String id)
+interface UserClient {
+    Optional<User> find(String id, boolean detailed)
 
     Map<String, User> find(List<String> ids)
 }

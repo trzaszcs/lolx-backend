@@ -36,4 +36,16 @@ class RequestOrder {
                 (status == Status.ACCEPTED && authorId == requestingUserId) ||
                 (status == Status.REJECTED && authorId == requestingUserId)
     }
+
+    boolean waiting() {
+        this.status == Status.WAITING
+    }
+
+    boolean accepted() {
+        this.status == Status.ACCEPTED
+    }
+
+    boolean rejected() {
+        this.status == Status.REJECTED
+    }
 }

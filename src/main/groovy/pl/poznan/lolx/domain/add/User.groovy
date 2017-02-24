@@ -13,4 +13,8 @@ class User {
     String name() {
         nick
     }
+
+    Optional<String> email() {
+        Optional.ofNullable(email)
+    }
 }

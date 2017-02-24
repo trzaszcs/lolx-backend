@@ -3,7 +3,7 @@ package pl.poznan.lolx.domain.order
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.AnounceSearchService
-import pl.poznan.lolx.domain.add.UserDetails
+import pl.poznan.lolx.domain.add.UserClient
 
 import java.util.stream.Collectors
 
@@ -17,7 +17,7 @@ class AnounceOrderService {
     AnounceSearchService anounceSearchService
 
     @Autowired
-    UserDetails userDetails
+    UserClient userDetails
 
 
     String requestOrder(String anounceId, String authorId) {

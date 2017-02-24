@@ -30,4 +30,8 @@ interface RequestOrderDao {
 
     List<RequestOrder> findUnseen(String userId)
 
+    Optional<RequestOrder> lockNotNotified(Date lockTime)
+
+    void markLockedAsNotified(String id)
+
 }

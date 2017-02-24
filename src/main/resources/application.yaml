@@ -7,3 +7,12 @@ user-service:
 
 category-service:
     addr: http://lolx-category.herokuapp.com/
+
+notification-service:
+  addr: http://lolx-notification.herokuapp.com/
+
+front-service:
+  addr: http://lolx-front.herokuapp.com/
+
+private-key:
+  path: classpath:private_key.der
