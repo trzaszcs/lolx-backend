@@ -55,8 +55,8 @@ class UserClientRestService implements UserClient {
                     .fromHttpUrl("${serviceAddress}/users/bulk")
                     .queryParam("userId", ids.toArray())
                     .build().encode().toString()
-            def response = restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, UserDto>>() {
-            })
+            def response = restTemplate
+                    .exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, UserDto>>() {})
             def usersMap = response.body
             return usersMap.keySet().collectEntries {
                 [(it): map(Optional.ofNullable(usersMap[it]).orElseThrow({

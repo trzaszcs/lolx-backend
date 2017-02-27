@@ -16,6 +16,6 @@ class RequestOrderUrlBuilder {
     }
 
     String build(String id) {
-        "$frontServiceAddr/#!/chat?chatId=$id"
+        "$frontServiceAddr#!/order?orderId=$id"
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.AnounceDao
 import pl.poznan.lolx.domain.SearchResult
 import pl.poznan.lolx.domain.add.UserClient
+import pl.poznan.lolx.domain.notification.DelayedNotification
 
 @Component
 class RequestOrderService {
@@ -15,10 +16,15 @@ class RequestOrderService {
     RequestOrderDao requestOrderDao
     @Autowired
     UserClient userDetails
+    @Autowired
+    DelayedNotification delayedNotification
 
     String requestOrder(String anounceId, String authorId) {
         def anounce = anounceDao.find(anounceId)
-        return requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId, anounce.type))
+        delayedNotification.run()
+        String id = requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId, anounce.type))
+        delayedNotification.run()
+        return id
     }
 
     void removeRequestOrder(String requestOrderId, String authorId) {
@@ -30,6 +36,7 @@ class RequestOrderService {
         optionalRequestOrder.ifPresent {
             if (anounceDao.find(it.anounceId).ownerId == authorId) {
                 requestOrderDao.accept(requestOrderId)
+                delayedNotification.run()
             }
         }
     }
@@ -39,6 +46,7 @@ class RequestOrderService {
         optionalRequestOrder.ifPresent {
             if (anounceDao.find(it.anounceId).ownerId == authorId) {
                 requestOrderDao.reject(requestOrderId)
+                delayedNotification.run()
             }
         }
     }

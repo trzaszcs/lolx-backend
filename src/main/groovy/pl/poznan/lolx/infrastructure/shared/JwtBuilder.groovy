@@ -18,6 +18,6 @@ class JwtBuilder {
     String build(String subject) {
         return Jwts
                 .builder()
-                .setSubject(subject).setIssuer("backend").signWith(SignatureAlgorithm.HS512, privateKey).compact()
+                .setSubject(subject).setIssuer("backend").signWith(SignatureAlgorithm.RS256, privateKey).compact()
     }
 }

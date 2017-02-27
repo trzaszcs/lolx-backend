@@ -22,9 +22,9 @@ class RequestOrderEventsEndpoint {
 
     @RequestMapping(value = "/request-orders/events/unseen", method = RequestMethod.GET)
     ResponseEntity unseenEvents(@RequestHeader(value = "Authorization") authorizationHeader) {
-        log.info("get unseen events")
         if (authorizationHeader != null) {
             def authorId = jwtChecker.subject(authorizationHeader)
+            log.info("get unseen orders for user '$authorId'")
             if (authorId) {
                 return ResponseEntity.ok(service.getEvents(authorId).collect { new EventDto(id: it.requestOrderId, type: it.type) })
             }

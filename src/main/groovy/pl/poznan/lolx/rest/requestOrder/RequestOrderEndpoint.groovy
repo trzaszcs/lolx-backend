@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 import pl.poznan.lolx.domain.requestOrder.*
+import pl.poznan.lolx.rest.shared.jwt.JwtChecker
 
 @RestController
 @Slf4j
@@ -21,9 +21,9 @@ class RequestOrderEndpoint {
     @RequestMapping(value = "/request-orders", method = RequestMethod.POST)
     ResponseEntity order(@RequestHeader(value = "Authorization") authorizationHeader,
                          @RequestBody @Validated RequestRequestOrderDto dto) {
-        log.info("new request order {}", dto)
         String authorId = jwtChecker.subject(authorizationHeader)
         if (authorId) {
+            log.info("new request order '$dto' for user '$authorId'")
             return ResponseEntity.ok(
                     new RequestOrderIdDto(
                             id: requestOrderService.requestOrder(dto.anounceId, authorId)
@@ -40,6 +40,7 @@ class RequestOrderEndpoint {
         if (authorizationHeader != null) {
             def authorId = jwtChecker.subject(authorizationHeader)
             if (authorId) {
+                log.info("get request order {} for user {}", id, authorId)
                 return requestOrderService.getRequestOrder(id, authorId)
                         .map({ ResponseEntity.ok(map(it)) })
                         .orElse(ResponseEntity.notFound().build())

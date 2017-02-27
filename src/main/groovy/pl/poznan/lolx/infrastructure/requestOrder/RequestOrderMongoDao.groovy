@@ -131,25 +131,25 @@ class RequestOrderMongoDao implements RequestOrderDao {
 
     @Override
     Optional<RequestOrder> lockNotNotified(Date lockTime) {
-        def criteria = new Criteria().
+        def query = new Query(Criteria.
                 where("seen").is(false)
                 .andOperator(new Criteria().orOperator(
                 Criteria.where("notified").is(false),
                 Criteria.where("lockTime").lt(lockTime)
-        ))
+        )))
         def update = new Update()
         update.set("lockTime", lockTime)
-        def document = Optional.ofNullable(mongoTemplate.findAndModify(criteria, update, RequestOrderDocument))
+        def document = Optional.ofNullable(mongoTemplate.findAndModify(query, update, RequestOrderDocument))
         return document.map({ map(it) })
     }
 
     @Override
     void markLockedAsNotified(String id) {
-        def criteria = Criteria.
-                where("id").is(id)
+        def query = new Query(Criteria.
+                where("id").is(id))
         def update = new Update()
         update.unset("lockTime").set("notified", true)
-        mongoTemplate.updateFirst(criteria, update, RequestOrderDocument)
+        mongoTemplate.updateFirst(query, update, RequestOrderDocument)
     }
 
     def map(RequestOrder order) {
