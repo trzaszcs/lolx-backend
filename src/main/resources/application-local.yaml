@@ -5,7 +5,7 @@ user-service:
   addr: http://localhost:8082/
 
 category-service:
-  addr: http://localhost:8084/
+  addr: http://localhost:8085/
 
 notification-service:
   addr: http://localhost:8083/

@@ -19,7 +19,6 @@ class Anounce {
     AnounceType type
     AnounceDuration duration
     boolean closed
-    String contactPhone
 
     final String imagePath = "/api/upload/"
 

@@ -52,7 +52,6 @@ class AnounceMongoDao implements AnounceDao {
         document.type = anounce.type
         document.duration = anounce.duration
         document.closed = anounce.closed
-        document.contactPhone = anounce.contactPhone
     }
 
     def map(AnounceDocument anounce) {

@@ -20,5 +20,4 @@ class AnounceDocument {
     AnounceType type
     AnounceDuration duration
     boolean closed
-    String contactPhone
 }

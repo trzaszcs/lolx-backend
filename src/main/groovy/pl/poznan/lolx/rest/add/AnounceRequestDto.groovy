@@ -28,11 +28,4 @@ class AnounceRequestDto {
     AnounceType type
     @NotNull
     AnounceDuration duration
-    @NotEmpty
-    String contactPhone
-
-
-    def formattContactPhone () {
-        this.contactPhone.replaceAll(" ","").replaceAll("-","")
-    }
 }

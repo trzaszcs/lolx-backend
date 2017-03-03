@@ -8,8 +8,10 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
+import pl.poznan.lolx.domain.ClientException
 import pl.poznan.lolx.domain.add.User
 import pl.poznan.lolx.domain.add.UserClient
 import pl.poznan.lolx.infrastructure.shared.AuthorizationHeaderBuilder
@@ -28,12 +30,12 @@ class UserClientRestService implements UserClient {
 
     @Override
     Optional<User> find(String id, boolean detailed) {
+        HttpHeaders headers = new HttpHeaders();
+        if (detailed) {
+            headers.set("Authorization", authorizationHeaderBuilder.build(id))
+        }
+        HttpEntity entity = new HttpEntity(headers);
         try {
-            HttpHeaders headers = new HttpHeaders();
-            if (detailed) {
-                headers.set("Authorization", authorizationHeaderBuilder.build(id))
-            }
-            HttpEntity entity = new HttpEntity(headers);
             def response = restTemplate.exchange(
                     "${serviceAddress}/users/${id}",
                     HttpMethod.GET,
@@ -41,11 +43,14 @@ class UserClientRestService implements UserClient {
                     UserDto)
             def dto = response.body
             return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName))
+        } catch (HttpServerErrorException ex) {
+            throw new ClientException("cound not get user $id details", ex)
         } catch (HttpClientErrorException ex) {
             if (ex.statusCode == 404)
                 return Optional.empty()
             throw ex
         }
+
     }
 
     @Override

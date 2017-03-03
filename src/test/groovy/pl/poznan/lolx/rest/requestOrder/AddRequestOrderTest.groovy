@@ -20,8 +20,7 @@ class AddRequestOrderTest extends IntTest {
             ownerId: ownerId,
             price: 22.23,
             type: AnounceType.ORDER,
-            duration: AnounceDuration.SEVEN_DAYS,
-            contactPhone: "222 333 444")
+            duration: AnounceDuration.SEVEN_DAYS)
 
     def requestOrderOwnerId = "777"
     def requestOrderJwt = JwtUtil.gen(requestOrderOwnerId)

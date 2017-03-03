@@ -57,8 +57,7 @@ class GetAnounceEndpoint {
                 ownerId: anounce.ownerId,
                 ownerName: anounce.ownerName,
                 price: anounce.price,
-                img: anounce.getImage().orElse(null),
-                contactPhone: anounce.contactPhone
+                img: anounce.getImage().orElse(null)
         )
     }
 

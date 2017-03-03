@@ -16,5 +16,4 @@ class AnounceCreationRequest {
     String categoryId
     AnounceType type
     AnounceDuration duration
-    String contactPhone
 }
