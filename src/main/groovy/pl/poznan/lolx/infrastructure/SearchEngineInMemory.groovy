@@ -24,12 +24,15 @@ class SearchEngineInMemory implements SearchEngine {
 
     @Override
     SearchResult forUser(String userId, int page, int itemsPerPage) {
-        def anounces = []
-        anounces.addAll(indexedAnounces)
-//        anounces.addAll(generateAnounces(2, 0, userId))
+        def userAnounces = indexedAnounces
+                .findAll { it.ownerId == userId }
+        def endingIndex = (page + 1) * itemsPerPage
+        def pageResults = userAnounces.subList(
+                page * itemsPerPage,
+                userAnounces.size() > endingIndex ? endingIndex : userAnounces.size())
         new SearchResult(
-                totalCount: anounces.size(),
-                items: anounces
+                totalCount: userAnounces.size(),
+                items: pageResults
         )
     }
 
