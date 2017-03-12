@@ -73,7 +73,6 @@ abstract class IntTest {
     }
 
     def createAnounce(anounce) {
-        mockCategories(anounce.categoryId)
         mockUsers()
         httpCreate(anounce)
     }

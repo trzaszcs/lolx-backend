@@ -7,8 +7,8 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import pl.poznan.lolx.domain.add.Category
 import pl.poznan.lolx.domain.add.CategoryDetails
-
-@Component
+// not created by spring
+@Deprecated
 class CategoryDetailsRestService implements CategoryDetails {
 
     @Value('${category-service.addr}')

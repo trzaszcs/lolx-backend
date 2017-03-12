@@ -31,7 +31,6 @@ class GetRequestOrdersForUserTest extends IntTest {
         def anounceAuthorName = "hyzio"
         def requestOrderAuthorName = "dyzio"
         mockBulkUsers([(ownerId): anounceAuthorName, (requestOrderOwnerId): requestOrderAuthorName])
-        mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when
@@ -53,7 +52,6 @@ class GetRequestOrdersForUserTest extends IntTest {
         def anounceAuthorName = "hyzio"
         def requestOrderAuthorName = "dyzio"
         mockBulkUsers([(ownerId): anounceAuthorName, (requestOrderOwnerId): requestOrderAuthorName])
-        mockCategories(anounce.categoryId)
 
         // create 2 anounces
 

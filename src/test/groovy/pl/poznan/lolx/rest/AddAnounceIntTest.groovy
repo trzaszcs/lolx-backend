@@ -24,7 +24,6 @@ class AddAnounceIntTest extends IntTest {
     void "should add anouncenemnt"() {
         // given
         mockUsers()
-        mockCategories(anounce.categoryId)
         // when
         def response = httpCreate(anounce)
         // then

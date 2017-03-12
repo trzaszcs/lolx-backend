@@ -31,7 +31,6 @@ class AddRequestOrderTest extends IntTest {
         // given
         mockUsers()
         mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
-        mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         // when
         def response = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken)
@@ -48,7 +47,6 @@ class AddRequestOrderTest extends IntTest {
     void "should delete request order"() {
         // given
         mockUsers()
-        mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when
@@ -68,7 +66,6 @@ class AddRequestOrderTest extends IntTest {
         // given
         mockUsers()
         mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
-        mockCategories(anounce.categoryId)
         def anounceId = httpCreate(anounce).data.id
         def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when
