@@ -14,11 +14,12 @@ class SearchResultMapper {
                     new SimpleAnounceDto(
                             id: it.id,
                             title: it.title,
-                            location: new LocationDto(title:  it.location.title, latitude: it.location.latitude, longitude: it.location.longitude),
+                            location: new LocationDto(title: it.location.title, latitude: it.location.latitude, longitude: it.location.longitude),
                             creationDate: it.creationDate,
                             price: it.price,
                             img: it.getSmallImage().orElse(null),
-                            type: it.type.name()
+                            type: it.type.name(),
+                            categoryName: it.category.name
                     )
                 }
         )

@@ -17,4 +17,5 @@ class SimpleAnounceDto {
     Date creationDate
     String img
     String type
+    String categoryName
 }
