@@ -42,7 +42,7 @@ class UserClientRestService implements UserClient {
                     entity,
                     UserDto)
             def dto = response.body
-            return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName))
+            return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName, nick: dto.nick))
         } catch (HttpServerErrorException ex) {
             throw new ClientException("cound not get user $id details", ex)
         } catch (HttpClientErrorException ex) {

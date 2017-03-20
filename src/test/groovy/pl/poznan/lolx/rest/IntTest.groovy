@@ -12,8 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
+import pl.poznan.lolx.infrastructure.SearchEngineInMemory
 import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
 import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
+import pl.poznan.lolx.infrastructure.db.WorkerMongoRepository
 import pl.poznan.lolx.rest.requestOrder.RequestRequestOrderDto
 import pl.poznan.lolx.rest.requestOrder.StatusDto
 import pl.poznan.lolx.util.JwtUtil
@@ -31,6 +33,10 @@ abstract class IntTest {
     AnounceMongoRepository anounceMongoRepository
     @Autowired
     RequestOrderMongoRepository requestOrderMongoRepository
+    @Autowired
+    WorkerMongoRepository workerMongoRepository
+    @Autowired
+    SearchEngineInMemory searchEngineInMemory
 
 
     def ownerId = "666"
@@ -40,7 +46,7 @@ abstract class IntTest {
     private static def httpClientInstnance
 
     @Rule
-    public WireMockRule rule = new WireMockRule(12346)
+    public WireMockRule rule = new WireMockRule(12348)
 
     def mockCategories(categoryId) {
         WireMock.stubFor(get(urlEqualTo("/categories/${categoryId}"))
@@ -49,11 +55,11 @@ abstract class IntTest {
                 .withBody("""{"id": "${categoryId}", "name" : "CATEGORY"}""")))
     }
 
-    def mockUsers() {
+    def mockUsers(nick = "defaultNick") {
         WireMock.stubFor(get(urlEqualTo("/users/${ownerId}"))
                 .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("""{"id": "${ownerId}", "email" : "email@wp.pl"}""")))
+                .withBody("""{"id": "${ownerId}", "email" : "email@wp.pl", "nick": "$nick"}""")))
     }
 
     def mockBulkUsers(usersMap) {
@@ -129,5 +135,7 @@ abstract class IntTest {
     void cleanup() {
         anounceMongoRepository.deleteAll()
         requestOrderMongoRepository.deleteAll()
+        workerMongoRepository.deleteAll()
+        searchEngineInMemory.cleanup()
     }
 }

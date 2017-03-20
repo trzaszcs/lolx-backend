@@ -7,4 +7,8 @@ interface SearchEngine {
     Optional<Anounce> getById(String anounceId)
     void index(Anounce anounce)
     void delete(String indexId)
+
+    SearchResult<Worker> findWorkers(String categoryId, Coordinate coordinate, int page, int itemsPerPage)
+    void index(Worker worker)
+    void deleteWorker(String id)
 }

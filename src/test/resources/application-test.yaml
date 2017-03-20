@@ -3,7 +3,7 @@ publicKey:
     files: test.der
 
 user-service:
-    addr: http://localhost:12346/
+    addr: http://localhost:12348/
 
 category-service:
-    addr: http://localhost:12346/
+    addr: http://localhost:12348/
