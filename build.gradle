@@ -31,7 +31,7 @@ task stage {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.10'
     compile 'org.slf4j:slf4j-api:1.7.16'
     compile 'ch.qos.logback:logback-classic:1.1.5'
     compile("org.springframework.boot:spring-boot-starter-web")
@@ -44,14 +44,10 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.2'
-    testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.1-groovy-2.4-rc-1'
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.0-groovy-2.4'
     testCompile 'junit:junit:4.12'
     testCompile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
-    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '1.18'
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock-standalone', version: '2.5.1'
 
 
 }
