@@ -40,13 +40,9 @@ class FindAnouncesEndpoint {
                         type,
                         page,
                         itemsPerPage,
-                        opt(location),
-                        opt(latitude),
-                        opt(longitude),
-                        opt(categoryId)))
-    }
-
-    def opt(value) {
-        Optional.ofNullable(value)
+                        location,
+                        latitude,
+                        longitude,
+                        categoryId))
     }
 }
