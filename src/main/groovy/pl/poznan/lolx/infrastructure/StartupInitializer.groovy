@@ -2,7 +2,10 @@ package pl.poznan.lolx.infrastructure
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.*
+import pl.poznan.lolx.domain.Anounce
+import pl.poznan.lolx.domain.AnounceDao
+import pl.poznan.lolx.domain.Location
+import pl.poznan.lolx.domain.SearchEngine
 import pl.poznan.lolx.domain.add.Category
 
 import javax.annotation.PostConstruct
@@ -28,8 +31,7 @@ class StartupInitializer {
                 location: new Location("Poznan, wielkopolskie", 52.406374, 16.9251681),
                 ownerId: ownerId,
                 ownerName: "someName",
-                price: genPrice(),
-                type: AnounceType.EXECUTE)
+                price: genPrice())
     }
 
     @PostConstruct

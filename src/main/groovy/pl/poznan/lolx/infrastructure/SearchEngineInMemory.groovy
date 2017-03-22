@@ -1,7 +1,10 @@
 package pl.poznan.lolx.infrastructure
 
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.*
+import pl.poznan.lolx.domain.Anounce
+import pl.poznan.lolx.domain.Coordinate
+import pl.poznan.lolx.domain.SearchEngine
+import pl.poznan.lolx.domain.SearchResult
 
 @Component
 class SearchEngineInMemory implements SearchEngine {
@@ -11,7 +14,7 @@ class SearchEngineInMemory implements SearchEngine {
     def indexedAnounces = []
 
     @Override
-    SearchResult find(String phrase, AnounceType type, int page, int itemsPerPage, Coordinate coordinateOpt, String categoryId) {
+    SearchResult find(String phrase, int page, int itemsPerPage, Coordinate coordinateOpt, String categoryId) {
         itemsPerPage = itemsPerPage < MAX_ITEMS_PER_PAGE ? itemsPerPage : MAX_ITEMS_PER_PAGE
         def anounces = []
         anounces.addAll(indexedAnounces)

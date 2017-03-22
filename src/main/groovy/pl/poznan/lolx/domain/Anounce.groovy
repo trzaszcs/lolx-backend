@@ -16,7 +16,6 @@ class Anounce {
     BigDecimal price
     String imgName
     Category category
-    AnounceType type
     AnounceDuration duration
     boolean closed
 
