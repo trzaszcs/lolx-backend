@@ -1,8 +1,6 @@
 package pl.poznan.lolx.domain.requestOrder
 
 import groovy.transform.ToString
-import pl.poznan.lolx.domain.AnounceType
-
 
 @ToString
 class RequestOrder {
@@ -10,13 +8,12 @@ class RequestOrder {
     String authorId
     String anounceId
     String anounceAuthorId
-    AnounceType anounceType
     Date creationDate
     Date updateStatusDate
     Status status
     boolean seen
 
-    static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId, AnounceType anounceType) {
+    static RequestOrder buildNew(String authorId, String anounceId, String anounceAuthorId) {
         if (authorId == anounceAuthorId) {
             throw new IllegalArgumentException("Author ${authorId} cannot create requestOrder because is the owner of anounce ${anounceId}")
         }
@@ -25,7 +22,6 @@ class RequestOrder {
                 anounceId: anounceId,
                 creationDate: new Date(),
                 anounceAuthorId: anounceAuthorId,
-                anounceType: anounceType,
                 status: Status.WAITING,
                 seen: false)
     }

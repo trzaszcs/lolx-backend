@@ -11,14 +11,13 @@ class AnounceSearchService {
 
     SearchResult<Anounce> find(
             String phrase,
-            AnounceType type,
             int page,
             int itemsPerPage,
             String location,
             Integer latitude,
             Integer longitude,
             String categoryId) {
-        searchEngine.find(phrase, type, page, itemsPerPage, getCoordinate(latitude, longitude).orElse(null), categoryId)
+        searchEngine.find(phrase, page, itemsPerPage, getCoordinate(latitude, longitude).orElse(null), categoryId)
     }
 
     SearchResult<Anounce> forUser(String userId, int page, int itemsPerPage) {

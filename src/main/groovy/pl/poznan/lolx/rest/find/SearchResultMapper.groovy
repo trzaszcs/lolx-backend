@@ -18,7 +18,6 @@ class SearchResultMapper {
                             creationDate: it.creationDate,
                             price: it.price,
                             img: it.getSmallImage().orElse(null),
-                            type: it.type.name(),
                             categoryName: it.category.name
                     )
                 }

@@ -22,7 +22,7 @@ class RequestOrderService {
     String requestOrder(String anounceId, String authorId) {
         def anounce = anounceDao.find(anounceId)
         delayedNotification.run()
-        String id = requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId, anounce.type))
+        String id = requestOrderDao.save(RequestOrder.buildNew(authorId, anounce.id, anounce.ownerId))
         delayedNotification.run()
         return id
     }
