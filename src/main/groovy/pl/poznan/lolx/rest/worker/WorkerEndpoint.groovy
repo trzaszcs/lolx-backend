@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import pl.poznan.lolx.domain.Coordinate
-import pl.poznan.lolx.domain.Location
 import pl.poznan.lolx.domain.worker.WorkerService
 import pl.poznan.lolx.rest.add.LocationDto
 import pl.poznan.lolx.rest.shared.jwt.JwtChecker
@@ -23,14 +22,12 @@ class WorkerEndpoint {
 
     @RequestMapping(value = "/workers", method = RequestMethod.POST)
     ResponseEntity find(@RequestHeader(value = "Authorization") authorizationHeader,
-                        @RequestBody @Validated WorkerDto dto) {
+                        @RequestBody @Validated BaseWorkerDto dto) {
         if (jwtChecker.verify(authorizationHeader, dto.userId)) {
             def workerId = workerService.create(
                     dto.userId,
                     dto.description,
-                    dto.photoUrl,
-                    dto.categoryIds,
-                    new Location(dto.location.title, dto.location.latitude, dto.location.longitude))
+                    dto.categoryIds)
             return ResponseEntity.ok(new IdDto(id: workerId));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
@@ -39,15 +36,13 @@ class WorkerEndpoint {
     @RequestMapping(value = "/workers/{workerId}", method = RequestMethod.PUT)
     ResponseEntity update(@PathVariable String workerId,
                           @RequestHeader(value = "Authorization") authorizationHeader,
-                          @RequestBody @Validated WorkerDto dto) {
-        if (workerId == dto.id && jwtChecker.verify(authorizationHeader, dto.userId)) {
+                          @RequestBody @Validated BaseWorkerDto dto) {
+        if (jwtChecker.verify(authorizationHeader, dto.userId)) {
             workerService.update(
-                    dto.id,
+                    workerId,
                     dto.userId,
                     dto.description,
-                    dto.photoUrl,
-                    dto.categoryIds,
-                    new Location(dto.location.title, dto.location.latitude, dto.location.longitude))
+                    dto.categoryIds)
             return ResponseEntity.ok().build()
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
@@ -58,14 +53,18 @@ class WorkerEndpoint {
         workerService.find(workerId)
                 .map({
             ResponseEntity.ok(
-                    new WorkerDto(
-                            id: it.id,
-                            userId: it.userId,
-                            description: it.description,
-                            photoUrl: it.photoUrl.orElse(null),
-                            categoryIds: it.categories,
-                            location: new LocationDto(title: it.locationTitle, latitude: it.latitude, longitude: it.longitude)
-                    )
+                    map(it)
+            )
+        })
+                .orElseGet({ ResponseEntity.notFound().build() })
+    }
+
+    @RequestMapping(value = "/workers/user/{userId}", method = RequestMethod.GET)
+    ResponseEntity findForUser(@PathVariable String userId) {
+        workerService.findForUser(userId)
+                .map({
+            ResponseEntity.ok(
+                    map(it)
             )
         })
                 .orElseGet({ ResponseEntity.notFound().build() })
@@ -90,10 +89,26 @@ class WorkerEndpoint {
                 workers: searchResult.items.collect {
                     new SimpleWorkerDto(
                             id: it.id,
-                            name: it.name.orElseThrow { new IllegalArgumentException("name should be set")},
+                            name: it.name,
                             photoUrl: it.photoUrl.orElse(null),
-                            location: new LocationDto(title: it.location.title, latitude: it.location.latitude, longitude: it.location.longitude))
+                            location: mapLocaton(it.location))
                 }
         )
+    }
+
+    def map(worker) {
+        new WorkerDto(
+                id: worker.id,
+                userId: worker.userId,
+                description: worker.description,
+                photoUrl: worker.photoUrl.orElse(null),
+                categoryIds: worker.categories,
+                name: worker.name,
+                location: mapLocaton(worker.location)
+        )
+    }
+
+    def mapLocaton(location) {
+        new LocationDto(title: location.title, latitude: location.latitude, longitude: location.longitude)
     }
 }

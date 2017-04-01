@@ -1,17 +1,21 @@
 package pl.poznan.lolx.rest.worker
 
 import org.junit.Test
+import pl.poznan.lolx.domain.Location
+import pl.poznan.lolx.domain.Worker
 import pl.poznan.lolx.rest.IntTest
 import pl.poznan.lolx.rest.add.LocationDto
 
 class WorkerIntTest extends IntTest {
 
+    def userNick = "someNick"
+    def location = new Location("Poz",10.1, 20.33)
 
     @Test
     void "should add worker"() {
         // given
         def worker = sampleWorker()
-        mockUsers()
+        mockUsers(userNick, location)
         // when
         def response = httpCreateWorker(worker)
         // then
@@ -21,20 +25,14 @@ class WorkerIntTest extends IntTest {
         def workerFromServer = httpGetWorker(workerId)
         // compare response to request
         def responseDetails = workerFromServer.data
-        assert responseDetails.userId == worker.userId
-        assert responseDetails.categoryIds == worker.categoryIds
-        assert responseDetails.photoUrl == worker.photoUrl
-        assert responseDetails.location.title == worker.location.title
-        assert responseDetails.location.latitude == worker.location.latitude
-        assert responseDetails.location.longitude == worker.location.longitude
+        assertWorkers(responseDetails, worker.userId, worker.categoryIds, location)
     }
 
     @Test
-    void "should find added worker"() {
+    void "should find added worker by categoryId"() {
         // given
         def worker = sampleWorker()
-        def userNick = "someNick"
-        mockUsers(userNick)
+        mockUsers(userNick, location)
         def response = httpCreateWorker(worker)
         response.status == 200
         def workerId = response.data.id
@@ -48,43 +46,56 @@ class WorkerIntTest extends IntTest {
         def foundWorker = searchResult.workers[0]
         assert foundWorker.id == workerId
         assert foundWorker.name == userNick
-        assert foundWorker.photoUrl == worker.photoUrl
-        assert foundWorker.location.title == worker.location.title
-        assert foundWorker.location.latitude == worker.location.latitude
-        assert foundWorker.location.longitude == worker.location.longitude
+        assertLocation(foundWorker, location)
+    }
+
+    @Test
+    void "should find added worker for user"() {
+        // given
+        def worker = sampleWorker()
+        mockUsers(userNick, location)
+        def response = httpCreateWorker(worker)
+        response.status == 200
+        def workerId = response.data.id
+        // when
+        response = httpFindWorkerByUserId(worker.userId)
+        // then
+        assert response.status == 200
+        def workerFromService = response.data
+        assert workerFromService.id == workerId
+        assert workerFromService.name == userNick
+        assertLocation(workerFromService, location)
     }
 
     @Test
     void "should edit worker"() {
         // given
-        def worker = sampleWorker()
-        mockUsers()
-        def response = httpCreateWorker(worker)
+        def workerRequest = sampleWorker()
+        mockUsers(userNick, location)
+        def response = httpCreateWorker(workerRequest)
         assert response.status == 200
-        worker.id = response.data.id
-        worker.description = "new description"
+        def workerId = response.data.id
+        def worker = new BaseWorkerDto(
+                description: "new description",
+                categoryIds: workerRequest.categoryIds,
+                userId: workerRequest.userId)
         // when
-        response = httpUpdateWorker(worker)
+        response = httpUpdateWorker(workerId, worker)
         // then
         assert response.status == 200
-        def workerFromServer = httpGetWorker(worker.id)
+        def workerFromServer = httpGetWorker(workerId)
         // compare response to request
         def responseDetails = workerFromServer.data
-        assert responseDetails.userId == worker.userId
+        assertWorkers(responseDetails, worker.userId, worker.categoryIds, location)
         assert responseDetails.description == "new description"
-        assert responseDetails.categoryIds == worker.categoryIds
-        assert responseDetails.photoUrl == worker.photoUrl
-        assert responseDetails.location.title == worker.location.title
-        assert responseDetails.location.latitude == worker.location.latitude
-        assert responseDetails.location.longitude == worker.location.longitude
     }
 
     def httpCreateWorker(worker) {
         httpClient().post(path: "/workers", body: worker, contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
-    def httpUpdateWorker(worker) {
-        httpClient().put(path: "/workers/${worker.id}", body: worker, contentType: 'application/json', headers: ["Authorization": bearerToken])
+    def httpUpdateWorker(id, worker) {
+        httpClient().put(path: "/workers/${id}", body: worker, contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
     def httpGetWorker(id) {
@@ -95,12 +106,27 @@ class WorkerIntTest extends IntTest {
         httpClient().get(path: "/workers", query: ['categoryId': categoryId, "latitude": latitude, "longitude": longitude], contentType: 'application/json')
     }
 
-    WorkerDto sampleWorker() {
-        new WorkerDto(
+
+    def httpFindWorkerByUserId(userId) {
+        httpClient().get(path: "/workers/user/$userId", contentType: 'application/json')
+    }
+
+    BaseWorkerDto sampleWorker() {
+        new BaseWorkerDto(
                 userId: ownerId,
                 description: "desc",
-                categoryIds: ["1"],
-                photoUrl: "",
-                location: new LocationDto(title: "Poznan", latitude: 22.1d, longitude: 22.3d))
+                categoryIds: ["1"])
+    }
+
+    def assertWorkers(workerToCheck, workerId, categoryIds, location){
+        assert workerToCheck.userId == workerId
+        assert workerToCheck.categoryIds == categoryIds
+        assertLocation(workerToCheck, location)
+    }
+
+    def assertLocation(workerToCheck, location) {
+        assert workerToCheck.location.title == location.title
+        assert workerToCheck.location.latitude == location.latitude
+        assert workerToCheck.location.longitude == location.longitude
     }
 }

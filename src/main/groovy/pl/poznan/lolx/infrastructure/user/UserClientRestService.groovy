@@ -12,8 +12,10 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import pl.poznan.lolx.domain.ClientException
+import pl.poznan.lolx.domain.Location
 import pl.poznan.lolx.domain.add.User
 import pl.poznan.lolx.domain.add.UserClient
+import pl.poznan.lolx.domain.add.UserDetails
 import pl.poznan.lolx.infrastructure.shared.AuthorizationHeaderBuilder
 
 @Component
@@ -41,8 +43,7 @@ class UserClientRestService implements UserClient {
                     HttpMethod.GET,
                     entity,
                     UserDto)
-            def dto = response.body
-            return Optional.of(new User(id: id, email: dto.email, created: dto.created, firstName: dto.firstName, nick: dto.nick))
+            return Optional.of(map(response.body, detailed))
         } catch (HttpServerErrorException ex) {
             throw new ClientException("cound not get user $id details", ex)
         } catch (HttpClientErrorException ex) {
@@ -64,9 +65,10 @@ class UserClientRestService implements UserClient {
                     .exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, UserDto>>() {})
             def usersMap = response.body
             return usersMap.keySet().collectEntries {
-                [(it): map(Optional.ofNullable(usersMap[it]).orElseThrow({
-                    new RuntimeException("User with id ${it} not found")
-                }))]
+                [(it): map(
+                        Optional.ofNullable(usersMap[it]).orElseThrow({new RuntimeException("User with id ${it} not found") }),
+                        false
+                )]
             }
         } catch (HttpClientErrorException ex) {
             if (ex.statusCode == 404)
@@ -75,7 +77,15 @@ class UserClientRestService implements UserClient {
         }
     }
 
-    private User map(UserDto dto) {
-        new User(id: dto.id, email: dto.email, created: dto.created, firstName: dto.firstName, nick: dto.nick)
+    private User map(UserDto dto, boolean detailed) {
+        UserDetails details
+        if (detailed) {
+            def locationDto = dto.location
+            details = new UserDetails(
+                    email: dto.email,
+                    photoUrl: dto.photoUrl,
+                    location: new Location(locationDto.title, locationDto.latitude, locationDto.longitude))
+        }
+        new User(id: dto.id, created: dto.created, firstName: dto.firstName, nick: dto.nick, userDetails: details)
     }
 }

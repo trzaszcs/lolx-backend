@@ -4,6 +4,7 @@ import pl.poznan.lolx.domain.Anounce
 import pl.poznan.lolx.domain.AnounceDao
 import pl.poznan.lolx.domain.add.User
 import pl.poznan.lolx.domain.add.UserClient
+import pl.poznan.lolx.domain.add.UserDetails
 import pl.poznan.lolx.domain.requestOrder.RequestOrder
 import pl.poznan.lolx.domain.requestOrder.RequestOrderDao
 import pl.poznan.lolx.domain.requestOrder.Status
@@ -35,7 +36,7 @@ class RequestOrderChangeNotifierTest extends Specification {
 
     def anounceTitle = "title"
     def anounceOwnerId = "ownerId"
-    def userOptional = Optional.of(new User(email: "email@wp.pl"))
+    def userOptional = Optional.of(new User(userDetails: new UserDetails(email: "email@wp.pl")))
     def anounceOptional = new Anounce(ownerId: anounceOwnerId, title: anounceTitle)
 
 
@@ -46,7 +47,7 @@ class RequestOrderChangeNotifierTest extends Specification {
         when:
         underTest.notify(1)
         then:
-        1 * notificationClient.requestCreated(userOptional.get().email, builder.build(order.id), anounceTitle)
+        1 * notificationClient.requestCreated(userOptional.get().email().get(), builder.build(order.id), anounceTitle)
     }
 
     def "should send event accepted notification"() {
@@ -56,7 +57,7 @@ class RequestOrderChangeNotifierTest extends Specification {
         when:
         underTest.notify(1)
         then:
-        1 * notificationClient.requestAccepted(userOptional.get().email, builder.build(order.id), anounceTitle)
+        1 * notificationClient.requestAccepted(userOptional.get().email().get(), builder.build(order.id), anounceTitle)
     }
 
     def "should send event rejected notification"() {
@@ -66,7 +67,7 @@ class RequestOrderChangeNotifierTest extends Specification {
         when:
         underTest.notify(1)
         then:
-        1 * notificationClient.requestRejected(userOptional.get().email, builder.build(order.id), anounceTitle)
+        1 * notificationClient.requestRejected(userOptional.get().email().get(), builder.build(order.id), anounceTitle)
     }
 
     def setupStubs(RequestOrder order, String userIdToGet) {

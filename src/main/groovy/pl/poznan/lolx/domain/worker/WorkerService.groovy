@@ -1,6 +1,7 @@
 package pl.poznan.lolx.domain.worker
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.PermissionDeniedDataAccessException
 import org.springframework.stereotype.Component
 import pl.poznan.lolx.domain.*
 import pl.poznan.lolx.domain.add.CategoryDetails
@@ -18,17 +19,17 @@ class WorkerService {
     @Autowired
     UserClient userClient
 
-    String create(String userId, String description, String photoUrl, List<String> categoryIds, Location location) {
+    String create(String userId, String description, List<String> categoryIds) {
         checkCategories(categoryIds)
-        def userDetails = userClient.find(userId, false)
+        def userDetails = userClient.find(userId, true)
                 .orElseThrow({ new IllegalArgumentException("user with id $userId not found") })
         def worker = new Worker(
                 null,
                 userId,
                 description,
-                photoUrl,
+                userDetails.photoUrl().orElse(null),
                 categoryIds,
-                location,
+                userDetails.location().get(),
                 userDetails.name()
         )
         def id = dao.create(worker)
@@ -37,14 +38,20 @@ class WorkerService {
         return id
     }
 
-    Worker update(String id, String userId, String description, String photoUrl, List<String> categoryIds, Location location) {
+    boolean update(String id, String userId, String description, List<String> categoryIds) {
         assert id != null && !id.isEmpty()
         checkCategories(categoryIds)
-        def userDetails = userClient.find(userId, false)
-                .orElseThrow({ new IllegalArgumentException("user with id $userId not found") })
-        def worker = new Worker(id, userId, description, photoUrl, categoryIds, location, userDetails.name())
-        searchEngine.index(worker)
-        dao.update(worker)
+        dao.find(id)
+            .map({workerToUpdate ->
+                if(workerToUpdate.userId != userId) {
+                    throw new PermissionDeniedDataAccessException("userId ${userId} not allowed to change worker ${id}")
+                }
+                def updatedWorker =  workerToUpdate.update(description, categoryIds)
+                dao.update(updatedWorker)
+                searchEngine.index(updatedWorker)
+                return true
+            })
+            .orElse(false)
     }
 
     void delete(String id) {
@@ -55,6 +62,10 @@ class WorkerService {
 
     Optional<Worker> find(String id) {
         dao.find(id)
+    }
+
+    Optional<Worker> findForUser(String id) {
+        dao.findForUser(id)
     }
 
     SearchResult<Worker> find(String categoryId, Coordinate coordinate, int page, int itemsPerPage) {

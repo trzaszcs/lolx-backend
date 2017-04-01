@@ -19,6 +19,7 @@ class WorkerMongoDao implements WorkerDao {
                 WorkerDocument.create(
                         worker.userId,
                         worker.description,
+                        worker.name,
                         worker.categories,
                         worker.getPhotoUrl().orElse(null),
                         map(worker.location)
@@ -47,6 +48,12 @@ class WorkerMongoDao implements WorkerDao {
                 .map({ map(it) })
     }
 
+    @Override
+    Optional<Worker> findForUser(String id) {
+        Optional.ofNullable(repository.findByUserId(id))
+                .map({ map(it) })
+    }
+
     LocationDocument map(Location location) {
         new LocationDocument(title: location.title, latitude: location.latitude, longitude: location.longitude)
     }
@@ -60,7 +67,7 @@ class WorkerMongoDao implements WorkerDao {
                 worker.photoUrl,
                 worker.categoriesId,
                 new Location(location.title, location.latitude, location.longitude),
-                null
+                worker.name
         )
     }
 

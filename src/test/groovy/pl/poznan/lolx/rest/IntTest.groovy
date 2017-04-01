@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import pl.poznan.lolx.AppConfig
+import pl.poznan.lolx.domain.Location
 import pl.poznan.lolx.infrastructure.SearchEngineInMemory
 import pl.poznan.lolx.infrastructure.db.AnounceMongoRepository
 import pl.poznan.lolx.infrastructure.db.RequestOrderMongoRepository
@@ -55,11 +56,19 @@ abstract class IntTest {
                 .withBody("""{"id": "${categoryId}", "name" : "CATEGORY"}""")))
     }
 
-    def mockUsers(nick = "defaultNick") {
+    def mockUsers(nick = "defaultNick", location = new Location("Poz", 52.406374, 16.9251681)) {
         WireMock.stubFor(get(urlEqualTo("/users/${ownerId}"))
                 .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("""{"id": "${ownerId}", "email" : "email@wp.pl", "nick": "$nick"}""")))
+                .withBody(
+                """
+                    {
+                        "id": "${ownerId}",
+                        "nick": "$nick",
+                        "email" : "email@wp.pl",
+                        "location": {"title": "${location.title}", "latitude": ${location.latitude}, "longitude": ${location.longitude}}
+                    }
+                """)))
     }
 
     def mockBulkUsers(usersMap) {

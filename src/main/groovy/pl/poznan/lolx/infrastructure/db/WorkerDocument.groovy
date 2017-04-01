@@ -11,6 +11,7 @@ class WorkerDocument {
     @Indexed(unique = true)
     String userId
     String description
+    String name
     String photoUrl
     LocationDocument location
     List<String> categoriesId
@@ -18,10 +19,11 @@ class WorkerDocument {
     Date creationDate
     Date updateDate
 
-    static WorkerDocument create(String userId, String description, List<String> categoriesId, String photoUrl, LocationDocument locationDocument) {
+    static WorkerDocument create(String userId, String description, String name, List<String> categoriesId, String photoUrl, LocationDocument locationDocument) {
         new WorkerDocument(
                 userId: userId,
                 description: description,
+                name: name,
                 categoriesId: categoriesId,
                 photoUrl: photoUrl,
                 location: locationDocument

@@ -12,4 +12,6 @@ interface WorkerDao {
 
     Optional<Worker> find(String id)
 
+    Optional<Worker> findForUser(String id)
+
 }

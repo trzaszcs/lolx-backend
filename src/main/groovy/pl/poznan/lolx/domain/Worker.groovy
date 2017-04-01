@@ -29,12 +29,13 @@ class Worker {
         new Worker(id, this.userId, this.description, this.photoUrl, this.categories, this.location, this.name)
     }
 
-    Optional<String> getPhotoUrl() {
-        return Optional.ofNullable(photoUrl)
+
+    Worker update(String description, List<String> categories) {
+        new Worker(this.id, this.userId, description, this.photoUrl, categories, location, name)
     }
 
-    Optional<String> getName() {
-        return Optional.ofNullable(name)
+    Optional<String> getPhotoUrl() {
+        return Optional.ofNullable(photoUrl)
     }
 
     String getLocationTitle() {
