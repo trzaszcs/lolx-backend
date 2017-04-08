@@ -1,15 +1,14 @@
 package pl.poznan.lolx.rest.worker
 
+import groovyx.net.http.HttpResponseException
 import org.junit.Test
 import pl.poznan.lolx.domain.Location
-import pl.poznan.lolx.domain.Worker
 import pl.poznan.lolx.rest.IntTest
-import pl.poznan.lolx.rest.add.LocationDto
 
 class WorkerIntTest extends IntTest {
 
     def userNick = "someNick"
-    def location = new Location("Poz",10.1, 20.33)
+    def location = new Location("Poz", 10.1, 20.33)
 
     @Test
     void "should add worker"() {
@@ -90,12 +89,37 @@ class WorkerIntTest extends IntTest {
         assert responseDetails.description == "new description"
     }
 
+    @Test
+    void "should delete worker"() {
+        // given
+        def workerRequest = sampleWorker()
+        mockUsers(userNick, location)
+        def response = httpCreateWorker(workerRequest)
+        assert response.status == 200
+        def workerId = response.data.id
+        // when
+        response = httpDeleteWorker(workerId)
+        // then
+        assert response.status == 200
+        try {
+            httpGetWorker(workerId)
+            assert false
+        } catch (HttpResponseException ex) {
+            assert ex.statusCode == 404
+        }
+    }
+
     def httpCreateWorker(worker) {
         httpClient().post(path: "/workers", body: worker, contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
     def httpUpdateWorker(id, worker) {
         httpClient().put(path: "/workers/${id}", body: worker, contentType: 'application/json', headers: ["Authorization": bearerToken])
+    }
+
+
+    def httpDeleteWorker(id) {
+        httpClient().delete(path: "/workers/${id}", contentType: 'application/json', headers: ["Authorization": bearerToken])
     }
 
     def httpGetWorker(id) {
@@ -118,7 +142,7 @@ class WorkerIntTest extends IntTest {
                 categoryIds: ["1"])
     }
 
-    def assertWorkers(workerToCheck, workerId, categoryIds, location){
+    def assertWorkers(workerToCheck, workerId, categoryIds, location) {
         assert workerToCheck.userId == workerId
         assert workerToCheck.categoryIds == categoryIds
         assertLocation(workerToCheck, location)

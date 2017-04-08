@@ -59,6 +59,14 @@ class WorkerEndpoint {
                 .orElseGet({ ResponseEntity.notFound().build() })
     }
 
+    @RequestMapping(value = "/workers/{workerId}", method = RequestMethod.DELETE)
+    ResponseEntity delete(@PathVariable String workerId,
+                          @RequestHeader(value = "Authorization") authorizationHeader) {
+        def userId = jwtChecker.subject(authorizationHeader)
+        workerService.delete(workerId, userId)
+        return ResponseEntity.ok().build()
+    }
+
     @RequestMapping(value = "/workers/user/{userId}", method = RequestMethod.GET)
     ResponseEntity findForUser(@PathVariable String userId) {
         workerService.findForUser(userId)

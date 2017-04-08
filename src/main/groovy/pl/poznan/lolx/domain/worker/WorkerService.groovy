@@ -3,7 +3,10 @@ package pl.poznan.lolx.domain.worker
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.PermissionDeniedDataAccessException
 import org.springframework.stereotype.Component
-import pl.poznan.lolx.domain.*
+import pl.poznan.lolx.domain.Coordinate
+import pl.poznan.lolx.domain.SearchEngine
+import pl.poznan.lolx.domain.SearchResult
+import pl.poznan.lolx.domain.Worker
 import pl.poznan.lolx.domain.add.CategoryDetails
 import pl.poznan.lolx.domain.add.UserClient
 
@@ -42,22 +45,29 @@ class WorkerService {
         assert id != null && !id.isEmpty()
         checkCategories(categoryIds)
         dao.find(id)
-            .map({workerToUpdate ->
-                if(workerToUpdate.userId != userId) {
-                    throw new PermissionDeniedDataAccessException("userId ${userId} not allowed to change worker ${id}")
-                }
-                def updatedWorker =  workerToUpdate.update(description, categoryIds)
-                dao.update(updatedWorker)
-                searchEngine.index(updatedWorker)
-                return true
-            })
-            .orElse(false)
+                .map({ workerToUpdate ->
+            if (workerToUpdate.userId != userId) {
+                throw new PermissionDeniedDataAccessException("userId ${userId} not allowed to change worker ${id}")
+            }
+            def updatedWorker = workerToUpdate.update(description, categoryIds)
+            dao.update(updatedWorker)
+            searchEngine.index(updatedWorker)
+            return true
+        })
+                .orElse(false)
     }
 
-    void delete(String id) {
-        assert id != null && !id.isEmpty()
-        dao.delete(id)
-        searchEngine.deleteWorker(id)
+    void delete(String workerId, String userId) {
+        assert workerId != null && !workerId.isEmpty()
+        assert userId != null && !userId.isEmpty()
+
+        dao.find(workerId).ifPresent({ worker ->
+            if (worker.userId != userId) {
+                throw new PermissionDeniedDataAccessException("userId ${userId} not allowed to change worker ${id}")
+            }
+            dao.delete(workerId)
+            searchEngine.deleteWorker(workerId)
+        })
     }
 
     Optional<Worker> find(String id) {
