@@ -49,7 +49,6 @@ class AnounceMongoDao implements AnounceDao {
                 longitude: anounce.location.longitude
         )
         document.imgName = anounce.imgName
-        document.type = anounce.type
         document.duration = anounce.duration
         document.closed = anounce.closed
     }
@@ -63,9 +62,7 @@ class AnounceMongoDao implements AnounceDao {
                 creationDate: anounce.creationDate,
                 price: anounce.price,
                 duration: anounce.duration,
-                category: new Category(id: anounce.categoryId),
-                type: anounce.type
-
+                category: new Category(id: anounce.categoryId)
         )
     }
 }

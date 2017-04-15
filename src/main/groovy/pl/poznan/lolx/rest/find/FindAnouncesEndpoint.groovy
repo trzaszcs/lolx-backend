@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import pl.poznan.lolx.domain.AnounceSearchService
-import pl.poznan.lolx.domain.AnounceType
 
 @RestController
 @Slf4j
@@ -28,7 +27,6 @@ class FindAnouncesEndpoint {
     SearchResultDto find(@RequestParam("query") String query,
                          @RequestParam(name = "page", defaultValue = "0") int page,
                          @RequestParam(name = "itemsPerPage", defaultValue = "20") int itemsPerPage,
-                         @RequestParam(name = "type", defaultValue = "EXECUTE") AnounceType type,
                          @RequestParam(name = "location", required = false) String location,
                          @RequestParam(name = "latitude", required = false) Integer latitude,
                          @RequestParam(name = "longitude", required = false) Integer longitude,
@@ -37,16 +35,11 @@ class FindAnouncesEndpoint {
         searchResultMapper.map(
                 anounceSearchService.find(
                         query,
-                        type,
                         page,
                         itemsPerPage,
-                        opt(location),
-                        opt(latitude),
-                        opt(longitude),
-                        opt(categoryId)))
-    }
-
-    def opt(value) {
-        Optional.ofNullable(value)
+                        location,
+                        latitude,
+                        longitude,
+                        categoryId))
     }
 }

@@ -99,7 +99,8 @@ class WorkerEndpoint {
                             id: it.id,
                             name: it.name,
                             photoUrl: it.photoUrl.orElse(null),
-                            location: mapLocaton(it.location))
+                            location: mapLocaton(it.location),
+                            categoryIds: it.categories)
                 }
         )
     }

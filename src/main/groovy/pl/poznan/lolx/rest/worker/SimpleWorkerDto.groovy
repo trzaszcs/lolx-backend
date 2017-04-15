@@ -10,4 +10,5 @@ class SimpleWorkerDto {
     String photoUrl
     @NotNull
     LocationDto location
+    List<String> categoryIds
 }

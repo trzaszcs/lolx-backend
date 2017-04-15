@@ -47,7 +47,7 @@ class UserClientRestService implements UserClient {
         } catch (HttpServerErrorException ex) {
             throw new ClientException("cound not get user $id details", ex)
         } catch (HttpClientErrorException ex) {
-            if (ex.statusCode == 404)
+            if (ex.statusCode.value() == 404)
                 return Optional.empty()
             throw ex
         }

@@ -3,7 +3,6 @@ package pl.poznan.lolx.rest.requestOrder
 import groovyx.net.http.HttpResponseException
 import org.junit.Test
 import pl.poznan.lolx.domain.AnounceDuration
-import pl.poznan.lolx.domain.AnounceType
 import pl.poznan.lolx.domain.requestOrder.Status
 import pl.poznan.lolx.rest.IntTest
 import pl.poznan.lolx.rest.add.AnounceRequestDto
@@ -19,7 +18,6 @@ class AddRequestOrderTest extends IntTest {
             location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d),
             ownerId: ownerId,
             price: 22.23,
-            type: AnounceType.ORDER,
             duration: AnounceDuration.SEVEN_DAYS)
 
     def requestOrderOwnerId = "777"
@@ -30,7 +28,7 @@ class AddRequestOrderTest extends IntTest {
     void "should create request order"() {
         // given
         mockUsers()
-        mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
+        mockBulkUsers([(ownerId): "A", (requestOrderOwnerId): "B"])
         def anounceId = httpCreate(anounce).data.id
         // when
         def response = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken)
@@ -65,7 +63,7 @@ class AddRequestOrderTest extends IntTest {
     void "should be able to accept order"() {
         // given
         mockUsers()
-        mockBulkUsers([(ownerId):"A", (requestOrderOwnerId):"B"])
+        mockBulkUsers([(ownerId): "A", (requestOrderOwnerId): "B"])
         def anounceId = httpCreate(anounce).data.id
         def requestOrderId = httpCreateRequestOrder(anounceId, requestOrderOwnerBearerToken).data.id
         // when

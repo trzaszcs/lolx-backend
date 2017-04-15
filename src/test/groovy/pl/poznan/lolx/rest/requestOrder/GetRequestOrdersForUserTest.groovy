@@ -2,7 +2,6 @@ package pl.poznan.lolx.rest.requestOrder
 
 import org.junit.Test
 import pl.poznan.lolx.domain.AnounceDuration
-import pl.poznan.lolx.domain.AnounceType
 import pl.poznan.lolx.rest.IntTest
 import pl.poznan.lolx.rest.add.AnounceRequestDto
 import pl.poznan.lolx.rest.add.LocationDto
@@ -17,7 +16,6 @@ class GetRequestOrdersForUserTest extends IntTest {
             location: new LocationDto(title: "Poznan", latitude: 22.3d, longitude: 22.3d),
             ownerId: ownerId,
             price: 22.23,
-            type: AnounceType.ORDER,
             duration: AnounceDuration.SEVEN_DAYS)
 
     def requestOrderOwnerId = "777"
