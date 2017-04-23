@@ -16,3 +16,8 @@ front-service:
 
 private-key:
   path: classpath:private_key.der
+
+spring:
+  http:
+    multipart:
+      maxFileSize: 10MB
