@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Xmx480m -Xms64m -javaagent:newrelic/newrelic.jar  -jar build/libs/lolx-backend.jar
+web: java -Dserver.port=$PORT -Xmx412m -Xms64m -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+PrintTenuringDistribution -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -javaagent:newrelic/newrelic.jar  -jar build/libs/lolx-backend.jar
