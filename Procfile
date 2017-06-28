@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Xmx256m -Xms32m XX:PermSize=128m -XX:MaxPermSize=128m -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+PrintTenuringDistribution -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -javaagent:newrelic/newrelic.jar  -jar build/libs/lolx-backend.jar
+web: java -Dserver.port=$PORT -Xmx256m -Xms32m -XX:PermSize=128m -XX:MaxPermSize=128m -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+PrintTenuringDistribution -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -javaagent:newrelic/newrelic.jar  -jar build/libs/lolx-backend.jar
